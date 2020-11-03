@@ -40,6 +40,9 @@
     <Compile Include="BinaryTreeNode.cs" />
     <Compile Include="BinaryTree.cs" />
     <Compile Include="Polyfill.cs" />
+    <Compile Include="Randomizer.cs" />
+    <Compile Include="Xorshift32.cs" />
+    <Compile Include="Xorshift128Plus.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

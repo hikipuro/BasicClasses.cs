@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -8,8 +10,20 @@ namespace Sample {
 	class MainClass {
 		public static void Main(string[] args) {
 			Console.WriteLine("Hello World!");
-			TestBinaryTree();
+			TestXorshift32();
+			TestXorshift128Plus();
+			//TestRandomizer();
+			//TestBinaryTree();
 			//TestTrieTree();
+		}
+
+		public static double Benchmark(Action action, int count) {
+			Stopwatch stopwatch = Stopwatch.StartNew();
+			for (int i = 0; i < count; i++) {
+				action();
+			}
+			stopwatch.Stop();
+			return stopwatch.Elapsed.TotalMilliseconds;
 		}
 
 		public static T TestSerialize<T>(T value) {
@@ -20,6 +34,57 @@ namespace Sample {
 			value = (T)formatter.Deserialize(stream);
 			stream.Close();
 			return value;
+		}
+
+		public static void TestXorshift32() {
+			Random random = new Random();
+			double time = Benchmark(() => {
+				random.Next();
+			}, 100000);
+			Console.WriteLine("time: {0}", time);
+
+			Xorshift32 xorshift = new Xorshift32();
+			time = Benchmark(() => {
+				xorshift.Next();
+			}, 100000);
+			Console.WriteLine("time: {0}", time);
+		}
+
+		public static void TestXorshift128Plus() {
+			Random random = new Random();
+			double time = Benchmark(() => {
+				random.Next();
+			}, 100000);
+			Console.WriteLine("time: {0}", time);
+
+			Xorshift128Plus xorshift = new Xorshift128Plus();
+			for (int i = 0; i < 10; i++) {
+				Console.WriteLine(xorshift.Next());
+			}
+			time = Benchmark(() => {
+				xorshift.Next();
+			}, 100000);
+			Console.WriteLine("time: {0}", time);
+		}
+
+		public static void TestRandomizer() {
+			int[] array = new int[10];
+			for (int i = 0; i < array.Length; i++) {
+				array[i] = i;
+			}
+			Randomizer.Shuffle(array);
+			for (int i = 0; i < array.Length; i++) {
+				Console.WriteLine(array[i]);
+			}
+			Console.WriteLine();
+			List<int> list = new List<int>();
+			for (int i = 0; i < 10; i++) {
+				list.Add(i);
+			}
+			Randomizer.Shuffle(list);
+			for (int i = 0; i < list.Count; i++) {
+				Console.WriteLine(list[i]);
+			}
 		}
 
 		public static void TestBinaryTree() {
