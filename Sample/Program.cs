@@ -4,13 +4,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using BasicClasses;
 
 namespace Sample {
 	class MainClass {
 		public static void Main(string[] args) {
 			Console.WriteLine("Hello World!");
-			TestHeap();
+			TestSiphash();
+			//TestHeap();
 			//TestXorshift32();
 			//TestXorshift128Plus();
 			//TestRandomizer();
@@ -35,6 +37,19 @@ namespace Sample {
 			value = (T)formatter.Deserialize(stream);
 			stream.Close();
 			return value;
+		}
+
+		public static void TestSiphash() {
+			string key = "This is the key!";
+			string message = "aaaShort test message";
+			byte[] bytes = Encoding.UTF8.GetBytes(message);
+			byte[] k = Encoding.UTF8.GetBytes(key);
+			SipHash siphash = new SipHash(8, k);
+			byte[] output = siphash.ComputeHash(bytes, 3, bytes.Length - 3);
+			for (int i = 0; i < output.Length; i++) {
+				Console.WriteLine("{0}: {1:X}", i, output[i]);
+			}
+			output = siphash.ComputeHash(bytes, 3, bytes.Length - 3);
 		}
 
 		public static void TestHeap() {
