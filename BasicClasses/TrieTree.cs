@@ -10,9 +10,6 @@ namespace BasicClasses {
 		}
 
 		public void Traverse(Func<TrieTreeNode<T>, bool> callback) {
-			if (callback == null) {
-				throw new ArgumentNullException("callback");
-			}
 			Root.Traverse(callback);
 		}
 

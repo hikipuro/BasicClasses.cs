@@ -10,8 +10,9 @@ namespace Sample {
 	class MainClass {
 		public static void Main(string[] args) {
 			Console.WriteLine("Hello World!");
-			TestXorshift32();
-			TestXorshift128Plus();
+			TestHeap();
+			//TestXorshift32();
+			//TestXorshift128Plus();
 			//TestRandomizer();
 			//TestBinaryTree();
 			//TestTrieTree();
@@ -34,6 +35,28 @@ namespace Sample {
 			value = (T)formatter.Deserialize(stream);
 			stream.Close();
 			return value;
+		}
+
+		public static void TestHeap() {
+			Heap<int> heap = new Heap<int>();
+			heap.Push(9);
+			heap.Push(2);
+			heap.Push(6);
+			heap.Push(1);
+			heap.Push(10);
+			heap.Push(3);
+			Console.WriteLine("count: {0}", heap.Count);
+			heap.Traverse((n) => {
+				Console.WriteLine(n);
+				return true;
+			});
+
+			Console.WriteLine(heap.Pop());
+			Console.WriteLine(heap.Pop());
+			Console.WriteLine(heap.Pop());
+			Console.WriteLine(heap.Pop());
+			Console.WriteLine(heap.Pop());
+			Console.WriteLine(heap.Pop());
 		}
 
 		public static void TestXorshift32() {
