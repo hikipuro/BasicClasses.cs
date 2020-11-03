@@ -36,6 +36,7 @@
     <Compile Include="TrieTree.cs" />
     <Compile Include="RingBuffer.cs" />
     <Compile Include="Pool.cs" />
+    <Compile Include="History.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
