@@ -37,6 +37,9 @@
     <Compile Include="RingBuffer.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="History.cs" />
+    <Compile Include="BinaryTreeNode.cs" />
+    <Compile Include="BinaryTree.cs" />
+    <Compile Include="Polyfill.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
