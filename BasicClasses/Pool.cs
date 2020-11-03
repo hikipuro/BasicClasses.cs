@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 
 namespace BasicClasses {
-
+	[Serializable]
 	public class Pool<T> where T : class, new() {
 		public readonly int MaxCount;
 		protected Queue<T> _unusedQueue;
 		protected Func<int, T> _generator;
 
 #if NET20
-		public delegate TResult Func<T1, TResult>(T1 arg);
 		protected List<T> _list = new List<T>();
 #else
 		protected HashSet<T> _list = new HashSet<T>();

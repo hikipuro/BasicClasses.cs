@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace BasicClasses {
+	[Serializable]
 	public class History<T> where T : class {
 		public readonly int MaxCount;
 		protected readonly List<T> _list;

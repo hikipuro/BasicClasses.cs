@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace BasicClasses {
+	[Serializable]
 	public class BinaryTreeNode<TKey, TValue> where TKey : IComparable<TKey> {
 		public readonly TKey Key;
 		public TValue Value;

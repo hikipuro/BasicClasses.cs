@@ -4,29 +4,29 @@ using System.Text;
 
 namespace BasicClasses {
 	[Serializable]
-	public class TrieNode<T> {
+	public class TrieTreeNode<T> {
 		public readonly string Key;
 		public T Value;
-		public TrieNode<T> Parent;
-		public readonly Dictionary<string, TrieNode<T>> Children;
+		public TrieTreeNode<T> Parent;
+		public readonly Dictionary<string, TrieTreeNode<T>> Children;
 
-		public TrieNode<T> this[string key] {
+		public TrieTreeNode<T> this[string key] {
 			get {
-				if (Children.TryGetValue(key, out TrieNode<T> node)) {
+				if (Children.TryGetValue(key, out TrieTreeNode<T> node)) {
 					return node;
 				}
 				return null;
 			}
 		}
 
-		public TrieNode(string key) {
+		public TrieTreeNode(string key) {
 			Key = key;
-			Children = new Dictionary<string, TrieNode<T>>();
+			Children = new Dictionary<string, TrieTreeNode<T>>();
 		}
 
 		public string GetWord() {
 			StringBuilder builder = new StringBuilder();
-			TrieNode<T> node = this;
+			TrieTreeNode<T> node = this;
 			while (node != null) {
 				builder.Insert(0, node.Key);
 				node = node.Parent;
@@ -41,24 +41,24 @@ namespace BasicClasses {
 			return Children.ContainsKey(key);
 		}
 
-		public bool HasChild(TrieNode<T> node) {
+		public bool HasChild(TrieTreeNode<T> node) {
 			if (node == null) {
 				return false;
 			}
 			return Children.ContainsValue(node);
 		}
 
-		public TrieNode<T> GetChild(string key) {
+		public TrieTreeNode<T> GetChild(string key) {
 			if (key == null) {
 				return null;
 			}
-			if (Children.TryGetValue(key, out TrieNode<T> node)) {
+			if (Children.TryGetValue(key, out TrieTreeNode<T> node)) {
 				return node;
 			}
 			return null;
 		}
 
-		public void AddChild(string key, TrieNode<T> node) {
+		public void AddChild(string key, TrieTreeNode<T> node) {
 			if (key == null) {
 				throw new ArgumentNullException("key");
 			}
@@ -68,11 +68,11 @@ namespace BasicClasses {
 			Children.Add(key, node);
 		}
 
-		public TrieNode<T> RemoveChild(string key) {
+		public TrieTreeNode<T> RemoveChild(string key) {
 			if (key == null) {
 				return null;
 			}
-			TrieNode<T> node = GetChild(key);
+			TrieTreeNode<T> node = GetChild(key);
 			if (node != null) {
 				node.Parent = null;
 				Children.Remove(key);
@@ -80,11 +80,11 @@ namespace BasicClasses {
 			return node;
 		}
 
-		public TrieNode<T> RemoveChild(TrieNode<T> node) {
+		public TrieTreeNode<T> RemoveChild(TrieTreeNode<T> node) {
 			if (node == null) {
 				return null;
 			}
-			foreach (KeyValuePair<string, TrieNode<T>> child in Children) {
+			foreach (KeyValuePair<string, TrieTreeNode<T>> child in Children) {
 				if (child.Value != node) {
 					continue;
 				}
@@ -95,33 +95,33 @@ namespace BasicClasses {
 			return null;
 		}
 
-		public void Traverse(TrieTree<T>.TraverseCallback callback) {
+		public void Traverse(Func<TrieTreeNode<T>, bool> callback) {
 			if (callback == null) {
 				throw new ArgumentNullException("callback");
 			}
-			Queue<TrieNode<T>> queue = new Queue<TrieNode<T>>();
-			foreach (TrieNode<T> child in Children.Values) {
+			Queue<TrieTreeNode<T>> queue = new Queue<TrieTreeNode<T>>();
+			foreach (TrieTreeNode<T> child in Children.Values) {
 				queue.Enqueue(child);
 			}
 			while (queue.Count > 0) {
-				TrieNode<T> node = queue.Dequeue();
+				TrieTreeNode<T> node = queue.Dequeue();
 				if (callback(node) == false) {
 					break;
 				}
-				foreach (TrieNode<T> child in node.Children.Values) {
+				foreach (TrieTreeNode<T> child in node.Children.Values) {
 					queue.Enqueue(child);
 				}
 			}
 		}
 
-		public TrieNode<T> Search(string word) {
+		public TrieTreeNode<T> Search(string word) {
 			if (word == null) {
 				throw new ArgumentNullException("word");
 			}
 			if (word == string.Empty) {
 				return null;
 			}
-			TrieNode<T> node = this;
+			TrieTreeNode<T> node = this;
 			foreach (string key in EnumerateKey(word)) {
 				node = node[key];
 				if (node == null) {
@@ -138,13 +138,13 @@ namespace BasicClasses {
 			if (word == string.Empty) {
 				return false;
 			}
-			TrieNode<T> node = this;
+			TrieTreeNode<T> node = this;
 			foreach (string key in EnumerateKey(word)) {
 				if (node.HasChild(key)) {
 					node = node[key];
 					continue;
 				}
-				TrieNode<T> newNode = new TrieNode<T>(key);
+				TrieTreeNode<T> newNode = new TrieTreeNode<T>(key);
 				newNode.Parent = node;
 				node.AddChild(key, newNode);
 				node = newNode;

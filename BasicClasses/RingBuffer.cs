@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace BasicClasses {
+	[Serializable]
 	public class RingBuffer<T> : IEnumerable<T> {
-		public delegate T InitializeFunc(int index);
 		protected readonly T[] _buffer;
 		protected readonly int _mask;
 
@@ -64,7 +64,7 @@ namespace BasicClasses {
 			IsEmpty = true;
 		}
 
-		public RingBuffer(int count, InitializeFunc initializer) : this(count) {
+		public RingBuffer(int count, Func<int, T> initializer) : this(count) {
 			if (initializer == null) {
 				return;
 			}

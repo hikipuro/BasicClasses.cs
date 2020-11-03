@@ -1,6 +1,7 @@
 ﻿using System;
 
 namespace BasicClasses {
+	[Serializable]
 	public class BinaryTree<TKey, TValue> where TKey: IComparable<TKey> {
 		public BinaryTreeNode<TKey, TValue> Root;
 

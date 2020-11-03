@@ -3,22 +3,20 @@
 namespace BasicClasses {
 	[Serializable]
 	public class TrieTree<T> {
-		public delegate bool TraverseCallback(TrieNode<T> node);
-
-		public readonly TrieNode<T> Root;
+		public readonly TrieTreeNode<T> Root;
 
 		public TrieTree() {
-			Root = new TrieNode<T>(null);
+			Root = new TrieTreeNode<T>(null);
 		}
 
-		public void Traverse(TraverseCallback callback) {
+		public void Traverse(Func<TrieTreeNode<T>, bool> callback) {
 			if (callback == null) {
 				throw new ArgumentNullException("callback");
 			}
 			Root.Traverse(callback);
 		}
 
-		public TrieNode<T> Search(string word) {
+		public TrieTreeNode<T> Search(string word) {
 			return Root.Search(word);
 		}
 
