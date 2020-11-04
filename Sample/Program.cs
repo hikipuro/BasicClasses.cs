@@ -11,14 +11,14 @@ namespace Sample {
 	class MainClass {
 		public static void Main(string[] args) {
 			Console.WriteLine("Hello World!");
-			TestMurmurHash3();
+			//TestMurmurHash3();
 			//TestSiphash();
 			//TestHeap();
 			//TestXorshift32();
 			//TestXorshift128Plus();
 			//TestRandomizer();
 			//TestBinaryTree();
-			//TestTrieTree();
+			TestTrieTree();
 		}
 
 		public static double Benchmark(Action action, int count) {
@@ -157,13 +157,28 @@ namespace Sample {
 
 		public static void TestTrieTree() {
 			TrieTree<string> tree = new TrieTree<string>();
-			tree.Insert("a", "test a");
-			tree.Insert("ab", "test ab");
-			tree.Insert("abc", "test abc");
-			tree.Insert("bc", "test bc");
-			tree.Insert("cdef", "test cdef");
+			tree["a"] = "test a";
+			tree["a"] = "test aa";
+			tree.Add("ab", "test ab");
+			tree.Add("abc", "test abc");
+			tree.Add("bc", "test bc");
+			tree.Add("cdef", "test cdef");
+			tree.Add("😁", "test 😁");
 
-			Console.WriteLine(tree.Search("a"));
+			tree = TestSerialize(tree);
+
+			Console.OutputEncoding = Encoding.UTF8;
+			Console.WriteLine("😁");
+
+			tree.Remove("a");
+			tree.Traverse((node) => {
+				Console.WriteLine("{0}: {1}", node.GetWord(), node);
+				return true;
+			});
+
+			Console.WriteLine();
+
+			Console.WriteLine(tree["a"]);
 			Console.WriteLine(tree.Search("abc"));
 			Console.WriteLine(tree.Search("c"));
 			Console.WriteLine(tree.Search("cde"));
