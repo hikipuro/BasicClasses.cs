@@ -13,11 +13,11 @@ namespace Sample {
 			Console.WriteLine("Hello World!");
 			//TestMurmurHash3();
 			//TestSiphash();
-			//TestHeap();
+			TestHeap();
 			//TestXorshift32();
 			//TestXorshift128Plus();
 			//TestRandomizer();
-			TestBinaryTree();
+			//TestBinaryTree();
 			//TestTrieTree();
 		}
 
@@ -77,12 +77,38 @@ namespace Sample {
 				return true;
 			});
 
+			Console.WriteLine();
+
 			Console.WriteLine(heap.Pop());
 			Console.WriteLine(heap.Pop());
 			Console.WriteLine(heap.Pop());
 			Console.WriteLine(heap.Pop());
 			Console.WriteLine(heap.Pop());
 			Console.WriteLine(heap.Pop());
+
+			Console.WriteLine();
+
+			Heap<int, string> heap2 = new Heap<int, string>();
+			heap2.Push(9, "9");
+			heap2.Push(2, "2");
+			heap2.Push(6, "6");
+			heap2.Push(1, "1");
+			heap2.Push(10, "10");
+			heap2.Push(3, "3");
+			Console.WriteLine("count: {0}", heap2.Count);
+			heap2.Traverse((key, value) => {
+				Console.WriteLine("{0}: {1}", key, value);
+				return true;
+			});
+
+			Console.WriteLine();
+
+			Console.WriteLine(heap2.Pop());
+			Console.WriteLine(heap2.Pop());
+			Console.WriteLine(heap2.Pop());
+			Console.WriteLine(heap2.Pop());
+			Console.WriteLine(heap2.Pop());
+			Console.WriteLine(heap2.Pop());
 		}
 
 		public static void TestXorshift32() {
