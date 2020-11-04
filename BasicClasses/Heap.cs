@@ -6,12 +6,109 @@ namespace BasicClasses {
 	public class Heap<T> where T : IComparable<T> {
 		protected readonly List<T> _list;
 
+		public bool IsEmpty {
+			get { return _list.Count <= 0; }
+		}
+
 		public int Count {
 			get { return _list.Count; }
 		}
 
+		public T Min {
+			get {
+				if (_list.Count <= 0) {
+					return default(T);
+				}
+				return _list[0];
+			}
+		}
+
 		public Heap() {
 			_list = new List<T>();
+		}
+
+		public Heap(params T[] args) {
+			_list = new List<T>();
+			if (args == null) {
+				return;
+			}
+			foreach (T item in args) {
+				Push(item);
+			}
+		}
+
+		public Heap(IEnumerable<T> collection) {
+			_list = new List<T>();
+			if (collection == null) {
+				throw new ArgumentNullException("collection");
+			}
+			foreach (T item in collection) {
+				Push(item);
+			}
+		}
+
+		protected Heap(List<T> list, bool protect) {
+			_list = list;
+		}
+
+		public static Heap<T> Heapify(IEnumerable<T> collection) {
+			if (collection == null) {
+				return null;
+			}
+			Heap<T> heap = new Heap<T>();
+			List<T> a = heap._list;
+			int i = -1;
+			foreach (T item in collection) {
+				i++;
+				a.Add(item);
+				if (i <= 0) {
+					continue;
+				}
+				int pi = (i - 1) >> 1;
+				while (true) {
+					if (a[i].CompareTo(a[pi]) >= 0) {
+						break;
+					}
+					T temp = a[i];
+					a[i] = a[pi];
+					a[pi] = temp;
+					if (pi <= 0) {
+						break;
+					}
+					i = pi;
+					pi = (i - 1) >> 1;
+				}
+			}
+			return heap;
+		}
+
+		public Heap<T> Clone() {
+			T[] array = new T[_list.Count];
+			_list.CopyTo(array, 0);
+			Heap<T> heap = new Heap<T>(new List<T>(array), true);
+			return heap;
+		}
+
+		public Heap<T> Merge(Heap<T> heap) {
+			if (heap == null) {
+				throw new ArgumentNullException("heap");
+			}
+			Heap<T> newHeap = Clone();
+			foreach (T item in heap._list) {
+				newHeap.Push(item);
+			}
+			return newHeap;
+		}
+
+		public Heap<T> Merge(IEnumerable<T> collection) {
+			if (collection == null) {
+				throw new ArgumentNullException("collection");
+			}
+			Heap<T> heap = Clone();
+			foreach (T item in collection) {
+				heap.Push(item);
+			}
+			return heap;
 		}
 
 		public void Traverse(Func<T, bool> callback) {
@@ -103,8 +200,21 @@ namespace BasicClasses {
 		protected readonly List<TKey> _keys;
 		protected readonly List<TValue> _values;
 
+		public bool IsEmpty {
+			get { return _keys.Count <= 0; }
+		}
+
 		public int Count {
 			get { return _keys.Count; }
+		}
+
+		public Node<TKey, TValue> Min {
+			get {
+				if (_keys.Count <= 0) {
+					return new Node<TKey, TValue>();
+				}
+				return new Node<TKey, TValue>(_keys[0], _values[0]);
+			}
 		}
 
 		public Heap() {
@@ -153,15 +263,15 @@ namespace BasicClasses {
 			}
 		}
 
-		public KeyValuePair<TKey, TValue> Pop() {
+		public Node<TKey, TValue> Pop() {
 			List<TKey> k = _keys;
 			List<TValue> v = _values;
 			int lastIndex = k.Count - 1;
 			if (lastIndex < 0) {
-				return new KeyValuePair<TKey, TValue>();
+				return new Node<TKey, TValue>();
 			}
-			KeyValuePair<TKey, TValue> result =
-				new KeyValuePair<TKey, TValue>(k[0], v[0]);
+			Node<TKey, TValue> result =
+				new Node<TKey, TValue>(k[0], v[0]);
 			k[0] = k[lastIndex];
 			k.RemoveAt(lastIndex);
 			v[0] = v[lastIndex];
@@ -217,5 +327,21 @@ namespace BasicClasses {
 			}
 			return result;
 		}
+
+#pragma warning disable CS0693
+		public struct Node<TKey, TValue> {
+			public TKey Key;
+			public TValue Value;
+
+			public Node(TKey key, TValue value) {
+				Key = key;
+				Value = value;
+			}
+
+			public override string ToString() {
+				return string.Format("{0}, {1}", Key, Value);
+			}
+		}
+#pragma warning restore CS0693
 	}
 }

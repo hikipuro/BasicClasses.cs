@@ -71,6 +71,9 @@ namespace Sample {
 			heap.Push(1);
 			heap.Push(10);
 			heap.Push(3);
+
+			heap = TestSerialize(heap);
+
 			Console.WriteLine("count: {0}", heap.Count);
 			heap.Traverse((n) => {
 				Console.WriteLine(n);
@@ -88,6 +91,17 @@ namespace Sample {
 
 			Console.WriteLine();
 
+			string[] test = new string[] {
+				"abcd", "aa", "n", "i", "bcd"
+			};
+			var sheap = Heap<string>.Heapify(test);
+			sheap = sheap.Merge(new Heap<string>("cc", "def"));
+			while (sheap.Count > 0) {
+				Console.WriteLine(sheap.Pop());
+			}
+
+			Console.WriteLine();
+
 			Heap<int, string> heap2 = new Heap<int, string>();
 			heap2.Push(9, "9");
 			heap2.Push(2, "2");
@@ -95,6 +109,9 @@ namespace Sample {
 			heap2.Push(1, "1");
 			heap2.Push(10, "10");
 			heap2.Push(3, "3");
+
+			heap2 = TestSerialize(heap2);
+
 			Console.WriteLine("count: {0}", heap2.Count);
 			heap2.Traverse((key, value) => {
 				Console.WriteLine("{0}: {1}", key, value);

@@ -20,6 +20,28 @@ namespace BasicClasses {
 			}
 		}
 
+		public bool IsEmpty {
+			get { return Root.Children.Count <= 0; }
+		}
+
+		public int Count {
+			get {
+				int count = Root.Children.Count;
+				Queue<Node<T>> queue = new Queue<Node<T>>();
+				foreach (Node<T> child in Root.Children.Values) {
+					queue.Enqueue(child);
+				}
+				while (queue.Count > 0) {
+					Node<T> node = queue.Dequeue();
+					count += node.Children.Count;
+					foreach (Node<T> child in node.Children.Values) {
+						queue.Enqueue(child);
+					}
+				}
+				return count;
+			}
+		}
+
 		public TrieTree() {
 			Root = new Node<T>(char.MinValue);
 		}
