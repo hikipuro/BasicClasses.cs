@@ -36,7 +36,6 @@
     <Compile Include="RingBuffer.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="History.cs" />
-    <Compile Include="BinaryTreeNode.cs" />
     <Compile Include="BinaryTree.cs" />
     <Compile Include="Polyfill.cs" />
     <Compile Include="Randomizer.cs" />

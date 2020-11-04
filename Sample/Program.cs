@@ -17,8 +17,8 @@ namespace Sample {
 			//TestXorshift32();
 			//TestXorshift128Plus();
 			//TestRandomizer();
-			//TestBinaryTree();
-			TestTrieTree();
+			TestBinaryTree();
+			//TestTrieTree();
 		}
 
 		public static double Benchmark(Action action, int count) {
@@ -138,14 +138,17 @@ namespace Sample {
 
 		public static void TestBinaryTree() {
 			BinaryTree<int, int> tree = new BinaryTree<int, int>();
-			tree.Insert(123, 123);
-			tree.Insert(21, 21);
-			tree.Insert(54, 54);
-			tree.Insert(74, 74);
-			tree.Insert(32, 32);
+			tree.Add(123, 123);
+			tree.Add(21, 21);
+			tree.Add(54, 54);
+			tree.Add(74, 74);
+			tree.Add(32, 32);
 
 			tree = TestSerialize(tree);
 
+			tree.Remove(123);
+			Console.WriteLine(tree[1]);
+			Console.WriteLine(tree[54]);
 			Console.WriteLine(tree.Search(21));
 			Console.WriteLine(tree.Search(11));
 			Console.WriteLine(tree.Search(74));
