@@ -11,7 +11,8 @@ namespace Sample {
 	class MainClass {
 		public static void Main(string[] args) {
 			Console.WriteLine("Hello World!");
-			TestSiphash();
+			TestMurmurHash3();
+			//TestSiphash();
 			//TestHeap();
 			//TestXorshift32();
 			//TestXorshift128Plus();
@@ -37,6 +38,16 @@ namespace Sample {
 			value = (T)formatter.Deserialize(stream);
 			stream.Close();
 			return value;
+		}
+
+		public static void TestMurmurHash3() {
+			string message = "Short test message";
+			byte[] bytes = Encoding.UTF8.GetBytes(message);
+			MurmurHash3 hash = new MurmurHash3(0);
+			byte[] output = hash.ComputeHash(bytes, 0, bytes.Length);
+			uint value = output[0] | (uint)(output[1] << 8) |
+				(uint)(output[2] << 16) | (uint)(output[3] << 24);
+			Console.WriteLine(value);
 		}
 
 		public static void TestSiphash() {
