@@ -44,6 +44,7 @@
     <Compile Include="Heap.cs" />
     <Compile Include="SipHash.cs" />
     <Compile Include="MurmurHash3.cs" />
+    <Compile Include="AVLTree.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
