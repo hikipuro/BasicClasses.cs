@@ -29,6 +29,19 @@ namespace BasicClasses {
 		public BinaryTree() {
 		}
 
+		public void Clear() {
+			if (Root == null) {
+				return;
+			}
+			if (Root.LeftChild != null) {
+				Root.LeftChild.Parent = null;
+			}
+			if (Root.RightChild != null) {
+				Root.RightChild.Parent = null;
+			}
+			Root = null;
+		}
+
 		public void Traverse(Func<Node, bool> callback) {
 			if (Root == null) {
 				return;
@@ -124,7 +137,7 @@ namespace BasicClasses {
 
 			public Node Search(TKey key) {
 				Node node = this;
-				while (node != null) {
+				do {
 					int compare = node.Key.CompareTo(key);
 					if (compare == 0) {
 						return node;
@@ -134,13 +147,13 @@ namespace BasicClasses {
 					} else {
 						node = node.LeftChild;
 					}
-				}
+				} while (node != null);
 				return null;
 			}
 
 			public void Add(TKey key, TValue value) {
 				Node node = this;
-				while (node != null) {
+				do {
 					int compare = node.Key.CompareTo(key);
 					if (compare == 0) {
 						node.Value = value;
@@ -163,12 +176,12 @@ namespace BasicClasses {
 						node.LeftChild.Parent = node;
 						break;
 					}
-				}
+				} while (node != null);
 			}
 
 			public bool Remove(TKey key) {
 				Node node = this;
-				while (node != null) {
+				do {
 					int compare = node.Key.CompareTo(key);
 					if (compare == 0) {
 						if (IsLeaf) {
@@ -189,7 +202,7 @@ namespace BasicClasses {
 						}
 						node = node.LeftChild;
 					}
-				}
+				} while (node != null);
 				return false;
 			}
 

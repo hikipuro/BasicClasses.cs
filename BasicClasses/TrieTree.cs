@@ -9,14 +9,34 @@ namespace BasicClasses {
 
 		public T this[string key] {
 			get {
-				Node node = Root.Search(key);
-				if (node == null) {
+				if (key == null || key == string.Empty) {
+					return default(T);
+				}
+				Node node = Root;
+				foreach (char ch in key) {
+					if (node.Children.TryGetValue(ch, out node)) {
+						continue;
+					}
 					return default(T);
 				}
 				return node.Value;
 			}
 			set {
-				Root.Add(key, value);
+				if (key == null || key == string.Empty) {
+					return;
+				}
+				Node node = Root;
+				foreach (char ch in key) {
+					if (node.Children.TryGetValue(ch, out Node child)) {
+						node = child;
+						continue;
+					}
+					Node newNode = new Node(ch);
+					newNode.Parent = node;
+					node.Children.Add(ch, newNode);
+					node = newNode;
+				}
+				node.Value = value;
 			}
 		}
 
@@ -46,20 +66,77 @@ namespace BasicClasses {
 			Root = new Node(char.MinValue);
 		}
 
+		public void Clear() {
+			foreach (Node node in Root.Children.Values) {
+				node.Parent = null;
+			}
+			Root.Children.Clear();
+		}
+
 		public void Traverse(Func<Node, bool> callback) {
 			Root.Traverse(callback);
 		}
 
 		public Node Search(string word) {
-			return Root.Search(word);
+			if (word == null) {
+				throw new ArgumentNullException("word");
+			}
+			if (word == string.Empty) {
+				return null;
+			}
+			Node node = Root;
+			foreach (char key in word) {
+				if (node.Children.TryGetValue(key, out node)) {
+					continue;
+				}
+				return null;
+			}
+			return node;
 		}
 
 		public bool Add(string word, T value) {
-			return Root.Add(word, value);
+			if (word == null) {
+				throw new ArgumentNullException("word");
+			}
+			if (word == string.Empty) {
+				return false;
+			}
+			Node node = Root;
+			foreach (char key in word) {
+				if (node.Children.TryGetValue(key, out Node child)) {
+					node = child;
+					continue;
+				}
+				Node newNode = new Node(key);
+				newNode.Parent = node;
+				node.Children.Add(key, newNode);
+				node = newNode;
+			}
+			node.Value = value;
+			return true;
 		}
 
 		public bool Remove(string word) {
-			return Root.Remove(word);
+			if (word == null) {
+				throw new ArgumentNullException("word");
+			}
+			if (word == string.Empty) {
+				return false;
+			}
+			Node node = Root;
+			foreach (char key in word) {
+				if (node.Children.TryGetValue(key, out node)) {
+					continue;
+				}
+				return false;
+			}
+			if (node.Children.Count <= 0) {
+				node.Parent.Children.Remove((char)node.Key);
+				node.Parent = null;
+			} else {
+				node.Value = default(T);
+			}
+			return true;
 		}
 
 		[Serializable]
@@ -90,13 +167,13 @@ namespace BasicClasses {
 			public string GetWord() {
 				StringBuilder builder = new StringBuilder();
 				Node node = this;
-				while (node != null) {
-					builder.Insert(0, (char)node.Key);
-					node = node.Parent;
+				do {
 					if (node.Key == char.MinValue) {
 						break;
 					}
-				}
+					builder.Insert(0, (char)node.Key);
+					node = node.Parent;
+				} while (node != null);
 				return builder.ToString();
 			}
 
@@ -138,7 +215,8 @@ namespace BasicClasses {
 				//if (key == null) {
 				//	return null;
 				//}
-				Node node = GetChild(key);
+				Node node;
+				Children.TryGetValue(key, out node);
 				if (node != null) {
 					node.Parent = null;
 					Children.Remove(key);
@@ -189,10 +267,10 @@ namespace BasicClasses {
 				}
 				Node node = this;
 				foreach (char key in word) {
-					node = node[key];
-					if (node == null) {
-						return null;
+					if (node.Children.TryGetValue(key, out node)) {
+						continue;
 					}
+					return null;
 				}
 				return node;
 			}
@@ -206,17 +284,14 @@ namespace BasicClasses {
 				}
 				Node node = this;
 				foreach (char key in word) {
-					if (node.HasChild(key)) {
-						node = node[key];
+					if (node.Children.TryGetValue(key, out Node child)) {
+						node = child;
 						continue;
 					}
 					Node newNode = new Node(key);
 					newNode.Parent = node;
-					node.AddChild(key, newNode);
+					node.Children.Add(key, newNode);
 					node = newNode;
-				}
-				if (node == this) {
-					return false;
 				}
 				node.Value = value;
 				return true;
@@ -231,14 +306,14 @@ namespace BasicClasses {
 				}
 				Node node = this;
 				foreach (char key in word) {
-					if (node.HasChild(key)) {
-						node = node[key];
+					if (node.Children.TryGetValue(key, out node)) {
 						continue;
 					}
 					return false;
 				}
 				if (node.Children.Count <= 0) {
-					node.Parent.RemoveChild((char)node.Key);
+					node.Parent.Children.Remove((char)node.Key);
+					node.Parent = null;
 				} else {
 					node.Value = default(T);
 				}
