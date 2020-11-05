@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace BasicClasses {
 	[Serializable]
 	public class BinaryTree<TKey, TValue> where TKey: IComparable<TKey> {
-		public Node<TKey, TValue> Root;
+		public Node Root;
 
 		public TValue this[TKey key] {
 			get {
 				if (Root == null) {
 					return default(TValue);
 				}
-				Node<TKey, TValue> node = Root.Search(key);
+				Node node = Root.Search(key);
 				if (node == null) {
 					return default(TValue);
 				}
@@ -19,7 +19,7 @@ namespace BasicClasses {
 			}
 			set {
 				if (Root == null) {
-					Root = new Node<TKey, TValue>(key, value);
+					Root = new Node(key, value);
 					return;
 				}
 				Root.Add(key, value);
@@ -29,14 +29,14 @@ namespace BasicClasses {
 		public BinaryTree() {
 		}
 
-		public void Traverse(Func<Node<TKey, TValue>, bool> callback) {
+		public void Traverse(Func<Node, bool> callback) {
 			if (Root == null) {
 				return;
 			}
 			Root.Traverse(callback);
 		}
 
-		public Node<TKey, TValue> Search(TKey key) {
+		public Node Search(TKey key) {
 			if (Root == null) {
 				return null;
 			}
@@ -45,7 +45,7 @@ namespace BasicClasses {
 
 		public void Add(TKey key, TValue value) {
 			if (Root == null) {
-				Root = new Node<TKey, TValue>(key, value);
+				Root = new Node(key, value);
 				return;
 			}
 			Root.Add(key, value);
@@ -58,14 +58,13 @@ namespace BasicClasses {
 			return Root.Remove(key);
 		}
 
-#pragma warning disable CS0693
 		[Serializable]
-		public class Node<TKey, TValue> where TKey : IComparable<TKey> {
+		public class Node {
 			public readonly TKey Key;
 			public TValue Value;
-			public Node<TKey, TValue> Parent;
-			public Node<TKey, TValue> LeftChild;
-			public Node<TKey, TValue> RightChild;
+			public Node Parent;
+			public Node LeftChild;
+			public Node RightChild;
 
 			public bool IsLeaf {
 				get { return LeftChild == null && RightChild == null; }
@@ -76,7 +75,7 @@ namespace BasicClasses {
 				Value = value;
 			}
 
-			public Node<TKey, TValue> RemoveChild(TKey key) {
+			public Node RemoveChild(TKey key) {
 				int compare = Key.CompareTo(key);
 				if (compare == 0) {
 					return null;
@@ -86,7 +85,7 @@ namespace BasicClasses {
 						return null;
 					}
 					if (RightChild.Key.CompareTo(key) == 0) {
-						Node<TKey, TValue> node = RightChild;
+						Node node = RightChild;
 						RightChild = null;
 						return node;
 					}
@@ -95,7 +94,7 @@ namespace BasicClasses {
 						return null;
 					}
 					if (LeftChild.Key.CompareTo(key) == 0) {
-						Node<TKey, TValue> node = LeftChild;
+						Node node = LeftChild;
 						LeftChild = null;
 						return node;
 					}
@@ -103,15 +102,14 @@ namespace BasicClasses {
 				return null;
 			}
 
-			public void Traverse(Func<Node<TKey, TValue>, bool> callback) {
+			public void Traverse(Func<Node, bool> callback) {
 				if (callback == null) {
 					throw new ArgumentNullException("callback");
 				}
-				Queue<Node<TKey, TValue>> queue =
-					new Queue<Node<TKey, TValue>>();
+				Queue<Node> queue = new Queue<Node>();
 				queue.Enqueue(this);
 				while (queue.Count > 0) {
-					Node<TKey, TValue> node = queue.Dequeue();
+					Node node = queue.Dequeue();
 					if (callback(node) == false) {
 						break;
 					}
@@ -124,8 +122,8 @@ namespace BasicClasses {
 				}
 			}
 
-			public Node<TKey, TValue> Search(TKey key) {
-				Node<TKey, TValue> node = this;
+			public Node Search(TKey key) {
+				Node node = this;
 				while (node != null) {
 					int compare = node.Key.CompareTo(key);
 					if (compare == 0) {
@@ -141,7 +139,7 @@ namespace BasicClasses {
 			}
 
 			public void Add(TKey key, TValue value) {
-				Node<TKey, TValue> node = this;
+				Node node = this;
 				while (node != null) {
 					int compare = node.Key.CompareTo(key);
 					if (compare == 0) {
@@ -153,7 +151,7 @@ namespace BasicClasses {
 							node = node.RightChild;
 							continue;
 						}
-						node.RightChild = new Node<TKey, TValue>(key, value);
+						node.RightChild = new Node(key, value);
 						node.RightChild.Parent = node;
 						break;
 					} else {
@@ -161,7 +159,7 @@ namespace BasicClasses {
 							node = node.LeftChild;
 							continue;
 						}
-						node.LeftChild = new Node<TKey, TValue>(key, value);
+						node.LeftChild = new Node(key, value);
 						node.LeftChild.Parent = node;
 						break;
 					}
@@ -169,7 +167,7 @@ namespace BasicClasses {
 			}
 
 			public bool Remove(TKey key) {
-				Node<TKey, TValue> node = this;
+				Node node = this;
 				while (node != null) {
 					int compare = node.Key.CompareTo(key);
 					if (compare == 0) {
@@ -199,6 +197,5 @@ namespace BasicClasses {
 				return string.Format("{0}, {1}", Key, Value);
 			}
 		}
-#pragma warning restore CS0693
 	}
 }

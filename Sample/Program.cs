@@ -94,7 +94,7 @@ namespace Sample {
 			string[] test = new string[] {
 				"abcd", "aa", "n", "i", "bcd"
 			};
-			var sheap = Heap<string>.Heapify(test);
+			var sheap = new Heap<string>(test);
 			sheap = sheap.Merge(new Heap<string>("cc", "def"));
 			while (sheap.Count > 0) {
 				Console.WriteLine(sheap.Pop());

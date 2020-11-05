@@ -51,37 +51,6 @@ namespace BasicClasses {
 			_list = list;
 		}
 
-		public static Heap<T> Heapify(IEnumerable<T> collection) {
-			if (collection == null) {
-				return null;
-			}
-			Heap<T> heap = new Heap<T>();
-			List<T> a = heap._list;
-			int i = -1;
-			foreach (T item in collection) {
-				i++;
-				a.Add(item);
-				if (i <= 0) {
-					continue;
-				}
-				int pi = (i - 1) >> 1;
-				while (true) {
-					if (a[i].CompareTo(a[pi]) >= 0) {
-						break;
-					}
-					T temp = a[i];
-					a[i] = a[pi];
-					a[pi] = temp;
-					if (pi <= 0) {
-						break;
-					}
-					i = pi;
-					pi = (i - 1) >> 1;
-				}
-			}
-			return heap;
-		}
-
 		public Heap<T> Clone() {
 			T[] array = new T[_list.Count];
 			_list.CopyTo(array, 0);
@@ -208,12 +177,12 @@ namespace BasicClasses {
 			get { return _keys.Count; }
 		}
 
-		public Node<TKey, TValue> Min {
+		public Node Min {
 			get {
 				if (_keys.Count <= 0) {
-					return new Node<TKey, TValue>();
+					return null;
 				}
-				return new Node<TKey, TValue>(_keys[0], _values[0]);
+				return new Node(_keys[0], _values[0]);
 			}
 		}
 
@@ -263,15 +232,14 @@ namespace BasicClasses {
 			}
 		}
 
-		public Node<TKey, TValue> Pop() {
+		public Node Pop() {
 			List<TKey> k = _keys;
 			List<TValue> v = _values;
 			int lastIndex = k.Count - 1;
 			if (lastIndex < 0) {
-				return new Node<TKey, TValue>();
+				return null;
 			}
-			Node<TKey, TValue> result =
-				new Node<TKey, TValue>(k[0], v[0]);
+			Node result = new Node(k[0], v[0]);
 			k[0] = k[lastIndex];
 			k.RemoveAt(lastIndex);
 			v[0] = v[lastIndex];
@@ -328,8 +296,7 @@ namespace BasicClasses {
 			return result;
 		}
 
-#pragma warning disable CS0693
-		public struct Node<TKey, TValue> {
+		public class Node {
 			public TKey Key;
 			public TValue Value;
 
@@ -342,6 +309,5 @@ namespace BasicClasses {
 				return string.Format("{0}, {1}", Key, Value);
 			}
 		}
-#pragma warning restore CS0693
 	}
 }
