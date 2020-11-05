@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace BasicClasses {
 	[Serializable]
@@ -12,31 +13,41 @@ namespace BasicClasses {
 				if (key == null || key == string.Empty) {
 					return default(T);
 				}
-				Node node = Root;
-				foreach (char ch in key) {
-					if (node.Children.TryGetValue(ch, out node)) {
-						continue;
+				try {
+					Monitor.Enter(Root);
+					Node node = Root;
+					foreach (char ch in key) {
+						if (node.Children.TryGetValue(ch, out node)) {
+							continue;
+						}
+						return default(T);
 					}
-					return default(T);
+					return node.Value;
+				} finally {
+					Monitor.Exit(Root);
 				}
-				return node.Value;
 			}
 			set {
 				if (key == null || key == string.Empty) {
 					return;
 				}
-				Node node = Root;
-				foreach (char ch in key) {
-					if (node.Children.TryGetValue(ch, out Node child)) {
-						node = child;
-						continue;
+				try {
+					Monitor.Enter(Root);
+					Node node = Root;
+					foreach (char ch in key) {
+						if (node.Children.TryGetValue(ch, out Node child)) {
+							node = child;
+							continue;
+						}
+						Node newNode = new Node(ch);
+						newNode.Parent = node;
+						node.Children.Add(ch, newNode);
+						node = newNode;
 					}
-					Node newNode = new Node(ch);
-					newNode.Parent = node;
-					node.Children.Add(ch, newNode);
-					node = newNode;
+					node.Value = value;
+				} finally {
+					Monitor.Exit(Root);
 				}
-				node.Value = value;
 			}
 		}
 
@@ -46,19 +57,24 @@ namespace BasicClasses {
 
 		public int Count {
 			get {
-				int count = Root.Children.Count;
 				Queue<Node> queue = new Queue<Node>();
-				foreach (Node child in Root.Children.Values) {
-					queue.Enqueue(child);
-				}
-				while (queue.Count > 0) {
-					Node node = queue.Dequeue();
-					count += node.Children.Count;
-					foreach (Node child in node.Children.Values) {
+				try {
+					Monitor.Enter(Root);
+					int count = Root.Children.Count;
+					foreach (Node child in Root.Children.Values) {
 						queue.Enqueue(child);
 					}
+					while (queue.Count > 0) {
+						Node node = queue.Dequeue();
+						count += node.Children.Count;
+						foreach (Node child in node.Children.Values) {
+							queue.Enqueue(child);
+						}
+					}
+					return count;
+				} finally {
+					Monitor.Exit(Root);
 				}
-				return count;
 			}
 		}
 
@@ -67,10 +83,15 @@ namespace BasicClasses {
 		}
 
 		public void Clear() {
-			foreach (Node node in Root.Children.Values) {
-				node.Parent = null;
+			try {
+				Monitor.Enter(Root);
+				foreach (Node node in Root.Children.Values) {
+					node.Parent = null;
+				}
+				Root.Children.Clear();
+			} finally {
+				Monitor.Exit(Root);
 			}
-			Root.Children.Clear();
 		}
 
 		public void Traverse(Func<Node, bool> callback) {
@@ -84,14 +105,19 @@ namespace BasicClasses {
 			if (word == string.Empty) {
 				return null;
 			}
-			Node node = Root;
-			foreach (char key in word) {
-				if (node.Children.TryGetValue(key, out node)) {
-					continue;
+			try {
+				Monitor.Enter(Root);
+				Node node = Root;
+				foreach (char key in word) {
+					if (node.Children.TryGetValue(key, out node)) {
+						continue;
+					}
+					return null;
 				}
-				return null;
+				return node;
+			} finally {
+				Monitor.Exit(Root);
 			}
-			return node;
 		}
 
 		public bool Add(string word, T value) {
@@ -101,19 +127,24 @@ namespace BasicClasses {
 			if (word == string.Empty) {
 				return false;
 			}
-			Node node = Root;
-			foreach (char key in word) {
-				if (node.Children.TryGetValue(key, out Node child)) {
-					node = child;
-					continue;
+			try {
+				Monitor.Enter(Root);
+				Node node = Root;
+				foreach (char key in word) {
+					if (node.Children.TryGetValue(key, out Node child)) {
+						node = child;
+						continue;
+					}
+					Node newNode = new Node(key);
+					newNode.Parent = node;
+					node.Children.Add(key, newNode);
+					node = newNode;
 				}
-				Node newNode = new Node(key);
-				newNode.Parent = node;
-				node.Children.Add(key, newNode);
-				node = newNode;
+				node.Value = value;
+				return true;
+			} finally {
+				Monitor.Exit(Root);
 			}
-			node.Value = value;
-			return true;
 		}
 
 		public bool Remove(string word) {
@@ -123,18 +154,23 @@ namespace BasicClasses {
 			if (word == string.Empty) {
 				return false;
 			}
-			Node node = Root;
-			foreach (char key in word) {
-				if (node.Children.TryGetValue(key, out node)) {
-					continue;
+			try {
+				Monitor.Enter(Root);
+				Node node = Root;
+				foreach (char key in word) {
+					if (node.Children.TryGetValue(key, out node)) {
+						continue;
+					}
+					return false;
 				}
-				return false;
-			}
-			if (node.Children.Count <= 0) {
-				node.Parent.Children.Remove((char)node.Key);
-				node.Parent = null;
-			} else {
-				node.Value = default(T);
+				if (node.Children.Count <= 0) {
+					node.Parent.Children.Remove((char)node.Key);
+					node.Parent = null;
+				} else {
+					node.Value = default(T);
+				}
+			} finally {
+				Monitor.Exit(Root);
 			}
 			return true;
 		}
@@ -148,10 +184,15 @@ namespace BasicClasses {
 
 			public Node this[char key] {
 				get {
-					if (Children.TryGetValue(key, out Node node)) {
-						return node;
+					try {
+						Monitor.Enter(this);
+						if (Children.TryGetValue(key, out Node node)) {
+							return node;
+						}
+						return null;
+					} finally {
+						Monitor.Exit(this);
 					}
-					return null;
 				}
 			}
 
@@ -166,15 +207,20 @@ namespace BasicClasses {
 
 			public string GetWord() {
 				StringBuilder builder = new StringBuilder();
-				Node node = this;
-				do {
-					if (node.Key == char.MinValue) {
-						break;
-					}
-					builder.Insert(0, (char)node.Key);
-					node = node.Parent;
-				} while (node != null);
-				return builder.ToString();
+				try {
+					Monitor.Enter(this);
+					Node node = this;
+					do {
+						if (node.Key == char.MinValue) {
+							break;
+						}
+						builder.Insert(0, (char)node.Key);
+						node = node.Parent;
+					} while (node != null);
+					return builder.ToString();
+				} finally {
+					Monitor.Exit(this);
+				}
 			}
 
 			public bool HasChild(char key) {
@@ -215,26 +261,36 @@ namespace BasicClasses {
 				//if (key == null) {
 				//	return null;
 				//}
-				Node node;
-				Children.TryGetValue(key, out node);
-				if (node != null) {
-					node.Parent = null;
-					Children.Remove(key);
+				try {
+					Monitor.Enter(this);
+					Node node;
+					Children.TryGetValue(key, out node);
+					if (node != null) {
+						node.Parent = null;
+						Children.Remove(key);
+					}
+					return node;
+				} finally {
+					Monitor.Exit(this);
 				}
-				return node;
 			}
 
 			public Node RemoveChild(Node node) {
 				if (node == null) {
 					return null;
 				}
-				foreach (KeyValuePair<ushort, Node> child in Children) {
-					if (child.Value != node) {
-						continue;
+				try {
+					Monitor.Enter(this);
+					foreach (KeyValuePair<ushort, Node> child in Children) {
+						if (child.Value != node) {
+							continue;
+						}
+						child.Value.Parent = null;
+						Children.Remove(child.Key);
+						return child.Value;
 					}
-					child.Value.Parent = null;
-					Children.Remove(child.Key);
-					return child.Value;
+				} finally {
+					Monitor.Exit(this);
 				}
 				return null;
 			}
@@ -244,17 +300,22 @@ namespace BasicClasses {
 					throw new ArgumentNullException("callback");
 				}
 				Queue<Node> queue = new Queue<Node>();
-				foreach (Node child in Children.Values) {
-					queue.Enqueue(child);
-				}
-				while (queue.Count > 0) {
-					Node node = queue.Dequeue();
-					if (callback(node) == false) {
-						break;
-					}
-					foreach (Node child in node.Children.Values) {
+				try {
+					Monitor.Enter(this);
+					foreach (Node child in Children.Values) {
 						queue.Enqueue(child);
 					}
+					while (queue.Count > 0) {
+						Node node = queue.Dequeue();
+						if (callback(node) == false) {
+							break;
+						}
+						foreach (Node child in node.Children.Values) {
+							queue.Enqueue(child);
+						}
+					}
+				} finally {
+					Monitor.Exit(this);
 				}
 			}
 
@@ -265,14 +326,19 @@ namespace BasicClasses {
 				if (word == string.Empty) {
 					return null;
 				}
-				Node node = this;
-				foreach (char key in word) {
-					if (node.Children.TryGetValue(key, out node)) {
-						continue;
+				try {
+					Monitor.Enter(this);
+					Node node = this;
+					foreach (char key in word) {
+						if (node.Children.TryGetValue(key, out node)) {
+							continue;
+						}
+						return null;
 					}
-					return null;
+					return node;
+				} finally {
+					Monitor.Exit(this);
 				}
-				return node;
 			}
 
 			public bool Add(string word, T value) {
@@ -282,19 +348,24 @@ namespace BasicClasses {
 				if (word == string.Empty) {
 					return false;
 				}
-				Node node = this;
-				foreach (char key in word) {
-					if (node.Children.TryGetValue(key, out Node child)) {
-						node = child;
-						continue;
+				try {
+					Monitor.Enter(this);
+					Node node = this;
+					foreach (char key in word) {
+						if (node.Children.TryGetValue(key, out Node child)) {
+							node = child;
+							continue;
+						}
+						Node newNode = new Node(key);
+						newNode.Parent = node;
+						node.Children.Add(key, newNode);
+						node = newNode;
 					}
-					Node newNode = new Node(key);
-					newNode.Parent = node;
-					node.Children.Add(key, newNode);
-					node = newNode;
+					node.Value = value;
+					return true;
+				} finally {
+					Monitor.Exit(this);
 				}
-				node.Value = value;
-				return true;
 			}
 
 			public bool Remove(string word) {
@@ -304,20 +375,25 @@ namespace BasicClasses {
 				if (word == string.Empty) {
 					return false;
 				}
-				Node node = this;
-				foreach (char key in word) {
-					if (node.Children.TryGetValue(key, out node)) {
-						continue;
+				try {
+					Monitor.Enter(this);
+					Node node = this;
+					foreach (char key in word) {
+						if (node.Children.TryGetValue(key, out node)) {
+							continue;
+						}
+						return false;
 					}
-					return false;
+					if (node.Children.Count <= 0) {
+						node.Parent.Children.Remove((char)node.Key);
+						node.Parent = null;
+					} else {
+						node.Value = default(T);
+					}
+					return true;
+				} finally {
+					Monitor.Exit(this);
 				}
-				if (node.Children.Count <= 0) {
-					node.Parent.Children.Remove((char)node.Key);
-					node.Parent = null;
-				} else {
-					node.Value = default(T);
-				}
-				return true;
 			}
 
 			public override string ToString() {
