@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace BasicClasses {
 	[Serializable]
@@ -24,12 +25,11 @@ namespace BasicClasses {
 		}
 
 		public T Get() {
-			lock (_unusedQueue) {
+			try {
+				Monitor.Enter(this);
 				if (_unusedQueue.Count > 0) {
 					return _unusedQueue.Dequeue();
 				}
-			}
-			lock (_list) {
 				if (_list.Count < MaxCount) {
 					T item;
 					if (_generator == null) {
@@ -40,6 +40,8 @@ namespace BasicClasses {
 					_list.Add(item);
 					return item;
 				}
+			} finally {
+				Monitor.Exit(this);
 			}
 			/*
 			throw new InvalidOperationException(
@@ -50,13 +52,14 @@ namespace BasicClasses {
 		}
 
 		public void Return(T item) {
-			lock (_list) {
+			try {
+				Monitor.Enter(this);
 				if (_list.Contains(item) == false) {
 					return;
 				}
-			}
-			lock (_unusedQueue) {
 				_unusedQueue.Enqueue(item);
+			} finally {
+				Monitor.Exit(this);
 			}
 		}
 	}
