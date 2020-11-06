@@ -68,7 +68,40 @@ namespace BasicClasses {
 			if (Root == null) {
 				return false;
 			}
-			return Root.Remove(key);
+			Node node = Root.Remove(key);
+			if (Root == node) {
+				if (node.LeftChild == null) {
+					Root = node.RightChild;
+					if (Root != null) {
+						Root.Parent = null;
+					}
+					return true;
+				}
+				if (node.RightChild == null) {
+					Root = node.LeftChild;
+					Root.Parent = null;
+					return true;
+				}
+				Node max = node.LeftChild.GetMaxDescendant();
+				if (max == null) {
+					Root = node.LeftChild;
+					Root.Parent = null;
+					Root.RightChild = node.RightChild;
+					Root.RightChild.Parent = Root;
+					return true;
+				}
+				if (max.LeftChild != null) {
+					max.Parent.RightChild = max.LeftChild;
+					max.LeftChild.Parent = max.Parent;
+				}
+				max.LeftChild = node.LeftChild;
+				max.LeftChild.Parent = max;
+				max.RightChild = node.RightChild;
+				max.RightChild.Parent = max;
+				Root = max;
+				Root.Parent = null;
+			}
+			return node != null;
 		}
 
 		[Serializable]
@@ -88,27 +121,42 @@ namespace BasicClasses {
 				Value = value;
 			}
 
-			public Node RemoveChild(TKey key) {
-				int compare = Key.CompareTo(key);
-				if (compare == 0) {
+			public Node GetMinDescendant() {
+				if (LeftChild == null) {
 					return null;
 				}
-				if (compare < 0) {
-					if (RightChild == null) {
-						return null;
-					}
-					if (RightChild.Key.CompareTo(key) == 0) {
-						Node node = RightChild;
-						RightChild = null;
-						return node;
-					}
-				} else {
-					if (LeftChild == null) {
-						return null;
-					}
+				Node node = LeftChild;
+				while (node.LeftChild != null) {
+					node = node.LeftChild;
+				}
+				return node;
+			}
+
+			public Node GetMaxDescendant() {
+				if (RightChild == null) {
+					return null;
+				}
+				Node node = RightChild;
+				while (node.RightChild != null) {
+					node = node.RightChild;
+				}
+				return node;
+			}
+
+			public Node RemoveChild(TKey key) {
+				if (LeftChild != null) {
 					if (LeftChild.Key.CompareTo(key) == 0) {
 						Node node = LeftChild;
+						LeftChild.Parent = null;
 						LeftChild = null;
+						return node;
+					}
+				}
+				if (RightChild != null) {
+					if (RightChild.Key.CompareTo(key) == 0) {
+						Node node = RightChild;
+						RightChild.Parent = null;
+						RightChild = null;
 						return node;
 					}
 				}
@@ -155,10 +203,6 @@ namespace BasicClasses {
 				Node node = this;
 				do {
 					int compare = node.Key.CompareTo(key);
-					if (compare == 0) {
-						node.Value = value;
-						break;
-					}
 					if (compare < 0) {
 						if (node.RightChild != null) {
 							node = node.RightChild;
@@ -167,7 +211,7 @@ namespace BasicClasses {
 						node.RightChild = new Node(key, value);
 						node.RightChild.Parent = node;
 						break;
-					} else {
+					} else if (compare > 0) {
 						if (node.LeftChild != null) {
 							node = node.LeftChild;
 							continue;
@@ -176,34 +220,90 @@ namespace BasicClasses {
 						node.LeftChild.Parent = node;
 						break;
 					}
+					node.Value = value;
+					break;
 				} while (node != null);
 			}
 
-			public bool Remove(TKey key) {
+			public Node Remove(TKey key) {
 				Node node = this;
 				do {
 					int compare = node.Key.CompareTo(key);
-					if (compare == 0) {
-						if (IsLeaf) {
-							RemoveChild(key);
-						} else {
-							node.Value = default(TValue);
-						}
-						return true;
-					}
 					if (compare < 0) {
 						if (node.RightChild == null) {
-							return false;
+							break;
 						}
 						node = node.RightChild;
-					} else {
+						continue;
+					}
+					if (compare > 0) {
 						if (node.LeftChild == null) {
-							return false;
+							break;
 						}
 						node = node.LeftChild;
+						continue;
 					}
+
+					if (node.Parent == null) {
+						return node;
+					}
+					if (node.IsLeaf) {
+						node.Parent.RemoveChild(key);
+						return node;
+					}
+
+					Node parent = node.Parent;
+					node.Parent = null;
+					bool isLeft = parent.LeftChild == this;
+
+					if (node.LeftChild == null) {
+						if (isLeft) {
+							parent.LeftChild = node.RightChild;
+						} else {
+							parent.RightChild = node.RightChild;
+						}
+						if (node.RightChild != null) {
+							node.RightChild.Parent = parent;
+						}
+						return node;
+					}
+					if (node.RightChild == null) {
+						if (isLeft) {
+							parent.LeftChild = node.LeftChild;
+						} else {
+							parent.RightChild = node.LeftChild;
+						}
+						node.LeftChild.Parent = parent;
+						return node;
+					}
+
+					Node max = node.LeftChild.GetMaxDescendant();
+					if (max == null) {
+						if (isLeft) {
+							parent.LeftChild = node.LeftChild;
+						} else {
+							parent.RightChild = node.LeftChild;
+						}
+						node.LeftChild.Parent = parent;
+						return node;
+					}
+					if (max.LeftChild != null) {
+						max.Parent.RightChild = max.LeftChild;
+						max.LeftChild.Parent = max.Parent;
+					}
+					max.LeftChild = node.LeftChild;
+					node.LeftChild.Parent = max;
+					max.RightChild = node.RightChild;
+					node.RightChild.Parent = max;
+					if (isLeft) {
+						parent.LeftChild = max;
+					} else {
+						parent.RightChild = max;
+					}
+					max.Parent = parent;
+					return node;
 				} while (node != null);
-				return false;
+				return null;
 			}
 
 			public override string ToString() {
