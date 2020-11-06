@@ -164,8 +164,15 @@ namespace BasicClasses {
 					return false;
 				}
 				if (node.Children.Count <= 0) {
-					node.Parent.Children.Remove((char)node.Key);
-					node.Parent = null;
+					do {
+						Node parent = node.Parent;
+						if (parent == null) {
+							break;
+						}
+						parent.Children.Remove((char)node.Key);
+						node.Parent = null;
+						node = parent;
+					} while (node.Children.Count <= 0);
 				} else {
 					node.Value = default(T);
 				}
@@ -385,8 +392,15 @@ namespace BasicClasses {
 						return false;
 					}
 					if (node.Children.Count <= 0) {
-						node.Parent.Children.Remove((char)node.Key);
-						node.Parent = null;
+						do {
+							Node parent = node.Parent;
+							if (parent == null) {
+								break;
+							}
+							parent.Children.Remove((char)node.Key);
+							node.Parent = null;
+							node = parent;
+						} while (node.Children.Count <= 0);
 					} else {
 						node.Value = default(T);
 					}
