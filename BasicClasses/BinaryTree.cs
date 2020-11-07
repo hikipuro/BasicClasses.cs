@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace BasicClasses {
 	[Serializable]
 	public class BinaryTree<TKey, TValue> :
+		ICloneable,
 		IEnumerable<BinaryTree<TKey, TValue>.Node>
 		where TKey: IComparable<TKey>
 	{
@@ -31,6 +32,14 @@ namespace BasicClasses {
 		}
 
 		public BinaryTree() {
+		}
+
+		public object Clone() {
+			BinaryTree<TKey, TValue> tree = new BinaryTree<TKey, TValue>();
+			if (Root != null) {
+				tree.Root = (Node)Root.Clone();
+			}
+			return tree;
 		}
 
 		public bool HasKey(TKey key) {
@@ -148,7 +157,7 @@ namespace BasicClasses {
 		}
 
 		[Serializable]
-		public class Node {
+		public class Node : ICloneable {
 			public readonly TKey Key;
 			public TValue Value;
 			public Node Parent;
@@ -178,6 +187,17 @@ namespace BasicClasses {
 			public Node(TKey key, TValue value) {
 				Key = key;
 				Value = value;
+			}
+
+			public object Clone() {
+				Node node = new Node(Key, Value);
+				if (LeftChild != null) {
+					node.LeftChild = (Node)LeftChild.Clone();
+				}
+				if (RightChild != null) {
+					node.RightChild = (Node)RightChild.Clone();
+				}
+				return node;
 			}
 
 			public Node GetMinDescendant() {
