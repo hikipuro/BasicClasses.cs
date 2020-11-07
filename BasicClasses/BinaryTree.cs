@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace BasicClasses {
 	[Serializable]
-	public class BinaryTree<TKey, TValue> where TKey: IComparable<TKey> {
+	public class BinaryTree<TKey, TValue> :
+		IEnumerable<BinaryTree<TKey, TValue>.Node>
+		where TKey: IComparable<TKey>
+	{
 		public Node Root;
 
 		public TValue this[TKey key] {
@@ -29,6 +33,25 @@ namespace BasicClasses {
 		public BinaryTree() {
 		}
 
+		public bool HasKey(TKey key) {
+			if (Root == null) {
+				return false;
+			}
+			Node node = Root;
+			do {
+				int compare = node.Key.CompareTo(key);
+				if (compare < 0) {
+					node = node.RightChild;
+					continue;
+				} else if (compare > 0) {
+					node = node.LeftChild;
+					continue;
+				}
+				return true;
+			} while (node != null);
+			return false;
+		}
+
 		public void Clear() {
 			if (Root == null) {
 				return;
@@ -48,6 +71,18 @@ namespace BasicClasses {
 			}
 			Root.Traverse(callback);
 		}
+
+		/*
+		public void ForEach(Node node, Func<Node, bool> callback) {
+			if (node.LeftChild != null) {
+				ForEach(node.LeftChild, callback);
+			}
+			callback(node);
+			if (node.RightChild != null) {
+				ForEach(node.RightChild, callback);
+			}
+		}
+		*/
 
 		public Node Search(TKey key) {
 			if (Root == null) {
@@ -104,6 +139,14 @@ namespace BasicClasses {
 			return node != null;
 		}
 
+		public IEnumerator<Node> GetEnumerator() {
+			return new Enumerator(this);
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() {
+			return new Enumerator(this);
+		}
+
 		[Serializable]
 		public class Node {
 			public readonly TKey Key;
@@ -111,6 +154,22 @@ namespace BasicClasses {
 			public Node Parent;
 			public Node LeftChild;
 			public Node RightChild;
+
+			public Node this[TKey key] {
+				get {
+					if (LeftChild != null) {
+						if (LeftChild.Key.CompareTo(key) == 0) {
+							return LeftChild;
+						}
+					}
+					if (RightChild != null) {
+						if (RightChild.Key.CompareTo(key) == 0) {
+							return RightChild;
+						}
+					}
+					return null;
+				}
+			}
 
 			public bool IsLeaf {
 				get { return LeftChild == null && RightChild == null; }
@@ -308,6 +367,71 @@ namespace BasicClasses {
 
 			public override string ToString() {
 				return string.Format("{0}, {1}", Key, Value);
+			}
+		}
+
+		protected class LoopItem {
+			public Node Node;
+			public int State;
+
+			public LoopItem(Node node) {
+				Node = node;
+			}
+		}
+
+		public struct Enumerator : IEnumerator<Node>, IEnumerator {
+			readonly BinaryTree<TKey, TValue> _tree;
+			readonly Stack<LoopItem> _stack;
+			Node _current;
+
+			public Node Current {
+				get { return _current; }
+			}
+			object IEnumerator.Current {
+				get { return Current; }
+			}
+
+			internal Enumerator(BinaryTree<TKey, TValue> tree) {
+				_tree = tree;
+				_stack = new Stack<LoopItem>();
+				_stack.Push(new LoopItem(_tree.Root));
+				_current = null;
+			}
+
+			public void Dispose() {
+			}
+
+			public bool MoveNext() {
+				if (_stack.Count == 0) {
+					return false;
+				}
+				_current = null;
+				while (_current == null) {
+					LoopItem item = _stack.Peek();
+					Node node = item.Node;
+					switch (item.State) {
+						case 0:
+							if (node.LeftChild != null) {
+								_stack.Push(new LoopItem(node.LeftChild));
+							}
+							item.State++;
+							break;
+						case 1:
+							_stack.Pop();
+							_current = node;
+							if (node.RightChild != null) {
+								_stack.Push(new LoopItem(node.RightChild));
+							}
+							break;
+					}
+				}
+				return true;
+			}
+
+			public void Reset() {
+				_stack.Clear();
+				_stack.Push(new LoopItem(_tree.Root));
+				_current = null;
 			}
 		}
 	}
