@@ -89,7 +89,7 @@ namespace BasicClasses {
 				if (i >= array.Length) {
 					break;
 				}
-				array[i] = item;
+				array[i++] = item;
 			}
 		}
 
@@ -108,7 +108,30 @@ namespace BasicClasses {
 				if (i >= array.Length) {
 					break;
 				}
-				array[i] = item;
+				array[i++] = item;
+			}
+		}
+
+		public void CopyTo(T[] array, int arrayIndex, int count) {
+			if (array == null) {
+				throw new ArgumentNullException("array");
+			}
+			if (arrayIndex < 0) {
+				throw new ArgumentOutOfRangeException("arrayIndex");
+			}
+			if (count < 0) {
+				throw new ArgumentOutOfRangeException("count");
+			}
+			if (arrayIndex + count >= array.Length) {
+				throw new ArgumentException();
+			}
+			count += arrayIndex;
+			int i = arrayIndex;
+			foreach (T item in _list.Keys) {
+				if (i >= count) {
+					break;
+				}
+				array[i++] = item;
 			}
 		}
 
@@ -133,35 +156,81 @@ namespace BasicClasses {
 			if (other == null) {
 				throw new ArgumentNullException("other");
 			}
-			throw new NotImplementedException();
+			List<T> removeList = new List<T>();
+			foreach (T item in _list.Keys) {
+				bool contains = false;
+				foreach (T otherItem in other) {
+					if (otherItem.Equals(item)) {
+						contains = true;
+						break;
+					}
+				}
+				if (contains == false) {
+					removeList.Add(item);
+				}
+			}
+			foreach (T item in removeList) {
+				_list.Remove(item);
+			}
 		}
 
 		public bool IsProperSubsetOf(IEnumerable<T> other) {
 			if (other == null) {
 				throw new ArgumentNullException("other");
 			}
-			throw new NotImplementedException();
+			HashSet<T> otherSet = new HashSet<T>(other);
+			if (otherSet.Count <= Count) {
+				return false;
+			}
+			foreach (T item in _list.Keys) {
+				if (otherSet.Contains(item)) {
+					continue;
+				}
+				return false;
+			}
+			return true;
 		}
 
 		public bool IsProperSupersetOf(IEnumerable<T> other) {
 			if (other == null) {
 				throw new ArgumentNullException("other");
 			}
-			throw new NotImplementedException();
+			int count = 0;
+			foreach (T item in other) {
+				if (Contains(item)) {
+					count++;
+					continue;
+				}
+				return false;
+			}
+			return count < Count;
 		}
 
 		public bool IsSubsetOf(IEnumerable<T> other) {
 			if (other == null) {
 				throw new ArgumentNullException("other");
 			}
-			throw new NotImplementedException();
+			HashSet<T> otherSet = new HashSet<T>(other);
+			foreach (T item in _list.Keys) {
+				if (otherSet.Contains(item)) {
+					continue;
+				}
+				return false;
+			}
+			return true;
 		}
 
 		public bool IsSupersetOf(IEnumerable<T> other) {
 			if (other == null) {
 				throw new ArgumentNullException("other");
 			}
-			throw new NotImplementedException();
+			foreach (T item in other) {
+				if (Contains(item)) {
+					continue;
+				}
+				return false;
+			}
+			return true;
 		}
 
 		public virtual void OnDeserialization(object sender) {
@@ -169,7 +238,15 @@ namespace BasicClasses {
 		}
 
 		public bool Overlaps(IEnumerable<T> other) {
-			throw new NotImplementedException();
+			if (other == null) {
+				throw new ArgumentNullException("other");
+			}
+			foreach (T item in other) {
+				if (Contains(item)) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		public bool Remove(T item) {
@@ -177,11 +254,37 @@ namespace BasicClasses {
 		}
 
 		public int RemoveWhere(Predicate<T> match) {
-			throw new NotImplementedException();
+			if (match == null) {
+				throw new ArgumentNullException("match");
+			}
+			List<T> removeList = new List<T>();
+			foreach (T item in _list.Keys) {
+				if (match(item)) {
+					removeList.Add(item);
+				}
+			}
+			int count = 0;
+			foreach (T item in removeList) {
+				if (_list.Remove(item)) {
+					count++;
+				}
+			}
+			return count;
 		}
 
 		public bool SetEquals(IEnumerable<T> other) {
-			throw new NotImplementedException();
+			if (other == null) {
+				throw new ArgumentNullException("other");
+			}
+			int count = 0;
+			foreach (T item in other) {
+				if (_list.ContainsKey(item)) {
+					count++;
+					continue;
+				}
+				return false;
+			}
+			return Count == count;
 		}
 
 		public void SymmetricExceptWith(IEnumerable<T> other) {
@@ -201,7 +304,12 @@ namespace BasicClasses {
 		}
 
 		public void UnionWith(IEnumerable<T> other) {
-			throw new NotImplementedException();
+			if (other == null) {
+				throw new ArgumentNullException("other");
+			}
+			foreach (T item in other) {
+				Add(item);
+			}
 		}
 
 		void ICollection<T>.Add(T item) {
