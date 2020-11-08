@@ -47,6 +47,7 @@
     <Compile Include="AVLTree.cs" />
     <Compile Include="SparseArray.cs" />
     <Compile Include="GrowingArray.cs" />
+    <Compile Include="DFA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
