@@ -3,14 +3,14 @@ using System.Collections.Generic;
 namespace BasicClasses {
 	public class DFA<T> {
 		public State StartState;
-		protected readonly List<State> _states;
+		protected readonly HashSet<State> _states;
 
 		public int Count {
 			get { return _states.Count; }
 		}
 
 		public DFA() {
-			_states = new List<State>();
+			_states = new HashSet<State>();
 		}
 
 		public bool Has(State state) {
