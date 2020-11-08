@@ -46,7 +46,7 @@
     <Compile Include="MurmurHash3.cs" />
     <Compile Include="AVLTree.cs" />
     <Compile Include="SparseArray.cs" />
-    <Compile Include="GrowingArrayUtils.cs" />
+    <Compile Include="GrowingArray.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,7 @@
 using System;
 
 namespace BasicClasses {
-	public static class GrowingArrayUtils {
+	public static class GrowingArray {
 		public const int MinSize = 4;
 		public const int MinAllocationSize = 8;
 
@@ -42,6 +42,14 @@ namespace BasicClasses {
 			Array.Resize(
 				ref array,
 				currentSize <= MinSize ? MinAllocationSize : currentSize * 2
+			);
+			return array;
+		}
+
+		public static T[] Grow<T>(ref T[] array, int currentSize, Func<Type, int, int> sizeFunc) {
+			Array.Resize(
+				ref array,
+				sizeFunc(typeof(T), currentSize)
 			);
 			return array;
 		}
