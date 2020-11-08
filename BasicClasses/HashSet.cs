@@ -77,7 +77,11 @@ namespace BasicClasses {
 		}
 
 		public bool Contains(T item) {
-			return _list.ContainsKey(item);
+			try {
+				return _list.ContainsKey(item);
+			} catch (Exception) {
+				return false;
+			}
 		}
 
 		public void CopyTo(T[] array) {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace BasicClasses {
 	public class DFA<T> {
-		public State StartState;
+		public State InitialState;
 		protected readonly HashSet<State> _states;
 
 		public int Count {
@@ -11,6 +11,10 @@ namespace BasicClasses {
 
 		public DFA() {
 			_states = new HashSet<State>();
+		}
+
+		public State CreateState() {
+			return new State();
 		}
 
 		public bool Has(State state) {
@@ -25,18 +29,39 @@ namespace BasicClasses {
 			_states.Remove(state);
 		}
 
-		public bool Accepts(IEnumerable<T> list) {
-			State state = StartState;
+		public Result Accepts(IEnumerable<T> list) {
+			State state = InitialState;
+			int i = 0;
 			foreach (T item in list) {
 				if (_states.Contains(state) == false) {
-					return false;
+					return new Result(false, i, state);
 				}
 				state = state.TransitionTo(item);
+				i++;
 			}
 			if (_states.Contains(state)) {
-				return state.IsAccept;
+				return new Result(state.IsAccept, i, state);
 			}
-			return false;
+			return new Result(false, i, state);
+		}
+
+		public struct Result {
+			public bool IsAccept;
+			public int Index;
+			public State State;
+
+			public Result(bool isAccept, int index, State state) {
+				IsAccept = isAccept;
+				Index = index;
+				State = state;
+			}
+
+			public override string ToString() {
+				return string.Format(
+					"IsAccept: {0}, Index: {1}",
+					IsAccept, Index
+				);
+			}
 		}
 
 		public class State {
