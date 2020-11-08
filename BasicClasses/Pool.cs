@@ -8,12 +8,7 @@ namespace BasicClasses {
 		public readonly int MaxCount;
 		protected Queue<T> _unusedQueue;
 		protected Func<int, T> _generator;
-
-#if NET20
-		protected List<T> _list = new List<T>();
-#else
-		protected HashSet<T> _list = new HashSet<T>();
-#endif
+		protected HashSet<T> _list;
 
 		public Pool(int maxCount, Func<int, T> generator = null) {
 			if (maxCount <= 0) {
@@ -22,6 +17,7 @@ namespace BasicClasses {
 			MaxCount = maxCount;
 			_unusedQueue = new Queue<T>();
 			_generator = generator;
+			_list = new HashSet<T>();
 		}
 
 		public T Get() {
