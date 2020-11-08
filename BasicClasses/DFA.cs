@@ -13,12 +13,14 @@ namespace BasicClasses {
 			_states = new HashSet<State>();
 		}
 
-		public State CreateState() {
-			return new State();
-		}
-
 		public bool Has(State state) {
 			return _states.Contains(state);
+		}
+
+		public State Add() {
+			State state = new State();
+			_states.Add(state);
+			return state;
 		}
 
 		public void Add(State state) {
@@ -31,13 +33,20 @@ namespace BasicClasses {
 
 		public Result Accepts(IEnumerable<T> list) {
 			State state = InitialState;
+			if (_states.Contains(state) == false) {
+				return new Result(false, 0, null);
+			}
 			int i = 0;
 			foreach (T item in list) {
-				if (_states.Contains(state) == false) {
-					return new Result(false, i, state);
+				if (state.Transitions.TryGetValue(item, out State nextState)) {
+					state = nextState;
+					if (_states.Contains(state) == false) {
+						return new Result(false, i, state);
+					}
+					i++;
+					continue;
 				}
-				state = state.TransitionTo(item);
-				i++;
+				return new Result(false, i, state);
 			}
 			if (_states.Contains(state)) {
 				return new Result(state.IsAccept, i, state);
