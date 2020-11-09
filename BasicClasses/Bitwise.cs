@@ -62,6 +62,22 @@ namespace BasicClasses {
 			return (value >> count) | (value << (32 - count));
 		}
 
+		public static int SetHighBits(int value, int count) {
+			return value | ~((1 << (32 - count)) - 1);
+		}
+
+		public static int SetLowBits(int value, int count) {
+			return value | ((1 << count) - 1);
+		}
+
+		public static int ClearHighBits(int value, int count) {
+			return value & ((1 << (32 - count)) - 1);
+		}
+
+		public static int ClearLowBits(int value, int count) {
+			return value & ~((1 << count) - 1);
+		}
+
 		public static int PopCount(short value) {
 			int n = value;
 			n = (n & 0x5555) + (n >> 1 & 0x5555);
@@ -70,6 +86,11 @@ namespace BasicClasses {
 			return (n & 0x00ff) + (n >> 8 & 0x00ff);
 		}
 
+		/// <summary>
+		/// POPCNT
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		public static int PopCount(int value) {
 			value = (value & 0x55555555) + (value >> 1 & 0x55555555);
 			value = (value & 0x33333333) + (value >> 2 & 0x33333333);
@@ -87,6 +108,11 @@ namespace BasicClasses {
 			return (int)((value & 0x00000000ffffffff) + ((value >> 32) & 0x00000000ffffffff));
 		}
 
+		/// <summary>
+		/// LZCNT
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		public static int CountLeadingZeros(int value) {
 			value |= value >> 1;
 			value |= value >> 2;
@@ -101,6 +127,11 @@ namespace BasicClasses {
 			return 32 - (value & 0x0000003f);
 		}
 
+		/// <summary>
+		/// TZCNT
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		public static int CountTrailingZeros(int value) {
 			if (value == 0) { return 32; }
 			int n = 1;
@@ -109,6 +140,135 @@ namespace BasicClasses {
 			if ((value & 0x0000000F) == 0) { n += 4; value >>= 4; }
 			if ((value & 0x00000003) == 0) { n += 2; value >>= 2; }
 			return n - (value & 1);
+		}
+
+		/// <summary>
+		/// ANDN
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
+		public static int AndNot(int x, int y) {
+			return ~x & y;
+		}
+
+		/// <summary>
+		/// BEXTR
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="start"></param>
+		/// <param name="length"></param>
+		/// <returns></returns>
+		public static int Extract(int value, int start, int length) {
+			return (value >> start) & ((1 << length) - 1);
+		}
+
+		/// <summary>
+		/// BLSI
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int ExtractLowestSetIsolatedBit(int value) {
+			return value & -value;
+		}
+
+		/// <summary>
+		/// BLSMSK
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int GetMaskUpToLowestSetBit(int value) {
+			return value ^ (value - 1);
+		}
+
+		/// <summary>
+		/// BLCFILL
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int FillFromLowestClearBit(int value) {
+			return value & (value + 1);
+		}
+
+		/// <summary>
+		/// BLCI
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int IsolateLowestClearBit(int value) {
+			return value | ~(value + 1);
+		}
+
+		/// <summary>
+		/// BLCIC
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int IsolateLowestClearBitAndComplement(int value) {
+			return ~value & (value + 1);
+		}
+
+		/// <summary>
+		/// BLCMSK
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int MaskFromLowestClearBit(int value) {
+			return value ^ (value + 1);
+		}
+
+		/// <summary>
+		/// BLSR
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int ResetLowestSetBit(int value) {
+			return value & (value - 1);
+		}
+
+		/// <summary>
+		/// BLCS
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int SetLowestClearBit(int value) {
+			return value | (value + 1);
+		}
+
+		/// <summary>
+		/// BLSFILL
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int FillFromLowestSetBit(int value) {
+			return value | (value - 1);
+		}
+
+		/// <summary>
+		/// BLSIC
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int IsolateLowestSetBitAndComplement(int value) {
+			return ~value | (value - 1);
+		}
+
+		/// <summary>
+		/// T1MSKC
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int InverseMaskFromTrailingOnes(int value) {
+			return ~value | (value + 1);
+		}
+
+		/// <summary>
+		/// TZMSK
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static int MaskFromTrailingZeros(int value) {
+			return ~value & (value - 1);
 		}
 
 		public static string ToString(int value) {
