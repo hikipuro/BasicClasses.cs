@@ -49,6 +49,7 @@
     <Compile Include="GrowingArray.cs" />
     <Compile Include="DFA.cs" />
     <Compile Include="HashSet.cs" />
+    <Compile Include="Bitwise.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
