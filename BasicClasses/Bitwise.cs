@@ -688,6 +688,36 @@ namespace BasicClasses {
 			return ~value & (value - 1);
 		}
 
+		public static int Parity(int value) {
+			value ^= value >> 16;
+			value ^= value >> 8;
+			value ^= value >> 4;
+			value &= 0xf;
+			return (0x6996 >> value) & 1;
+		}
+
+		public static int Reverse(int value) {
+			value = ((value >> 1) & 0x55555555) | ((value & 0x55555555) << 1);
+			value = ((value >> 2) & 0x33333333) | ((value & 0x33333333) << 2);
+			value = ((value >> 4) & 0x0F0F0F0F) | ((value & 0x0F0F0F0F) << 4);
+			value = ((value >> 8) & 0x00FF00FF) | ((value & 0x00FF00FF) << 8);
+			return (value >> 16) | (value << 16);
+		}
+
+		public static int Interleave(short x, short y) {
+			int ix = x;
+			int iy = y;
+			ix = (ix | (ix << 8)) & 0x00FF00FF;
+			ix = (ix | (ix << 4)) & 0x0F0F0F0F;
+			ix = (ix | (ix << 2)) & 0x33333333;
+			ix = (ix | (ix << 1)) & 0x55555555;
+			iy = (iy | (iy << 8)) & 0x00FF00FF;
+			iy = (iy | (iy << 4)) & 0x0F0F0F0F;
+			iy = (iy | (iy << 2)) & 0x33333333;
+			iy = (iy | (iy << 1)) & 0x55555555;
+			return ix | (iy << 1);
+		}
+
 		public static string ToString(byte value) {
 			return Convert.ToString(value, 2).PadLeft(8, '0');
 		}
