@@ -8,6 +8,7 @@ namespace BasicClasses {
 	public class HashSet<T> :
 		ICollection<T>,
 		IEnumerable<T>,
+		IReadOnlyCollection<T>,
 		ISet<T>,
 		IDeserializationCallback,
 		ISerializable
