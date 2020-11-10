@@ -50,6 +50,7 @@
     <Compile Include="DFA.cs" />
     <Compile Include="HashSet.cs" />
     <Compile Include="Bitwise.cs" />
+    <Compile Include="NFA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
