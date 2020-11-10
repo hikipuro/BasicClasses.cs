@@ -37,7 +37,6 @@
     <Compile Include="Pool.cs" />
     <Compile Include="History.cs" />
     <Compile Include="BinaryTree.cs" />
-    <Compile Include="Polyfill.cs" />
     <Compile Include="Randomizer.cs" />
     <Compile Include="Xorshift32.cs" />
     <Compile Include="Xorshift128Plus.cs" />
@@ -48,9 +47,16 @@
     <Compile Include="SparseArray.cs" />
     <Compile Include="GrowingArray.cs" />
     <Compile Include="DFA.cs" />
-    <Compile Include="HashSet.cs" />
     <Compile Include="Bitwise.cs" />
     <Compile Include="NFA.cs" />
+    <Compile Include="IReadOnlyCollection.cs" />
+    <Compile Include="Polyfills\ISet.cs" />
+    <Compile Include="Polyfills\HashSet.cs" />
+    <Compile Include="Polyfills\Action.cs" />
+    <Compile Include="Polyfills\Func.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Polyfills\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
