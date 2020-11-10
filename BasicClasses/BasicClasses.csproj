@@ -49,11 +49,13 @@
     <Compile Include="DFA.cs" />
     <Compile Include="Bitwise.cs" />
     <Compile Include="NFA.cs" />
-    <Compile Include="IReadOnlyCollection.cs" />
     <Compile Include="Polyfills\ISet.cs" />
     <Compile Include="Polyfills\HashSet.cs" />
     <Compile Include="Polyfills\Action.cs" />
     <Compile Include="Polyfills\Func.cs" />
+    <Compile Include="Polyfills\IReadOnlyCollection.cs" />
+    <Compile Include="Polyfills\IReadOnlyList.cs" />
+    <Compile Include="Polyfills\IReadOnlyDictionary.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Polyfills\" />
