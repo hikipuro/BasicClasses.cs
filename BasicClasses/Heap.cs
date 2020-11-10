@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace BasicClasses {
+	using System;
+	using System.Collections.Generic;
+	using Polyfills;
 
-namespace BasicClasses {
 	[Serializable]
 	public class Heap<T> where T : IComparable<T> {
 		protected readonly List<T> _list;

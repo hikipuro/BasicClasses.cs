@@ -1,5 +1,5 @@
 #if NET20
-namespace BasicClasses {
+namespace BasicClasses.Polyfills {
 	using System.Collections.Generic;
 
 	public interface ISet<T> : ICollection<T>, IEnumerable<T> {

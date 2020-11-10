@@ -1,6 +1,7 @@
-using System.Collections.Generic;
-
 namespace BasicClasses {
+	using System.Collections.Generic;
+	using Polyfills;
+
 	public class DFA<T> {
 		public State InitialState;
 		protected readonly HashSet<State> _states;
@@ -39,10 +40,10 @@ namespace BasicClasses {
 			int i = 0;
 			foreach (T item in list) {
 				if (state.Transitions.TryGetValue(item, out State nextState)) {
-					state = nextState;
-					if (_states.Contains(state) == false) {
+					if (_states.Contains(nextState) == false) {
 						return new Result(false, i, state);
 					}
+					state = nextState;
 					i++;
 					continue;
 				}
@@ -75,10 +76,15 @@ namespace BasicClasses {
 
 		public class State {
 			public bool IsAccept;
+			public string Name;
 			public readonly Dictionary<T, State> Transitions;
 
 			public State() {
 				Transitions = new Dictionary<T, State>();
+			}
+
+			public State(string name) : this() {
+				Name = name;
 			}
 
 			public void Add(T key, State state) {

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿namespace BasicClasses {
+	using System;
+	using System.Collections.Generic;
+	using System.Threading;
+	using Polyfills;
 
-namespace BasicClasses {
 	[Serializable]
 	public class Pool<T> where T : class, new() {
 		public readonly int MaxCount;

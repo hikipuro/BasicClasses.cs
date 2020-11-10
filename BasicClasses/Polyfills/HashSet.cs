@@ -1,5 +1,5 @@
 #if NET20
-namespace BasicClasses {
+namespace BasicClasses.Polyfills {
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;

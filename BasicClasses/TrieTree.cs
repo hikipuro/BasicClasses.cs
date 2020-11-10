@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿namespace BasicClasses {
+	using System;
+	using System.Collections.Generic;
+	using System.Text;
+	using System.Threading;
+	using Polyfills;
 
-namespace BasicClasses {
 	[Serializable]
 	public class TrieTree<T> {
 		public readonly Node Root;
