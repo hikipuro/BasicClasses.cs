@@ -1,70 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug (net20)</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C818D2EB-486E-4B2D-A30E-7B3D3274CE10}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>BasicClasses</RootNamespace>
-    <AssemblyName>BasicClasses</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworks>net20;net35</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug (net20)|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
-    <OutputPath>bin\Debug\net20</OutputPath>
-    <DefineConstants>DEBUG;NET20</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release (net20)|AnyCPU' ">
-    <OutputPath>bin\Release\net35</OutputPath>
-    <DefineConstants>NET20</DefineConstants>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug (net35)|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\net35</OutputPath>
-    <DefineConstants>DEBUG;NET35</DefineConstants>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release (net35)|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\net35</OutputPath>
-    <DefineConstants>NET35</DefineConstants>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrieTree.cs" />
-    <Compile Include="RingBuffer.cs" />
-    <Compile Include="Pool.cs" />
-    <Compile Include="History.cs" />
-    <Compile Include="BinaryTree.cs" />
-    <Compile Include="Randomizer.cs" />
-    <Compile Include="Xorshift32.cs" />
-    <Compile Include="Xorshift128Plus.cs" />
-    <Compile Include="Heap.cs" />
-    <Compile Include="SipHash.cs" />
-    <Compile Include="MurmurHash3.cs" />
-    <Compile Include="AVLTree.cs" />
-    <Compile Include="SparseArray.cs" />
-    <Compile Include="GrowingArray.cs" />
-    <Compile Include="DFA.cs" />
-    <Compile Include="Bitwise.cs" />
-    <Compile Include="NFA.cs" />
-    <Compile Include="Polyfills\ISet.cs" />
-    <Compile Include="Polyfills\HashSet.cs" />
-    <Compile Include="Polyfills\Action.cs" />
-    <Compile Include="Polyfills\Func.cs" />
-    <Compile Include="Polyfills\IReadOnlyCollection.cs" />
-    <Compile Include="Polyfills\IReadOnlyList.cs" />
-    <Compile Include="Polyfills\IReadOnlyDictionary.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Polyfills\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,43 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug (net20)</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3DA1A314-9B6F-41A6-B91D-4D925F9447F6}</ProjectGuid>
+    <TargetFramework>net35</TargetFramework>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Sample</RootNamespace>
-    <AssemblyName>Sample</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug (net20)|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug %28net20%29</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release (net20)|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release %28net20%29</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ExternalConsole>true</ExternalConsole>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+    <ProjectReference Include="..\BasicClasses\BasicClasses.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BasicClasses\BasicClasses.csproj">
-      <Project>{C818D2EB-486E-4B2D-A30E-7B3D3274CE10}</Project>
-      <Name>BasicClasses</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
