@@ -79,6 +79,22 @@ namespace BasicClasses {
 			public string Name;
 			public readonly Dictionary<T, State> Transitions;
 
+			public State this[T key] {
+				get {
+					if (Transitions.TryGetValue(key, out State state)) {
+						return state;
+					}
+					return null;
+				}
+				set {
+					if (Transitions.ContainsKey(key)) {
+						Transitions[key] = value;
+						return;
+					}
+					Transitions.Add(key, value);
+				}
+			}
+
 			public State() {
 				Transitions = new Dictionary<T, State>();
 			}
@@ -88,11 +104,15 @@ namespace BasicClasses {
 			}
 
 			public void Add(T key, State state) {
+				if (Transitions.ContainsKey(key)) {
+					Transitions[key] = state;
+					return;
+				}
 				Transitions.Add(key, state);
 			}
 
-			public void Remove(T key) {
-				Transitions.Remove(key);
+			public bool Remove(T key) {
+				return Transitions.Remove(key);
 			}
 
 			public State TransitionTo(T key) {
