@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿namespace BasicClasses {
+	using System;
+	using System.Collections.Generic;
+	using System.Threading;
 
-namespace BasicClasses {
 	[Serializable]
 	public class History<T> where T : class {
 		public readonly int MaxCount;

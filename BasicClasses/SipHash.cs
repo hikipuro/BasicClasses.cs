@@ -1,7 +1,7 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿namespace BasicClasses {
+	using System;
+	using System.Security.Cryptography;
 
-namespace BasicClasses {
 	public class SipHash : HashAlgorithm {
 		public const int cROUNDS = 2;
 		public const int dROUNDS = 4;

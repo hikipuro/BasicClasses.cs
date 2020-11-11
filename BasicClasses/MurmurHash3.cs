@@ -1,7 +1,7 @@
-﻿using System.Security.Cryptography;
+﻿namespace BasicClasses {
+    using System.Security.Cryptography;
 
-namespace BasicClasses {
-	public class MurmurHash3 : HashAlgorithm {
+    public class MurmurHash3 : HashAlgorithm {
         public uint Seed;
         protected uint _out;
 

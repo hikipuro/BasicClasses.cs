@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace BasicClasses {
+	using System;
+	using System.Collections.Generic;
 
-namespace BasicClasses {
 	public class Randomizer {
 		public static void Shuffle<T>(IList<T> list) {
 			if (list == null) {
