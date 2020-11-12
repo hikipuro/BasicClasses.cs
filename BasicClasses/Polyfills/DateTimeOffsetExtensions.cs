@@ -3,8 +3,8 @@ namespace BasicClasses.Polyfills {
 
 	public static class DateTimeOffsetExtensions {
 #if NET20 || NET35 || NET40 || NET45 || NET451 || NET452
-		public static int ToUnixTimeSeconds(this DateTimeOffset dateTimeOffset) {
-			return (int)((dateTimeOffset - DateTimeUtils.UnixTimeOrigin).Ticks / 10000000L);
+		public static long ToUnixTimeSeconds(this DateTimeOffset dateTimeOffset) {
+			return (dateTimeOffset - DateTimeUtils.UnixTimeOrigin).Ticks / 10000000L;
 		}
 		
 		public static long ToUnixTimeMilliseconds(this DateTimeOffset dateTimeOffset) {
