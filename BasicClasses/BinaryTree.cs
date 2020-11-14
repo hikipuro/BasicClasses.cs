@@ -2,7 +2,6 @@
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
-	using Polyfills;
 
 	[Serializable]
 	public class BinaryTree<TKey, TValue> :

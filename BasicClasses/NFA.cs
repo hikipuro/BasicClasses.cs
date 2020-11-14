@@ -1,6 +1,6 @@
-using System.Collections.Generic;
-
 namespace BasicClasses {
+	using System.Collections.Generic;
+
 	public class NFA<T> {
 		public State InitialState;
 		protected readonly StateSet _states;
@@ -73,6 +73,25 @@ namespace BasicClasses {
 			return new Result(false, i, states);
 		}
 
+		public DFA<T> ToDFA(State initialState) {
+			DFA<T> dfa = new DFA<T>();
+			if (_states.Contains(initialState) == false) {
+				return dfa;
+			}
+			StateSet states = new StateSet(initialState);
+			foreach (State state in states) {
+				DFA<T>.State dfaState = new DFA<T>.State();
+				StateSet e = state.GetAllEpsilonTransitions();
+				dfaState.IsAccept = state.IsAccept | e.HasAcceptState;
+				dfa.Add(dfaState);
+
+				foreach (KeyValuePair<T, StateSet> transition in state.Transitions) {
+					//dfaState.Add(transition.Key, transition.Value);
+				}
+			}
+			return dfa;
+		}
+
 		public struct Result {
 			public bool IsAccept;
 			public int Index;
@@ -98,6 +117,22 @@ namespace BasicClasses {
 			public readonly Dictionary<T, StateSet> Transitions;
 			public readonly StateSet EpsilonTransitions;
 
+			public StateSet this[T key] {
+				get {
+					if (Transitions.TryGetValue(key, out StateSet states)) {
+						return states;
+					}
+					return null;
+				}
+				set {
+					if (Transitions.ContainsKey(key)) {
+						Transitions[key] = value;
+						return;
+					}
+					Transitions.Add(key, value);
+				}
+			}
+
 			public State() {
 				Transitions = new Dictionary<T, StateSet>();
 				EpsilonTransitions = new StateSet();
@@ -122,6 +157,12 @@ namespace BasicClasses {
 			}
 
 			public void Add(T key, State state) {
+				/*
+				if (key.Equals(default(T))) {
+					AddEpsilon(state);
+					return;
+				}
+				*/
 				if (Transitions.ContainsKey(key) == false) {
 					Transitions.Add(key, new StateSet());
 				}
@@ -140,6 +181,12 @@ namespace BasicClasses {
 			}
 
 			public void Remove(T key, State state) {
+				/*
+				if (key.Equals(default(T))) {
+					RemoveEpsilon(state);
+					return;
+				}
+				*/
 				if (Transitions.ContainsKey(key) == false) {
 					return;
 				}
@@ -162,9 +209,33 @@ namespace BasicClasses {
 				}
 				return states;
 			}
+
+			public DFA<T>.State ToDFAState() {
+				DFA<T>.State dfaState = new DFA<T>.State();
+				StateSet e = GetAllEpsilonTransitions();
+				dfaState.IsAccept = IsAccept | e.HasAcceptState;
+				foreach (KeyValuePair<T, StateSet> transition in Transitions) {
+					foreach (State state in transition.Value) {
+						state.ToDFAState();
+					}
+					//dfaState.Add(transition.Key, );
+				}
+				return dfaState;
+			}
 		}
 
 		public class StateSet : HashSet<State> {
+			public bool HasAcceptState {
+				get {
+					foreach (State state in this) {
+						if (state.IsAccept) {
+							return true;
+						}
+					}
+					return false;
+				}
+			}
+
 			public StateSet() : base() {
 			}
 

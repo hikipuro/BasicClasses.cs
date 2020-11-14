@@ -1,6 +1,5 @@
 namespace BasicClasses {
 	using System.Collections.Generic;
-	using Polyfills;
 
 	public class DFA<T> {
 		public State InitialState;

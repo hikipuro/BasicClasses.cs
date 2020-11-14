@@ -2,7 +2,6 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Threading;
-	using Polyfills;
 
 	[Serializable]
 	public class Pool<T> where T : class, new() {

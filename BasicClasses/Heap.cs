@@ -1,7 +1,6 @@
 ﻿namespace BasicClasses {
 	using System;
 	using System.Collections.Generic;
-	using Polyfills;
 
 	[Serializable]
 	public class Heap<T> where T : IComparable<T> {
