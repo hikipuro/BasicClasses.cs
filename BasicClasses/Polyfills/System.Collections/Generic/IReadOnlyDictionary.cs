@@ -1,7 +1,5 @@
 #if NET20
-namespace BasicClasses.Polyfills {
-	using System.Collections.Generic;
-
+namespace System.Collections.Generic {
 	public interface IReadOnlyDictionary<TKey, TValue> :
 		IEnumerable<KeyValuePair<TKey, TValue>>,
 		IReadOnlyCollection<KeyValuePair<TKey, TValue>>

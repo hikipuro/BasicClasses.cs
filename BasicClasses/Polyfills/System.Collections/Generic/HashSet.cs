@@ -1,8 +1,7 @@
 #if NET20
-namespace BasicClasses.Polyfills {
+namespace System.Collections.Generic {
 	using System;
 	using System.Collections;
-	using System.Collections.Generic;
 	using System.Runtime.Serialization;
 
 	public class HashSet<T> :

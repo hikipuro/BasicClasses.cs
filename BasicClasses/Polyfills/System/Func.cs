@@ -1,4 +1,4 @@
-namespace BasicClasses.Polyfills {
+namespace System {
 #if NET20
 	public delegate TResult Func<out TResult>();
 	public delegate TResult Func<in T, out TResult>(T arg);

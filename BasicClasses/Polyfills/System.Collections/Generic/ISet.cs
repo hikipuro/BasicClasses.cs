@@ -1,7 +1,5 @@
 #if NET20
-namespace BasicClasses.Polyfills {
-	using System.Collections.Generic;
-
+namespace System.Collections.Generic {
 	public interface ISet<T> : ICollection<T>, IEnumerable<T> {
 		new bool Add(T item);
 		void ExceptWith(IEnumerable<T> other);

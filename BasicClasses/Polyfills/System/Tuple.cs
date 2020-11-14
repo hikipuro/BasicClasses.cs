@@ -1,6 +1,5 @@
 #if NET20 || NET35
-namespace BasicClasses.Polyfills {
-	using System;
+namespace System {
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.Runtime.CompilerServices;
@@ -46,10 +45,10 @@ namespace BasicClasses.Polyfills {
 
 		public object this[int index] {
 			get {
-				switch (index) {
-					case 0: return Item1;
-					default: throw new IndexOutOfRangeException();
+				if (index == 0) {
+					return Item1;
 				}
+				throw new IndexOutOfRangeException();
 			}
 		}
 

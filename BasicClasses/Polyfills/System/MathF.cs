@@ -1,7 +1,5 @@
 #if NET20 || NET35 || NET40 || NET45 || NET451 || NET452 || NET46 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
-namespace BasicClasses.Polyfills {
-	using System;
-
+namespace System {
 	public static class MathF {
 		public const float E = 2.71828175f;
 		public const float PI = 3.14159274f;

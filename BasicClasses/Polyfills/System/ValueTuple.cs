@@ -1,8 +1,8 @@
 #if NET20 || NET35 || NET40 || NET45 || NET451 || NET452 || NET46 || NET461 || NET462
-namespace BasicClasses.Polyfills {
-	using System;
+namespace System {
 	using System.Collections;
 	using System.Collections.Generic;
+	using System.Runtime.CompilerServices;
 
 	public struct ValueTuple //:
 		/*IComparable, IComparable<ValueTuple>, IEquatable<ValueTuple>,
