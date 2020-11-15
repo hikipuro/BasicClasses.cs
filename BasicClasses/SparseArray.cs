@@ -98,6 +98,7 @@ namespace BasicClasses {
 				keys.CopyTo(_keys, 0);
 				Array.Sort(_keys);
 				_index = 0;
+				_current = new KeyValuePair<int, T>();
 			}
 
 			public void Dispose() {
