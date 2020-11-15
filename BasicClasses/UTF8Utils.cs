@@ -8,11 +8,36 @@ namespace BasicClasses {
 		public const char LowSurrogateMin = (char)0xDC00;
 		public const char LowSurrogateMax = (char)0xDFFF;
 
+		public static void WriteBOM(byte[] bytes) {
+			WriteBOM(bytes, 0);
+		}
+
+		public static void WriteBOM(byte[] bytes, int offset) {
+			bytes[offset] = 0xEF;
+			bytes[offset + 1] = 0xBB;
+			bytes[offset + 2] = 0xBF;
+		}
+
+		public static bool HasBOM(byte[] bytes) {
+			return HasBOM(bytes, 0);
+		}
+
+		public static bool HasBOM(byte[] bytes, int offset) {
+			return bytes[offset] == 0xEF &&
+				bytes[offset + 1] == 0xBB &&
+				bytes[offset + 2] == 0xBF;
+		}
+
 		public static string Decode(byte[] bytes) {
 			return Decode(bytes, 0, bytes.Length);
 		}
 
 		public static string Decode(byte[] bytes, int offset, int length) {
+			if (bytes[offset] == 0xEF &&
+				bytes[offset + 1] == 0xBB &&
+				bytes[offset + 2] == 0xBF) {
+				offset += 3;
+			}
 			length += offset;
 			if (length > bytes.Length) {
 				length = bytes.Length;
@@ -45,17 +70,33 @@ namespace BasicClasses {
 					continue;
 				}
 				switch (c & 0xF8) {
-					case 0x00: case 0x08: case 0x10: case 0x18:
-					case 0x20: case 0x28: case 0x30: case 0x38:
-					case 0x40: case 0x48: case 0x50: case 0x58:
-					case 0x60: case 0x68: case 0x70: case 0x78:
+					case 0x00:
+					case 0x08:
+					case 0x10:
+					case 0x18:
+					case 0x20:
+					case 0x28:
+					case 0x30:
+					case 0x38:
+					case 0x40:
+					case 0x48:
+					case 0x50:
+					case 0x58:
+					case 0x60:
+					case 0x68:
+					case 0x70:
+					case 0x78:
 						buffer[index++] = (char)c;
 						continue;
-					case 0xC0: case 0xC8: case 0xD0: case 0xD8:
+					case 0xC0:
+					case 0xC8:
+					case 0xD0:
+					case 0xD8:
 						code = (c & 0x1F) << 6;
 						trail = 6;
 						continue;
-					case 0xE0: case 0xE8:
+					case 0xE0:
+					case 0xE8:
 						code = (c & 0xF) << 12;
 						trail = 12;
 						continue;
@@ -73,6 +114,26 @@ namespace BasicClasses {
 
 		public static int Encode(string value, byte[] bytes) {
 			return Encode(value, bytes, 0);
+		}
+
+		public static int Encode(string value, byte[] bytes, bool writeBOM) {
+			if (writeBOM == false) {
+				return Encode(value, bytes, 0);
+			}
+			bytes[0] = 0xEF;
+			bytes[1] = 0xBB;
+			bytes[2] = 0xBF;
+			return Encode(value, bytes, 3);
+		}
+
+		public static int Encode(string value, byte[] bytes, int offset, bool writeBOM) {
+			if (writeBOM == false) {
+				return Encode(value, bytes, offset);
+			}
+			bytes[offset] = 0xEF;
+			bytes[offset + 1] = 0xBB;
+			bytes[offset + 2] = 0xBF;
+			return Encode(value, bytes, offset + 3);
 		}
 
 		public static int Encode(string value, byte[] bytes, int offset) {
