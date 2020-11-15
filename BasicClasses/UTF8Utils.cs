@@ -152,21 +152,38 @@ namespace BasicClasses {
 						);
 					}
 					code |= c & 0x3FF;
-					if (code > MaxCodePoint) {
-						throw new InvalidOperationException(
-							string.Format(
-								"Invalid code point ({0}, 0x{1:X})",
-								i - 1, code
-							)
-						);
-					}
-					bytes[index] = (byte)(0xF0 | ((code >> 18) & 0x7));
-					bytes[index + 1] = (byte)(0x80 | ((code >> 12) & 0x3F));
-					bytes[index + 2] = (byte)(0x80 | ((code >> 6) & 0x3F));
-					bytes[index + 3] = (byte)(0x80 | (code & 0x3F));
-					index += 4;
 					surrogatePair = false;
-					continue;
+					if (code < 0x80) {
+						bytes[index++] = (byte)code;
+						continue;
+					}
+					if (code < 0x800) {
+						bytes[index] = (byte)(0xC0 | ((code >> 6) & 0x1F));
+						bytes[index + 1] = (byte)(0x80 | (code & 0x3F));
+						index += 2;
+						continue;
+					}
+					if (code < 0x10000) {
+						bytes[index] = (byte)(0xE0 | ((code >> 12) & 0xF));
+						bytes[index + 1] = (byte)(0x80 | ((code >> 6) & 0x3F));
+						bytes[index + 2] = (byte)(0x80 | (code & 0x3F));
+						index += 3;
+						continue;
+					}
+					if (code <= MaxCodePoint) {
+						bytes[index] = (byte)(0xF0 | ((code >> 18) & 0x7));
+						bytes[index + 1] = (byte)(0x80 | ((code >> 12) & 0x3F));
+						bytes[index + 2] = (byte)(0x80 | ((code >> 6) & 0x3F));
+						bytes[index + 3] = (byte)(0x80 | (code & 0x3F));
+						index += 4;
+						continue;
+					}
+					throw new InvalidOperationException(
+						string.Format(
+							"Invalid code point ({0}, 0x{1:X})",
+							i - 1, code
+						)
+					);
 				}
 
 				if (c < 0x80) {
@@ -200,6 +217,11 @@ namespace BasicClasses {
 				bytes[index + 1] = (byte)(0x80 | ((c >> 6) & 0x3F));
 				bytes[index + 2] = (byte)(0x80 | (c & 0x3F));
 				index += 3;
+			}
+			if (surrogatePair) {
+				throw new InvalidOperationException(
+					string.Format("Invalid surrogate pair ({0})", value.Length - 1)
+				);
 			}
 			return index - offset;
 		}
