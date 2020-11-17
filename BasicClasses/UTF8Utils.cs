@@ -2,12 +2,6 @@ namespace BasicClasses {
 	using System;
 
 	public static class UTF8Utils {
-		public const int MaxCodePoint = 0x10FFFF;
-		public const char HighSurrogateMin = (char)0xD800;
-		public const char HighSurrogateMax = (char)0xDBFF;
-		public const char LowSurrogateMin = (char)0xDC00;
-		public const char LowSurrogateMax = (char)0xDFFF;
-
 		public static void WriteBOM(byte[] bytes) {
 			WriteBOM(bytes, 0);
 		}
@@ -28,12 +22,176 @@ namespace BasicClasses {
 				bytes[offset + 2] == 0xBF;
 		}
 
+		public static int GetLength(string value) {
+			if (value == null || value == string.Empty) {
+				return 0;
+			}
+			const int ZeroWidthJoiner = UnicodeCodePoint.ZeroWidthJoiner;
+			int length = 0;
+			int code = 0;
+			int prevCode = 0;
+			for (int i = 0; i < value.Length; i++) {
+				char c = value[i];
+				if (code != 0) {
+					if ((c & 0xFC00) != 0xDC00) {
+						throw new InvalidOperationException(
+							string.Format("Invalid surrogate pair ({0})", i)
+						);
+					}
+					code |= c & 0x3FF;
+					switch (code) {
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterA:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterB:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterC:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterD:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterE:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterF:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterG:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterH:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterI:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterJ:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterK:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterL:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterM:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterN:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterO:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterP:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterQ:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterR:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterS:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterT:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterU:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterV:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterW:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterX:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterY:
+						case UnicodeCodePoint.RegionalIndicatorSymbolLetterZ:
+							if (UnicodeCodePoint.IsRegionalIndicatorSymbolLetter(prevCode) == false) {
+								if (prevCode != ZeroWidthJoiner) {
+									length++;
+								}
+							}
+							prevCode = code;
+							code = 0;
+							continue;
+						case UnicodeCodePoint.EmojiModifierFitzpatrickType1_2:
+						case UnicodeCodePoint.EmojiModifierFitzpatrickType3:
+						case UnicodeCodePoint.EmojiModifierFitzpatrickType4:
+						case UnicodeCodePoint.EmojiModifierFitzpatrickType5:
+						case UnicodeCodePoint.EmojiModifierFitzpatrickType6:
+							prevCode = code;
+							code = 0;
+							continue;
+					}
+					if (code <= UnicodeCodePoint.Max) {
+						if (prevCode != ZeroWidthJoiner) {
+							length++;
+						}
+						prevCode = code;
+						code = 0;
+						continue;
+					}
+					throw new InvalidOperationException(
+						string.Format(
+							"Invalid code point ({0}, 0x{1:X})",
+							i - 1, code
+						)
+					);
+				}
+				switch ((int)c) {
+					case UnicodeCodePoint.ZeroWidthJoiner:
+						prevCode = c;
+						continue;
+					case UnicodeCodePoint.CombiningLeftHarpoonAbove:
+					case UnicodeCodePoint.CombiningRightHarpoonAbove:
+					case UnicodeCodePoint.CombiningLongVerticalLineOverlay:
+					case UnicodeCodePoint.CombiningShortVerticalLineOverlay:
+					case UnicodeCodePoint.CombiningAnticlockwiseArrowAbove:
+					case UnicodeCodePoint.CombiningClockwiseArrowAbove:
+					case UnicodeCodePoint.CombiningLeftArrowAbove:
+					case UnicodeCodePoint.CombiningRightArrowAbove:
+					case UnicodeCodePoint.CombiningRingOverlay:
+					case UnicodeCodePoint.CombiningClockwiseRingOverlay:
+					case UnicodeCodePoint.CombiningAnticlockwiseRingOverlay:
+					case UnicodeCodePoint.CombiningThreeDotsAbove:
+					case UnicodeCodePoint.CombiningFourDotsAbove:
+					case UnicodeCodePoint.CombiningEnclosingCircle:
+					case UnicodeCodePoint.CombiningEnclosingSquare:
+					case UnicodeCodePoint.CombiningEnclosingDiamond:
+					case UnicodeCodePoint.CombiningEnclosingCircleBackslash:
+					case UnicodeCodePoint.CombiningLeftRightArrowAbove:
+					case UnicodeCodePoint.CombiningEnclosingScreen:
+					case UnicodeCodePoint.CombiningEnclosingKeycap:
+					case UnicodeCodePoint.CombiningEnclosingUpwardPointingTriangle:
+					case UnicodeCodePoint.CombiningReverseSolidusOverlay:
+					case UnicodeCodePoint.CombiningDoubleVerticalStrokeOverlay:
+					case UnicodeCodePoint.CombiningAnnuitySymbol:
+					case UnicodeCodePoint.CombiningTripleUnderdot:
+					case UnicodeCodePoint.CombiningWideBridgeAbove:
+					case UnicodeCodePoint.CombiningLeftwardsArrowOverlay:
+					case UnicodeCodePoint.CombiningLongDoubleSolidusOverlay:
+					case UnicodeCodePoint.CombiningRightwardsHarpoonWithBarbDownwards:
+					case UnicodeCodePoint.CombiningLeftwardsHarpoonWithBarbDownwards:
+					case UnicodeCodePoint.CombiningLeftArrowBelow:
+					case UnicodeCodePoint.CombiningRightArrowBelow:
+					case UnicodeCodePoint.CombiningAsteriskAbove:
+						prevCode = c;
+						continue;
+					case UnicodeCodePoint.VariationSelector1:
+					case UnicodeCodePoint.VariationSelector2:
+					case UnicodeCodePoint.VariationSelector3:
+					case UnicodeCodePoint.VariationSelector4:
+					case UnicodeCodePoint.VariationSelector5:
+					case UnicodeCodePoint.VariationSelector6:
+					case UnicodeCodePoint.VariationSelector7:
+					case UnicodeCodePoint.VariationSelector8:
+					case UnicodeCodePoint.VariationSelector9:
+					case UnicodeCodePoint.VariationSelector10:
+					case UnicodeCodePoint.VariationSelector11:
+					case UnicodeCodePoint.VariationSelector12:
+					case UnicodeCodePoint.VariationSelector13:
+					case UnicodeCodePoint.VariationSelector14:
+					case UnicodeCodePoint.VariationSelector15:
+					case UnicodeCodePoint.VariationSelector16:
+						prevCode = c;
+						continue;
+				}
+				if (c < UnicodeCodePoint.HighSurrogateMin) {
+					if (prevCode != ZeroWidthJoiner) {
+						length++;
+					}
+					prevCode = c;
+					continue;
+				}
+				if (c <= UnicodeCodePoint.HighSurrogateMax) {
+					code = 0x10000 + ((c & 0x3FF) << 10);
+					continue;
+				}
+				if (c <= UnicodeCodePoint.LowSurrogateMax) {
+					throw new InvalidOperationException(
+						string.Format("Invalid surrogate pair ({0})", i)
+					);
+				}
+				if (prevCode != ZeroWidthJoiner) {
+					length++;
+				}
+				prevCode = c;
+			}
+			if (code != 0) {
+				throw new InvalidOperationException(
+					string.Format("Invalid surrogate pair ({0})", value.Length - 1)
+				);
+			}
+			return length;
+		}
+
 		public static string Decode(byte[] bytes) {
 			return Decode(bytes, 0, bytes.Length);
 		}
 
 		public static string Decode(byte[] bytes, int offset, int length) {
-			if (bytes[offset] == 0xEF &&
+			if (length > 2 &&
+				bytes[offset] == 0xEF &&
 				bytes[offset + 1] == 0xBB &&
 				bytes[offset + 2] == 0xBF) {
 				offset += 3;
@@ -51,7 +209,7 @@ namespace BasicClasses {
 				if (trail > 0) {
 					if ((c & 0xC0) != 0x80) {
 						throw new InvalidOperationException(
-							string.Format("Invalid utf-8 format ({0}, 0x{1:X})", i, c)
+							string.Format("Invalid utf-8 byte array ({0}, 0x{1:X})", i, c)
 						);
 					}
 					trail -= 6;
@@ -64,8 +222,8 @@ namespace BasicClasses {
 						buffer[index++] = (char)code;
 						continue;
 					}
-					buffer[index] = (char)(((code - 0x10000) >> 10) | HighSurrogateMin);
-					buffer[index + 1] = (char)((code & 0x3FF) | LowSurrogateMin);
+					buffer[index] = (char)(((code - 0x10000) >> 10) | UnicodeCodePoint.HighSurrogateMin);
+					buffer[index + 1] = (char)((code & 0x3FF) | UnicodeCodePoint.LowSurrogateMin);
 					index += 2;
 					continue;
 				}
@@ -106,7 +264,7 @@ namespace BasicClasses {
 						continue;
 				}
 				throw new InvalidOperationException(
-					string.Format("Invalid utf-8 format ({0}, 0x{1:X})", i, c)
+					string.Format("Invalid utf-8 byte array ({0}, 0x{1:X})", i, c)
 				);
 			}
 			return new string(buffer, 0, index);
@@ -142,25 +300,25 @@ namespace BasicClasses {
 			}
 			int index = offset;
 			int code = 0;
-			bool surrogatePair = false;
 			for (int i = 0; i < value.Length; i++) {
 				char c = value[i];
-				if (surrogatePair) {
+				if (code != 0) {
 					if ((c & 0xFC00) != 0xDC00) {
 						throw new InvalidOperationException(
 							string.Format("Invalid surrogate pair ({0})", i)
 						);
 					}
 					code |= c & 0x3FF;
-					surrogatePair = false;
 					if (code < 0x80) {
 						bytes[index++] = (byte)code;
+						code = 0;
 						continue;
 					}
 					if (code < 0x800) {
 						bytes[index] = (byte)(0xC0 | ((code >> 6) & 0x1F));
 						bytes[index + 1] = (byte)(0x80 | (code & 0x3F));
 						index += 2;
+						code = 0;
 						continue;
 					}
 					if (code < 0x10000) {
@@ -168,14 +326,16 @@ namespace BasicClasses {
 						bytes[index + 1] = (byte)(0x80 | ((code >> 6) & 0x3F));
 						bytes[index + 2] = (byte)(0x80 | (code & 0x3F));
 						index += 3;
+						code = 0;
 						continue;
 					}
-					if (code <= MaxCodePoint) {
+					if (code <= UnicodeCodePoint.Max) {
 						bytes[index] = (byte)(0xF0 | ((code >> 18) & 0x7));
 						bytes[index + 1] = (byte)(0x80 | ((code >> 12) & 0x3F));
 						bytes[index + 2] = (byte)(0x80 | ((code >> 6) & 0x3F));
 						bytes[index + 3] = (byte)(0x80 | (code & 0x3F));
 						index += 4;
+						code = 0;
 						continue;
 					}
 					throw new InvalidOperationException(
@@ -196,19 +356,18 @@ namespace BasicClasses {
 					index += 2;
 					continue;
 				}
-				if (c < HighSurrogateMin) {
+				if (c < UnicodeCodePoint.HighSurrogateMin) {
 					bytes[index] = (byte)(0xE0 | ((c >> 12) & 0xF));
 					bytes[index + 1] = (byte)(0x80 | ((c >> 6) & 0x3F));
 					bytes[index + 2] = (byte)(0x80 | (c & 0x3F));
 					index += 3;
 					continue;
 				}
-				if (c <= HighSurrogateMax) {
+				if (c <= UnicodeCodePoint.HighSurrogateMax) {
 					code = 0x10000 + ((c & 0x3FF) << 10);
-					surrogatePair = true;
 					continue;
 				}
-				if (c <= LowSurrogateMax) {
+				if (c <= UnicodeCodePoint.LowSurrogateMax) {
 					throw new InvalidOperationException(
 						string.Format("Invalid surrogate pair ({0})", i)
 					);
@@ -218,7 +377,7 @@ namespace BasicClasses {
 				bytes[index + 2] = (byte)(0x80 | (c & 0x3F));
 				index += 3;
 			}
-			if (surrogatePair) {
+			if (code != 0) {
 				throw new InvalidOperationException(
 					string.Format("Invalid surrogate pair ({0})", value.Length - 1)
 				);
