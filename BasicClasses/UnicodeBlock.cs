@@ -1,665 +1,1633 @@
 namespace BasicClasses {
-	using System.Collections.Generic;
+	public class UnicodeBlock {
+		public static readonly UnicodeBlock No_Block = new UnicodeBlock(
+			"No_Block", -1, -1
+		);
 
-	public static class UnicodeBlock {
-		public const string No_Block = "No_Block";
-		public const string BasicLatin = "Basic Latin";
-		public const string Latin1Supplement = "Latin-1 Supplement";
-		public const string LatinExtendedA = "Latin Extended-A";
-		public const string LatinExtendedB = "Latin Extended-B";
-		public const string IPAExtensions = "IPA Extensions";
-		public const string SpacingModifierLetters = "Spacing Modifier Letters";
-		public const string CombiningDiacriticalMarks = "Combining Diacritical Marks";
-		public const string GreekandCoptic = "Greek and Coptic";
-		public const string Cyrillic = "Cyrillic";
-		public const string CyrillicSupplement = "Cyrillic Supplement";
-		public const string Armenian = "Armenian";
-		public const string Hebrew = "Hebrew";
-		public const string Arabic = "Arabic";
-		public const string Syriac = "Syriac";
-		public const string ArabicSupplement = "Arabic Supplement";
-		public const string Thaana = "Thaana";
-		public const string NKo = "NKo";
-		public const string Samaritan = "Samaritan";
-		public const string Mandaic = "Mandaic";
-		public const string SyriacSupplement = "Syriac Supplement";
-		public const string ArabicExtendedA = "Arabic Extended-A";
-		public const string Devanagari = "Devanagari";
-		public const string Bengali = "Bengali";
-		public const string Gurmukhi = "Gurmukhi";
-		public const string Gujarati = "Gujarati";
-		public const string Oriya = "Oriya";
-		public const string Tamil = "Tamil";
-		public const string Telugu = "Telugu";
-		public const string Kannada = "Kannada";
-		public const string Malayalam = "Malayalam";
-		public const string Sinhala = "Sinhala";
-		public const string Thai = "Thai";
-		public const string Lao = "Lao";
-		public const string Tibetan = "Tibetan";
-		public const string Myanmar = "Myanmar";
-		public const string Georgian = "Georgian";
-		public const string HangulJamo = "Hangul Jamo";
-		public const string Ethiopic = "Ethiopic";
-		public const string EthiopicSupplement = "Ethiopic Supplement";
-		public const string Cherokee = "Cherokee";
-		public const string UnifiedCanadianAboriginalSyllabics = "Unified Canadian Aboriginal Syllabics";
-		public const string Ogham = "Ogham";
-		public const string Runic = "Runic";
-		public const string Tagalog = "Tagalog";
-		public const string Hanunoo = "Hanunoo";
-		public const string Buhid = "Buhid";
-		public const string Tagbanwa = "Tagbanwa";
-		public const string Khmer = "Khmer";
-		public const string Mongolian = "Mongolian";
-		public const string UnifiedCanadianAboriginalSyllabicsExtended = "Unified Canadian Aboriginal Syllabics Extended";
-		public const string Limbu = "Limbu";
-		public const string TaiLe = "Tai Le";
-		public const string NewTaiLue = "New Tai Lue";
-		public const string KhmerSymbols = "Khmer Symbols";
-		public const string Buginese = "Buginese";
-		public const string TaiTham = "Tai Tham";
-		public const string CombiningDiacriticalMarksExtended = "Combining Diacritical Marks Extended";
-		public const string Balinese = "Balinese";
-		public const string Sundanese = "Sundanese";
-		public const string Batak = "Batak";
-		public const string Lepcha = "Lepcha";
-		public const string OlChiki = "Ol Chiki";
-		public const string CyrillicExtendedC = "Cyrillic Extended-C";
-		public const string GeorgianExtended = "Georgian Extended";
-		public const string SundaneseSupplement = "Sundanese Supplement";
-		public const string VedicExtensions = "Vedic Extensions";
-		public const string PhoneticExtensions = "Phonetic Extensions";
-		public const string PhoneticExtensionsSupplement = "Phonetic Extensions Supplement";
-		public const string CombiningDiacriticalMarksSupplement = "Combining Diacritical Marks Supplement";
-		public const string LatinExtendedAdditional = "Latin Extended Additional";
-		public const string GreekExtended = "Greek Extended";
-		public const string GeneralPunctuation = "General Punctuation";
-		public const string SuperscriptsandSubscripts = "Superscripts and Subscripts";
-		public const string CurrencySymbols = "Currency Symbols";
-		public const string CombiningDiacriticalMarksforSymbols = "Combining Diacritical Marks for Symbols";
-		public const string LetterlikeSymbols = "Letterlike Symbols";
-		public const string NumberForms = "Number Forms";
-		public const string Arrows = "Arrows";
-		public const string MathematicalOperators = "Mathematical Operators";
-		public const string MiscellaneousTechnical = "Miscellaneous Technical";
-		public const string ControlPictures = "Control Pictures";
-		public const string OpticalCharacterRecognition = "Optical Character Recognition";
-		public const string EnclosedAlphanumerics = "Enclosed Alphanumerics";
-		public const string BoxDrawing = "Box Drawing";
-		public const string BlockElements = "Block Elements";
-		public const string GeometricShapes = "Geometric Shapes";
-		public const string MiscellaneousSymbols = "Miscellaneous Symbols";
-		public const string Dingbats = "Dingbats";
-		public const string MiscellaneousMathematicalSymbolsA = "Miscellaneous Mathematical Symbols-A";
-		public const string SupplementalArrowsA = "Supplemental Arrows-A";
-		public const string BraillePatterns = "Braille Patterns";
-		public const string SupplementalArrowsB = "Supplemental Arrows-B";
-		public const string MiscellaneousMathematicalSymbolsB = "Miscellaneous Mathematical Symbols-B";
-		public const string SupplementalMathematicalOperators = "Supplemental Mathematical Operators";
-		public const string MiscellaneousSymbolsandArrows = "Miscellaneous Symbols and Arrows";
-		public const string Glagolitic = "Glagolitic";
-		public const string LatinExtendedC = "Latin Extended-C";
-		public const string Coptic = "Coptic";
-		public const string GeorgianSupplement = "Georgian Supplement";
-		public const string Tifinagh = "Tifinagh";
-		public const string EthiopicExtended = "Ethiopic Extended";
-		public const string CyrillicExtendedA = "Cyrillic Extended-A";
-		public const string SupplementalPunctuation = "Supplemental Punctuation";
-		public const string CJKRadicalsSupplement = "CJK Radicals Supplement";
-		public const string KangxiRadicals = "Kangxi Radicals";
-		public const string IdeographicDescriptionCharacters = "Ideographic Description Characters";
-		public const string CJKSymbolsandPunctuation = "CJK Symbols and Punctuation";
-		public const string Hiragana = "Hiragana";
-		public const string Katakana = "Katakana";
-		public const string Bopomofo = "Bopomofo";
-		public const string HangulCompatibilityJamo = "Hangul Compatibility Jamo";
-		public const string Kanbun = "Kanbun";
-		public const string BopomofoExtended = "Bopomofo Extended";
-		public const string CJKStrokes = "CJK Strokes";
-		public const string KatakanaPhoneticExtensions = "Katakana Phonetic Extensions";
-		public const string EnclosedCJKLettersandMonths = "Enclosed CJK Letters and Months";
-		public const string CJKCompatibility = "CJK Compatibility";
-		public const string CJKUnifiedIdeographsExtensionA = "CJK Unified Ideographs Extension A";
-		public const string YijingHexagramSymbols = "Yijing Hexagram Symbols";
-		public const string CJKUnifiedIdeographs = "CJK Unified Ideographs";
-		public const string YiSyllables = "Yi Syllables";
-		public const string YiRadicals = "Yi Radicals";
-		public const string Lisu = "Lisu";
-		public const string Vai = "Vai";
-		public const string CyrillicExtendedB = "Cyrillic Extended-B";
-		public const string Bamum = "Bamum";
-		public const string ModifierToneLetters = "Modifier Tone Letters";
-		public const string LatinExtendedD = "Latin Extended-D";
-		public const string SylotiNagri = "Syloti Nagri";
-		public const string CommonIndicNumberForms = "Common Indic Number Forms";
-		public const string Phagspa = "Phags-pa";
-		public const string Saurashtra = "Saurashtra";
-		public const string DevanagariExtended = "Devanagari Extended";
-		public const string KayahLi = "Kayah Li";
-		public const string Rejang = "Rejang";
-		public const string HangulJamoExtendedA = "Hangul Jamo Extended-A";
-		public const string Javanese = "Javanese";
-		public const string MyanmarExtendedB = "Myanmar Extended-B";
-		public const string Cham = "Cham";
-		public const string MyanmarExtendedA = "Myanmar Extended-A";
-		public const string TaiViet = "Tai Viet";
-		public const string MeeteiMayekExtensions = "Meetei Mayek Extensions";
-		public const string EthiopicExtendedA = "Ethiopic Extended-A";
-		public const string LatinExtendedE = "Latin Extended-E";
-		public const string CherokeeSupplement = "Cherokee Supplement";
-		public const string MeeteiMayek = "Meetei Mayek";
-		public const string HangulSyllables = "Hangul Syllables";
-		public const string HangulJamoExtendedB = "Hangul Jamo Extended-B";
-		public const string HighSurrogates = "High Surrogates";
-		public const string HighPrivateUseSurrogates = "High Private Use Surrogates";
-		public const string LowSurrogates = "Low Surrogates";
-		public const string PrivateUseArea = "Private Use Area";
-		public const string CJKCompatibilityIdeographs = "CJK Compatibility Ideographs";
-		public const string AlphabeticPresentationForms = "Alphabetic Presentation Forms";
-		public const string ArabicPresentationFormsA = "Arabic Presentation Forms-A";
-		public const string VariationSelectors = "Variation Selectors";
-		public const string VerticalForms = "Vertical Forms";
-		public const string CombiningHalfMarks = "Combining Half Marks";
-		public const string CJKCompatibilityForms = "CJK Compatibility Forms";
-		public const string SmallFormVariants = "Small Form Variants";
-		public const string ArabicPresentationFormsB = "Arabic Presentation Forms-B";
-		public const string HalfwidthandFullwidthForms = "Halfwidth and Fullwidth Forms";
-		public const string Specials = "Specials";
-		public const string LinearBSyllabary = "Linear B Syllabary";
-		public const string LinearBIdeograms = "Linear B Ideograms";
-		public const string AegeanNumbers = "Aegean Numbers";
-		public const string AncientGreekNumbers = "Ancient Greek Numbers";
-		public const string AncientSymbols = "Ancient Symbols";
-		public const string PhaistosDisc = "Phaistos Disc";
-		public const string Lycian = "Lycian";
-		public const string Carian = "Carian";
-		public const string CopticEpactNumbers = "Coptic Epact Numbers";
-		public const string OldItalic = "Old Italic";
-		public const string Gothic = "Gothic";
-		public const string OldPermic = "Old Permic";
-		public const string Ugaritic = "Ugaritic";
-		public const string OldPersian = "Old Persian";
-		public const string Deseret = "Deseret";
-		public const string Shavian = "Shavian";
-		public const string Osmanya = "Osmanya";
-		public const string Osage = "Osage";
-		public const string Elbasan = "Elbasan";
-		public const string CaucasianAlbanian = "Caucasian Albanian";
-		public const string LinearA = "Linear A";
-		public const string CypriotSyllabary = "Cypriot Syllabary";
-		public const string ImperialAramaic = "Imperial Aramaic";
-		public const string Palmyrene = "Palmyrene";
-		public const string Nabataean = "Nabataean";
-		public const string Hatran = "Hatran";
-		public const string Phoenician = "Phoenician";
-		public const string Lydian = "Lydian";
-		public const string MeroiticHieroglyphs = "Meroitic Hieroglyphs";
-		public const string MeroiticCursive = "Meroitic Cursive";
-		public const string Kharoshthi = "Kharoshthi";
-		public const string OldSouthArabian = "Old South Arabian";
-		public const string OldNorthArabian = "Old North Arabian";
-		public const string Manichaean = "Manichaean";
-		public const string Avestan = "Avestan";
-		public const string InscriptionalParthian = "Inscriptional Parthian";
-		public const string InscriptionalPahlavi = "Inscriptional Pahlavi";
-		public const string PsalterPahlavi = "Psalter Pahlavi";
-		public const string OldTurkic = "Old Turkic";
-		public const string OldHungarian = "Old Hungarian";
-		public const string HanifiRohingya = "Hanifi Rohingya";
-		public const string RumiNumeralSymbols = "Rumi Numeral Symbols";
-		public const string Yezidi = "Yezidi";
-		public const string OldSogdian = "Old Sogdian";
-		public const string Sogdian = "Sogdian";
-		public const string Chorasmian = "Chorasmian";
-		public const string Elymaic = "Elymaic";
-		public const string Brahmi = "Brahmi";
-		public const string Kaithi = "Kaithi";
-		public const string SoraSompeng = "Sora Sompeng";
-		public const string Chakma = "Chakma";
-		public const string Mahajani = "Mahajani";
-		public const string Sharada = "Sharada";
-		public const string SinhalaArchaicNumbers = "Sinhala Archaic Numbers";
-		public const string Khojki = "Khojki";
-		public const string Multani = "Multani";
-		public const string Khudawadi = "Khudawadi";
-		public const string Grantha = "Grantha";
-		public const string Newa = "Newa";
-		public const string Tirhuta = "Tirhuta";
-		public const string Siddham = "Siddham";
-		public const string Modi = "Modi";
-		public const string MongolianSupplement = "Mongolian Supplement";
-		public const string Takri = "Takri";
-		public const string Ahom = "Ahom";
-		public const string Dogra = "Dogra";
-		public const string WarangCiti = "Warang Citi";
-		public const string DivesAkuru = "Dives Akuru";
-		public const string Nandinagari = "Nandinagari";
-		public const string ZanabazarSquare = "Zanabazar Square";
-		public const string Soyombo = "Soyombo";
-		public const string PauCinHau = "Pau Cin Hau";
-		public const string Bhaiksuki = "Bhaiksuki";
-		public const string Marchen = "Marchen";
-		public const string MasaramGondi = "Masaram Gondi";
-		public const string GunjalaGondi = "Gunjala Gondi";
-		public const string Makasar = "Makasar";
-		public const string LisuSupplement = "Lisu Supplement";
-		public const string TamilSupplement = "Tamil Supplement";
-		public const string Cuneiform = "Cuneiform";
-		public const string CuneiformNumbersandPunctuation = "Cuneiform Numbers and Punctuation";
-		public const string EarlyDynasticCuneiform = "Early Dynastic Cuneiform";
-		public const string EgyptianHieroglyphs = "Egyptian Hieroglyphs";
-		public const string EgyptianHieroglyphFormatControls = "Egyptian Hieroglyph Format Controls";
-		public const string AnatolianHieroglyphs = "Anatolian Hieroglyphs";
-		public const string BamumSupplement = "Bamum Supplement";
-		public const string Mro = "Mro";
-		public const string BassaVah = "Bassa Vah";
-		public const string PahawhHmong = "Pahawh Hmong";
-		public const string Medefaidrin = "Medefaidrin";
-		public const string Miao = "Miao";
-		public const string IdeographicSymbolsandPunctuation = "Ideographic Symbols and Punctuation";
-		public const string Tangut = "Tangut";
-		public const string TangutComponents = "Tangut Components";
-		public const string KhitanSmallScript = "Khitan Small Script";
-		public const string TangutSupplement = "Tangut Supplement";
-		public const string KanaSupplement = "Kana Supplement";
-		public const string KanaExtendedA = "Kana Extended-A";
-		public const string SmallKanaExtension = "Small Kana Extension";
-		public const string Nushu = "Nushu";
-		public const string Duployan = "Duployan";
-		public const string ShorthandFormatControls = "Shorthand Format Controls";
-		public const string ByzantineMusicalSymbols = "Byzantine Musical Symbols";
-		public const string MusicalSymbols = "Musical Symbols";
-		public const string AncientGreekMusicalNotation = "Ancient Greek Musical Notation";
-		public const string MayanNumerals = "Mayan Numerals";
-		public const string TaiXuanJingSymbols = "Tai Xuan Jing Symbols";
-		public const string CountingRodNumerals = "Counting Rod Numerals";
-		public const string MathematicalAlphanumericSymbols = "Mathematical Alphanumeric Symbols";
-		public const string SuttonSignWriting = "Sutton SignWriting";
-		public const string GlagoliticSupplement = "Glagolitic Supplement";
-		public const string NyiakengPuachueHmong = "Nyiakeng Puachue Hmong";
-		public const string Wancho = "Wancho";
-		public const string MendeKikakui = "Mende Kikakui";
-		public const string Adlam = "Adlam";
-		public const string IndicSiyaqNumbers = "Indic Siyaq Numbers";
-		public const string OttomanSiyaqNumbers = "Ottoman Siyaq Numbers";
-		public const string ArabicMathematicalAlphabeticSymbols = "Arabic Mathematical Alphabetic Symbols";
-		public const string MahjongTiles = "Mahjong Tiles";
-		public const string DominoTiles = "Domino Tiles";
-		public const string PlayingCards = "Playing Cards";
-		public const string EnclosedAlphanumericSupplement = "Enclosed Alphanumeric Supplement";
-		public const string EnclosedIdeographicSupplement = "Enclosed Ideographic Supplement";
-		public const string MiscellaneousSymbolsandPictographs = "Miscellaneous Symbols and Pictographs";
-		public const string Emoticons = "Emoticons";
-		public const string OrnamentalDingbats = "Ornamental Dingbats";
-		public const string TransportandMapSymbols = "Transport and Map Symbols";
-		public const string AlchemicalSymbols = "Alchemical Symbols";
-		public const string GeometricShapesExtended = "Geometric Shapes Extended";
-		public const string SupplementalArrowsC = "Supplemental Arrows-C";
-		public const string SupplementalSymbolsandPictographs = "Supplemental Symbols and Pictographs";
-		public const string ChessSymbols = "Chess Symbols";
-		public const string SymbolsandPictographsExtendedA = "Symbols and Pictographs Extended-A";
-		public const string SymbolsforLegacyComputing = "Symbols for Legacy Computing";
-		public const string CJKUnifiedIdeographsExtensionB = "CJK Unified Ideographs Extension B";
-		public const string CJKUnifiedIdeographsExtensionC = "CJK Unified Ideographs Extension C";
-		public const string CJKUnifiedIdeographsExtensionD = "CJK Unified Ideographs Extension D";
-		public const string CJKUnifiedIdeographsExtensionE = "CJK Unified Ideographs Extension E";
-		public const string CJKUnifiedIdeographsExtensionF = "CJK Unified Ideographs Extension F";
-		public const string CJKCompatibilityIdeographsSupplement = "CJK Compatibility Ideographs Supplement";
-		public const string CJKUnifiedIdeographsExtensionG = "CJK Unified Ideographs Extension G";
-		public const string Tags = "Tags";
-		public const string VariationSelectorsSupplement = "Variation Selectors Supplement";
-		public const string SupplementaryPrivateUseAreaA = "Supplementary Private Use Area-A";
-		public const string SupplementaryPrivateUseAreaB = "Supplementary Private Use Area-B";
+		public static readonly UnicodeBlock BasicLatin = new UnicodeBlock(
+			"Basic Latin", 0x0000, 0x007F
+		);
 
-		static Dictionary<string, int[]> Range;
+		public static readonly UnicodeBlock Latin1Supplement = new UnicodeBlock(
+			"Latin-1 Supplement", 0x0080, 0x00FF
+		);
 
-		static void InitRange() {
-			Range = new Dictionary<string, int[]> {
-				{ BasicLatin, new int[] { 0x0000, 0x007F } },
-				{ Latin1Supplement, new int[] { 0x0080, 0x00FF } },
-				{ LatinExtendedA, new int[] { 0x0100, 0x017F } },
-				{ LatinExtendedB, new int[] { 0x0180, 0x024F } },
-				{ IPAExtensions, new int[] { 0x0250, 0x02AF } },
-				{ SpacingModifierLetters, new int[] { 0x02B0, 0x02FF } },
-				{ CombiningDiacriticalMarks, new int[] { 0x0300, 0x036F } },
-				{ GreekandCoptic, new int[] { 0x0370, 0x03FF } },
-				{ Cyrillic, new int[] { 0x0400, 0x04FF } },
-				{ CyrillicSupplement, new int[] { 0x0500, 0x052F } },
-				{ Armenian, new int[] { 0x0530, 0x058F } },
-				{ Hebrew, new int[] { 0x0590, 0x05FF } },
-				{ Arabic, new int[] { 0x0600, 0x06FF } },
-				{ Syriac, new int[] { 0x0700, 0x074F } },
-				{ ArabicSupplement, new int[] { 0x0750, 0x077F } },
-				{ Thaana, new int[] { 0x0780, 0x07BF } },
-				{ NKo, new int[] { 0x07C0, 0x07FF } },
-				{ Samaritan, new int[] { 0x0800, 0x083F } },
-				{ Mandaic, new int[] { 0x0840, 0x085F } },
-				{ SyriacSupplement, new int[] { 0x0860, 0x086F } },
-				{ ArabicExtendedA, new int[] { 0x08A0, 0x08FF } },
-				{ Devanagari, new int[] { 0x0900, 0x097F } },
-				{ Bengali, new int[] { 0x0980, 0x09FF } },
-				{ Gurmukhi, new int[] { 0x0A00, 0x0A7F } },
-				{ Gujarati, new int[] { 0x0A80, 0x0AFF } },
-				{ Oriya, new int[] { 0x0B00, 0x0B7F } },
-				{ Tamil, new int[] { 0x0B80, 0x0BFF } },
-				{ Telugu, new int[] { 0x0C00, 0x0C7F } },
-				{ Kannada, new int[] { 0x0C80, 0x0CFF } },
-				{ Malayalam, new int[] { 0x0D00, 0x0D7F } },
-				{ Sinhala, new int[] { 0x0D80, 0x0DFF } },
-				{ Thai, new int[] { 0x0E00, 0x0E7F } },
-				{ Lao, new int[] { 0x0E80, 0x0EFF } },
-				{ Tibetan, new int[] { 0x0F00, 0x0FFF } },
-				{ Myanmar, new int[] { 0x1000, 0x109F } },
-				{ Georgian, new int[] { 0x10A0, 0x10FF } },
-				{ HangulJamo, new int[] { 0x1100, 0x11FF } },
-				{ Ethiopic, new int[] { 0x1200, 0x137F } },
-				{ EthiopicSupplement, new int[] { 0x1380, 0x139F } },
-				{ Cherokee, new int[] { 0x13A0, 0x13FF } },
-				{ UnifiedCanadianAboriginalSyllabics, new int[] { 0x1400, 0x167F } },
-				{ Ogham, new int[] { 0x1680, 0x169F } },
-				{ Runic, new int[] { 0x16A0, 0x16FF } },
-				{ Tagalog, new int[] { 0x1700, 0x171F } },
-				{ Hanunoo, new int[] { 0x1720, 0x173F } },
-				{ Buhid, new int[] { 0x1740, 0x175F } },
-				{ Tagbanwa, new int[] { 0x1760, 0x177F } },
-				{ Khmer, new int[] { 0x1780, 0x17FF } },
-				{ Mongolian, new int[] { 0x1800, 0x18AF } },
-				{ UnifiedCanadianAboriginalSyllabicsExtended, new int[] { 0x18B0, 0x18FF } },
-				{ Limbu, new int[] { 0x1900, 0x194F } },
-				{ TaiLe, new int[] { 0x1950, 0x197F } },
-				{ NewTaiLue, new int[] { 0x1980, 0x19DF } },
-				{ KhmerSymbols, new int[] { 0x19E0, 0x19FF } },
-				{ Buginese, new int[] { 0x1A00, 0x1A1F } },
-				{ TaiTham, new int[] { 0x1A20, 0x1AAF } },
-				{ CombiningDiacriticalMarksExtended, new int[] { 0x1AB0, 0x1AFF } },
-				{ Balinese, new int[] { 0x1B00, 0x1B7F } },
-				{ Sundanese, new int[] { 0x1B80, 0x1BBF } },
-				{ Batak, new int[] { 0x1BC0, 0x1BFF } },
-				{ Lepcha, new int[] { 0x1C00, 0x1C4F } },
-				{ OlChiki, new int[] { 0x1C50, 0x1C7F } },
-				{ CyrillicExtendedC, new int[] { 0x1C80, 0x1C8F } },
-				{ GeorgianExtended, new int[] { 0x1C90, 0x1CBF } },
-				{ SundaneseSupplement, new int[] { 0x1CC0, 0x1CCF } },
-				{ VedicExtensions, new int[] { 0x1CD0, 0x1CFF } },
-				{ PhoneticExtensions, new int[] { 0x1D00, 0x1D7F } },
-				{ PhoneticExtensionsSupplement, new int[] { 0x1D80, 0x1DBF } },
-				{ CombiningDiacriticalMarksSupplement, new int[] { 0x1DC0, 0x1DFF } },
-				{ LatinExtendedAdditional, new int[] { 0x1E00, 0x1EFF } },
-				{ GreekExtended, new int[] { 0x1F00, 0x1FFF } },
-				{ GeneralPunctuation, new int[] { 0x2000, 0x206F } },
-				{ SuperscriptsandSubscripts, new int[] { 0x2070, 0x209F } },
-				{ CurrencySymbols, new int[] { 0x20A0, 0x20CF } },
-				{ CombiningDiacriticalMarksforSymbols, new int[] { 0x20D0, 0x20FF } },
-				{ LetterlikeSymbols, new int[] { 0x2100, 0x214F } },
-				{ NumberForms, new int[] { 0x2150, 0x218F } },
-				{ Arrows, new int[] { 0x2190, 0x21FF } },
-				{ MathematicalOperators, new int[] { 0x2200, 0x22FF } },
-				{ MiscellaneousTechnical, new int[] { 0x2300, 0x23FF } },
-				{ ControlPictures, new int[] { 0x2400, 0x243F } },
-				{ OpticalCharacterRecognition, new int[] { 0x2440, 0x245F } },
-				{ EnclosedAlphanumerics, new int[] { 0x2460, 0x24FF } },
-				{ BoxDrawing, new int[] { 0x2500, 0x257F } },
-				{ BlockElements, new int[] { 0x2580, 0x259F } },
-				{ GeometricShapes, new int[] { 0x25A0, 0x25FF } },
-				{ MiscellaneousSymbols, new int[] { 0x2600, 0x26FF } },
-				{ Dingbats, new int[] { 0x2700, 0x27BF } },
-				{ MiscellaneousMathematicalSymbolsA, new int[] { 0x27C0, 0x27EF } },
-				{ SupplementalArrowsA, new int[] { 0x27F0, 0x27FF } },
-				{ BraillePatterns, new int[] { 0x2800, 0x28FF } },
-				{ SupplementalArrowsB, new int[] { 0x2900, 0x297F } },
-				{ MiscellaneousMathematicalSymbolsB, new int[] { 0x2980, 0x29FF } },
-				{ SupplementalMathematicalOperators, new int[] { 0x2A00, 0x2AFF } },
-				{ MiscellaneousSymbolsandArrows, new int[] { 0x2B00, 0x2BFF } },
-				{ Glagolitic, new int[] { 0x2C00, 0x2C5F } },
-				{ LatinExtendedC, new int[] { 0x2C60, 0x2C7F } },
-				{ Coptic, new int[] { 0x2C80, 0x2CFF } },
-				{ GeorgianSupplement, new int[] { 0x2D00, 0x2D2F } },
-				{ Tifinagh, new int[] { 0x2D30, 0x2D7F } },
-				{ EthiopicExtended, new int[] { 0x2D80, 0x2DDF } },
-				{ CyrillicExtendedA, new int[] { 0x2DE0, 0x2DFF } },
-				{ SupplementalPunctuation, new int[] { 0x2E00, 0x2E7F } },
-				{ CJKRadicalsSupplement, new int[] { 0x2E80, 0x2EFF } },
-				{ KangxiRadicals, new int[] { 0x2F00, 0x2FDF } },
-				{ IdeographicDescriptionCharacters, new int[] { 0x2FF0, 0x2FFF } },
-				{ CJKSymbolsandPunctuation, new int[] { 0x3000, 0x303F } },
-				{ Hiragana, new int[] { 0x3040, 0x309F } },
-				{ Katakana, new int[] { 0x30A0, 0x30FF } },
-				{ Bopomofo, new int[] { 0x3100, 0x312F } },
-				{ HangulCompatibilityJamo, new int[] { 0x3130, 0x318F } },
-				{ Kanbun, new int[] { 0x3190, 0x319F } },
-				{ BopomofoExtended, new int[] { 0x31A0, 0x31BF } },
-				{ CJKStrokes, new int[] { 0x31C0, 0x31EF } },
-				{ KatakanaPhoneticExtensions, new int[] { 0x31F0, 0x31FF } },
-				{ EnclosedCJKLettersandMonths, new int[] { 0x3200, 0x32FF } },
-				{ CJKCompatibility, new int[] { 0x3300, 0x33FF } },
-				{ CJKUnifiedIdeographsExtensionA, new int[] { 0x3400, 0x4DBF } },
-				{ YijingHexagramSymbols, new int[] { 0x4DC0, 0x4DFF } },
-				{ CJKUnifiedIdeographs, new int[] { 0x4E00, 0x9FFF } },
-				{ YiSyllables, new int[] { 0xA000, 0xA48F } },
-				{ YiRadicals, new int[] { 0xA490, 0xA4CF } },
-				{ Lisu, new int[] { 0xA4D0, 0xA4FF } },
-				{ Vai, new int[] { 0xA500, 0xA63F } },
-				{ CyrillicExtendedB, new int[] { 0xA640, 0xA69F } },
-				{ Bamum, new int[] { 0xA6A0, 0xA6FF } },
-				{ ModifierToneLetters, new int[] { 0xA700, 0xA71F } },
-				{ LatinExtendedD, new int[] { 0xA720, 0xA7FF } },
-				{ SylotiNagri, new int[] { 0xA800, 0xA82F } },
-				{ CommonIndicNumberForms, new int[] { 0xA830, 0xA83F } },
-				{ Phagspa, new int[] { 0xA840, 0xA87F } },
-				{ Saurashtra, new int[] { 0xA880, 0xA8DF } },
-				{ DevanagariExtended, new int[] { 0xA8E0, 0xA8FF } },
-				{ KayahLi, new int[] { 0xA900, 0xA92F } },
-				{ Rejang, new int[] { 0xA930, 0xA95F } },
-				{ HangulJamoExtendedA, new int[] { 0xA960, 0xA97F } },
-				{ Javanese, new int[] { 0xA980, 0xA9DF } },
-				{ MyanmarExtendedB, new int[] { 0xA9E0, 0xA9FF } },
-				{ Cham, new int[] { 0xAA00, 0xAA5F } },
-				{ MyanmarExtendedA, new int[] { 0xAA60, 0xAA7F } },
-				{ TaiViet, new int[] { 0xAA80, 0xAADF } },
-				{ MeeteiMayekExtensions, new int[] { 0xAAE0, 0xAAFF } },
-				{ EthiopicExtendedA, new int[] { 0xAB00, 0xAB2F } },
-				{ LatinExtendedE, new int[] { 0xAB30, 0xAB6F } },
-				{ CherokeeSupplement, new int[] { 0xAB70, 0xABBF } },
-				{ MeeteiMayek, new int[] { 0xABC0, 0xABFF } },
-				{ HangulSyllables, new int[] { 0xAC00, 0xD7AF } },
-				{ HangulJamoExtendedB, new int[] { 0xD7B0, 0xD7FF } },
-				{ HighSurrogates, new int[] { 0xD800, 0xDB7F } },
-				{ HighPrivateUseSurrogates, new int[] { 0xDB80, 0xDBFF } },
-				{ LowSurrogates, new int[] { 0xDC00, 0xDFFF } },
-				{ PrivateUseArea, new int[] { 0xE000, 0xF8FF } },
-				{ CJKCompatibilityIdeographs, new int[] { 0xF900, 0xFAFF } },
-				{ AlphabeticPresentationForms, new int[] { 0xFB00, 0xFB4F } },
-				{ ArabicPresentationFormsA, new int[] { 0xFB50, 0xFDFF } },
-				{ VariationSelectors, new int[] { 0xFE00, 0xFE0F } },
-				{ VerticalForms, new int[] { 0xFE10, 0xFE1F } },
-				{ CombiningHalfMarks, new int[] { 0xFE20, 0xFE2F } },
-				{ CJKCompatibilityForms, new int[] { 0xFE30, 0xFE4F } },
-				{ SmallFormVariants, new int[] { 0xFE50, 0xFE6F } },
-				{ ArabicPresentationFormsB, new int[] { 0xFE70, 0xFEFF } },
-				{ HalfwidthandFullwidthForms, new int[] { 0xFF00, 0xFFEF } },
-				{ Specials, new int[] { 0xFFF0, 0xFFFF } },
-				{ LinearBSyllabary, new int[] { 0x10000, 0x1007F } },
-				{ LinearBIdeograms, new int[] { 0x10080, 0x100FF } },
-				{ AegeanNumbers, new int[] { 0x10100, 0x1013F } },
-				{ AncientGreekNumbers, new int[] { 0x10140, 0x1018F } },
-				{ AncientSymbols, new int[] { 0x10190, 0x101CF } },
-				{ PhaistosDisc, new int[] { 0x101D0, 0x101FF } },
-				{ Lycian, new int[] { 0x10280, 0x1029F } },
-				{ Carian, new int[] { 0x102A0, 0x102DF } },
-				{ CopticEpactNumbers, new int[] { 0x102E0, 0x102FF } },
-				{ OldItalic, new int[] { 0x10300, 0x1032F } },
-				{ Gothic, new int[] { 0x10330, 0x1034F } },
-				{ OldPermic, new int[] { 0x10350, 0x1037F } },
-				{ Ugaritic, new int[] { 0x10380, 0x1039F } },
-				{ OldPersian, new int[] { 0x103A0, 0x103DF } },
-				{ Deseret, new int[] { 0x10400, 0x1044F } },
-				{ Shavian, new int[] { 0x10450, 0x1047F } },
-				{ Osmanya, new int[] { 0x10480, 0x104AF } },
-				{ Osage, new int[] { 0x104B0, 0x104FF } },
-				{ Elbasan, new int[] { 0x10500, 0x1052F } },
-				{ CaucasianAlbanian, new int[] { 0x10530, 0x1056F } },
-				{ LinearA, new int[] { 0x10600, 0x1077F } },
-				{ CypriotSyllabary, new int[] { 0x10800, 0x1083F } },
-				{ ImperialAramaic, new int[] { 0x10840, 0x1085F } },
-				{ Palmyrene, new int[] { 0x10860, 0x1087F } },
-				{ Nabataean, new int[] { 0x10880, 0x108AF } },
-				{ Hatran, new int[] { 0x108E0, 0x108FF } },
-				{ Phoenician, new int[] { 0x10900, 0x1091F } },
-				{ Lydian, new int[] { 0x10920, 0x1093F } },
-				{ MeroiticHieroglyphs, new int[] { 0x10980, 0x1099F } },
-				{ MeroiticCursive, new int[] { 0x109A0, 0x109FF } },
-				{ Kharoshthi, new int[] { 0x10A00, 0x10A5F } },
-				{ OldSouthArabian, new int[] { 0x10A60, 0x10A7F } },
-				{ OldNorthArabian, new int[] { 0x10A80, 0x10A9F } },
-				{ Manichaean, new int[] { 0x10AC0, 0x10AFF } },
-				{ Avestan, new int[] { 0x10B00, 0x10B3F } },
-				{ InscriptionalParthian, new int[] { 0x10B40, 0x10B5F } },
-				{ InscriptionalPahlavi, new int[] { 0x10B60, 0x10B7F } },
-				{ PsalterPahlavi, new int[] { 0x10B80, 0x10BAF } },
-				{ OldTurkic, new int[] { 0x10C00, 0x10C4F } },
-				{ OldHungarian, new int[] { 0x10C80, 0x10CFF } },
-				{ HanifiRohingya, new int[] { 0x10D00, 0x10D3F } },
-				{ RumiNumeralSymbols, new int[] { 0x10E60, 0x10E7F } },
-				{ Yezidi, new int[] { 0x10E80, 0x10EBF } },
-				{ OldSogdian, new int[] { 0x10F00, 0x10F2F } },
-				{ Sogdian, new int[] { 0x10F30, 0x10F6F } },
-				{ Chorasmian, new int[] { 0x10FB0, 0x10FDF } },
-				{ Elymaic, new int[] { 0x10FE0, 0x10FFF } },
-				{ Brahmi, new int[] { 0x11000, 0x1107F } },
-				{ Kaithi, new int[] { 0x11080, 0x110CF } },
-				{ SoraSompeng, new int[] { 0x110D0, 0x110FF } },
-				{ Chakma, new int[] { 0x11100, 0x1114F } },
-				{ Mahajani, new int[] { 0x11150, 0x1117F } },
-				{ Sharada, new int[] { 0x11180, 0x111DF } },
-				{ SinhalaArchaicNumbers, new int[] { 0x111E0, 0x111FF } },
-				{ Khojki, new int[] { 0x11200, 0x1124F } },
-				{ Multani, new int[] { 0x11280, 0x112AF } },
-				{ Khudawadi, new int[] { 0x112B0, 0x112FF } },
-				{ Grantha, new int[] { 0x11300, 0x1137F } },
-				{ Newa, new int[] { 0x11400, 0x1147F } },
-				{ Tirhuta, new int[] { 0x11480, 0x114DF } },
-				{ Siddham, new int[] { 0x11580, 0x115FF } },
-				{ Modi, new int[] { 0x11600, 0x1165F } },
-				{ MongolianSupplement, new int[] { 0x11660, 0x1167F } },
-				{ Takri, new int[] { 0x11680, 0x116CF } },
-				{ Ahom, new int[] { 0x11700, 0x1173F } },
-				{ Dogra, new int[] { 0x11800, 0x1184F } },
-				{ WarangCiti, new int[] { 0x118A0, 0x118FF } },
-				{ DivesAkuru, new int[] { 0x11900, 0x1195F } },
-				{ Nandinagari, new int[] { 0x119A0, 0x119FF } },
-				{ ZanabazarSquare, new int[] { 0x11A00, 0x11A4F } },
-				{ Soyombo, new int[] { 0x11A50, 0x11AAF } },
-				{ PauCinHau, new int[] { 0x11AC0, 0x11AFF } },
-				{ Bhaiksuki, new int[] { 0x11C00, 0x11C6F } },
-				{ Marchen, new int[] { 0x11C70, 0x11CBF } },
-				{ MasaramGondi, new int[] { 0x11D00, 0x11D5F } },
-				{ GunjalaGondi, new int[] { 0x11D60, 0x11DAF } },
-				{ Makasar, new int[] { 0x11EE0, 0x11EFF } },
-				{ LisuSupplement, new int[] { 0x11FB0, 0x11FBF } },
-				{ TamilSupplement, new int[] { 0x11FC0, 0x11FFF } },
-				{ Cuneiform, new int[] { 0x12000, 0x123FF } },
-				{ CuneiformNumbersandPunctuation, new int[] { 0x12400, 0x1247F } },
-				{ EarlyDynasticCuneiform, new int[] { 0x12480, 0x1254F } },
-				{ EgyptianHieroglyphs, new int[] { 0x13000, 0x1342F } },
-				{ EgyptianHieroglyphFormatControls, new int[] { 0x13430, 0x1343F } },
-				{ AnatolianHieroglyphs, new int[] { 0x14400, 0x1467F } },
-				{ BamumSupplement, new int[] { 0x16800, 0x16A3F } },
-				{ Mro, new int[] { 0x16A40, 0x16A6F } },
-				{ BassaVah, new int[] { 0x16AD0, 0x16AFF } },
-				{ PahawhHmong, new int[] { 0x16B00, 0x16B8F } },
-				{ Medefaidrin, new int[] { 0x16E40, 0x16E9F } },
-				{ Miao, new int[] { 0x16F00, 0x16F9F } },
-				{ IdeographicSymbolsandPunctuation, new int[] { 0x16FE0, 0x16FFF } },
-				{ Tangut, new int[] { 0x17000, 0x187FF } },
-				{ TangutComponents, new int[] { 0x18800, 0x18AFF } },
-				{ KhitanSmallScript, new int[] { 0x18B00, 0x18CFF } },
-				{ TangutSupplement, new int[] { 0x18D00, 0x18D8F } },
-				{ KanaSupplement, new int[] { 0x1B000, 0x1B0FF } },
-				{ KanaExtendedA, new int[] { 0x1B100, 0x1B12F } },
-				{ SmallKanaExtension, new int[] { 0x1B130, 0x1B16F } },
-				{ Nushu, new int[] { 0x1B170, 0x1B2FF } },
-				{ Duployan, new int[] { 0x1BC00, 0x1BC9F } },
-				{ ShorthandFormatControls, new int[] { 0x1BCA0, 0x1BCAF } },
-				{ ByzantineMusicalSymbols, new int[] { 0x1D000, 0x1D0FF } },
-				{ MusicalSymbols, new int[] { 0x1D100, 0x1D1FF } },
-				{ AncientGreekMusicalNotation, new int[] { 0x1D200, 0x1D24F } },
-				{ MayanNumerals, new int[] { 0x1D2E0, 0x1D2FF } },
-				{ TaiXuanJingSymbols, new int[] { 0x1D300, 0x1D35F } },
-				{ CountingRodNumerals, new int[] { 0x1D360, 0x1D37F } },
-				{ MathematicalAlphanumericSymbols, new int[] { 0x1D400, 0x1D7FF } },
-				{ SuttonSignWriting, new int[] { 0x1D800, 0x1DAAF } },
-				{ GlagoliticSupplement, new int[] { 0x1E000, 0x1E02F } },
-				{ NyiakengPuachueHmong, new int[] { 0x1E100, 0x1E14F } },
-				{ Wancho, new int[] { 0x1E2C0, 0x1E2FF } },
-				{ MendeKikakui, new int[] { 0x1E800, 0x1E8DF } },
-				{ Adlam, new int[] { 0x1E900, 0x1E95F } },
-				{ IndicSiyaqNumbers, new int[] { 0x1EC70, 0x1ECBF } },
-				{ OttomanSiyaqNumbers, new int[] { 0x1ED00, 0x1ED4F } },
-				{ ArabicMathematicalAlphabeticSymbols, new int[] { 0x1EE00, 0x1EEFF } },
-				{ MahjongTiles, new int[] { 0x1F000, 0x1F02F } },
-				{ DominoTiles, new int[] { 0x1F030, 0x1F09F } },
-				{ PlayingCards, new int[] { 0x1F0A0, 0x1F0FF } },
-				{ EnclosedAlphanumericSupplement, new int[] { 0x1F100, 0x1F1FF } },
-				{ EnclosedIdeographicSupplement, new int[] { 0x1F200, 0x1F2FF } },
-				{ MiscellaneousSymbolsandPictographs, new int[] { 0x1F300, 0x1F5FF } },
-				{ Emoticons, new int[] { 0x1F600, 0x1F64F } },
-				{ OrnamentalDingbats, new int[] { 0x1F650, 0x1F67F } },
-				{ TransportandMapSymbols, new int[] { 0x1F680, 0x1F6FF } },
-				{ AlchemicalSymbols, new int[] { 0x1F700, 0x1F77F } },
-				{ GeometricShapesExtended, new int[] { 0x1F780, 0x1F7FF } },
-				{ SupplementalArrowsC, new int[] { 0x1F800, 0x1F8FF } },
-				{ SupplementalSymbolsandPictographs, new int[] { 0x1F900, 0x1F9FF } },
-				{ ChessSymbols, new int[] { 0x1FA00, 0x1FA6F } },
-				{ SymbolsandPictographsExtendedA, new int[] { 0x1FA70, 0x1FAFF } },
-				{ SymbolsforLegacyComputing, new int[] { 0x1FB00, 0x1FBFF } },
-				{ CJKUnifiedIdeographsExtensionB, new int[] { 0x20000, 0x2A6DF } },
-				{ CJKUnifiedIdeographsExtensionC, new int[] { 0x2A700, 0x2B73F } },
-				{ CJKUnifiedIdeographsExtensionD, new int[] { 0x2B740, 0x2B81F } },
-				{ CJKUnifiedIdeographsExtensionE, new int[] { 0x2B820, 0x2CEAF } },
-				{ CJKUnifiedIdeographsExtensionF, new int[] { 0x2CEB0, 0x2EBEF } },
-				{ CJKCompatibilityIdeographsSupplement, new int[] { 0x2F800, 0x2FA1F } },
-				{ CJKUnifiedIdeographsExtensionG, new int[] { 0x30000, 0x3134F } },
-				{ Tags, new int[] { 0xE0000, 0xE007F } },
-				{ VariationSelectorsSupplement, new int[] { 0xE0100, 0xE01EF } },
-				{ SupplementaryPrivateUseAreaA, new int[] { 0xF0000, 0xFFFFF } },
-				{ SupplementaryPrivateUseAreaB, new int[] { 0x100000, 0x10FFFF } }
-			};
+		public static readonly UnicodeBlock LatinExtendedA = new UnicodeBlock(
+			"Latin Extended-A", 0x0100, 0x017F
+		);
+
+		public static readonly UnicodeBlock LatinExtendedB = new UnicodeBlock(
+			"Latin Extended-B", 0x0180, 0x024F
+		);
+
+		public static readonly UnicodeBlock IPAExtensions = new UnicodeBlock(
+			"IPA Extensions", 0x0250, 0x02AF
+		);
+
+		public static readonly UnicodeBlock SpacingModifierLetters = new UnicodeBlock(
+			"Spacing Modifier Letters", 0x02B0, 0x02FF
+		);
+
+		public static readonly UnicodeBlock CombiningDiacriticalMarks = new UnicodeBlock(
+			"Combining Diacritical Marks", 0x0300, 0x036F
+		);
+
+		public static readonly UnicodeBlock GreekandCoptic = new UnicodeBlock(
+			"Greek and Coptic", 0x0370, 0x03FF
+		);
+
+		public static readonly UnicodeBlock Cyrillic = new UnicodeBlock(
+			"Cyrillic", 0x0400, 0x04FF
+		);
+
+		public static readonly UnicodeBlock CyrillicSupplement = new UnicodeBlock(
+			"Cyrillic Supplement", 0x0500, 0x052F
+		);
+
+		public static readonly UnicodeBlock Armenian = new UnicodeBlock(
+			"Armenian", 0x0530, 0x058F
+		);
+
+		public static readonly UnicodeBlock Hebrew = new UnicodeBlock(
+			"Hebrew", 0x0590, 0x05FF
+		);
+
+		public static readonly UnicodeBlock Arabic = new UnicodeBlock(
+			"Arabic", 0x0600, 0x06FF
+		);
+
+		public static readonly UnicodeBlock Syriac = new UnicodeBlock(
+			"Syriac", 0x0700, 0x074F
+		);
+
+		public static readonly UnicodeBlock ArabicSupplement = new UnicodeBlock(
+			"Arabic Supplement", 0x0750, 0x077F
+		);
+
+		public static readonly UnicodeBlock Thaana = new UnicodeBlock(
+			"Thaana", 0x0780, 0x07BF
+		);
+
+		public static readonly UnicodeBlock NKo = new UnicodeBlock(
+			"NKo", 0x07C0, 0x07FF
+		);
+
+		public static readonly UnicodeBlock Samaritan = new UnicodeBlock(
+			"Samaritan", 0x0800, 0x083F
+		);
+
+		public static readonly UnicodeBlock Mandaic = new UnicodeBlock(
+			"Mandaic", 0x0840, 0x085F
+		);
+
+		public static readonly UnicodeBlock SyriacSupplement = new UnicodeBlock(
+			"Syriac Supplement", 0x0860, 0x086F
+		);
+
+		public static readonly UnicodeBlock ArabicExtendedA = new UnicodeBlock(
+			"Arabic Extended-A", 0x08A0, 0x08FF
+		);
+
+		public static readonly UnicodeBlock Devanagari = new UnicodeBlock(
+			"Devanagari", 0x0900, 0x097F
+		);
+
+		public static readonly UnicodeBlock Bengali = new UnicodeBlock(
+			"Bengali", 0x0980, 0x09FF
+		);
+
+		public static readonly UnicodeBlock Gurmukhi = new UnicodeBlock(
+			"Gurmukhi", 0x0A00, 0x0A7F
+		);
+
+		public static readonly UnicodeBlock Gujarati = new UnicodeBlock(
+			"Gujarati", 0x0A80, 0x0AFF
+		);
+
+		public static readonly UnicodeBlock Oriya = new UnicodeBlock(
+			"Oriya", 0x0B00, 0x0B7F
+		);
+
+		public static readonly UnicodeBlock Tamil = new UnicodeBlock(
+			"Tamil", 0x0B80, 0x0BFF
+		);
+
+		public static readonly UnicodeBlock Telugu = new UnicodeBlock(
+			"Telugu", 0x0C00, 0x0C7F
+		);
+
+		public static readonly UnicodeBlock Kannada = new UnicodeBlock(
+			"Kannada", 0x0C80, 0x0CFF
+		);
+
+		public static readonly UnicodeBlock Malayalam = new UnicodeBlock(
+			"Malayalam", 0x0D00, 0x0D7F
+		);
+
+		public static readonly UnicodeBlock Sinhala = new UnicodeBlock(
+			"Sinhala", 0x0D80, 0x0DFF
+		);
+
+		public static readonly UnicodeBlock Thai = new UnicodeBlock(
+			"Thai", 0x0E00, 0x0E7F
+		);
+
+		public static readonly UnicodeBlock Lao = new UnicodeBlock(
+			"Lao", 0x0E80, 0x0EFF
+		);
+
+		public static readonly UnicodeBlock Tibetan = new UnicodeBlock(
+			"Tibetan", 0x0F00, 0x0FFF
+		);
+
+		public static readonly UnicodeBlock Myanmar = new UnicodeBlock(
+			"Myanmar", 0x1000, 0x109F
+		);
+
+		public static readonly UnicodeBlock Georgian = new UnicodeBlock(
+			"Georgian", 0x10A0, 0x10FF
+		);
+
+		public static readonly UnicodeBlock HangulJamo = new UnicodeBlock(
+			"Hangul Jamo", 0x1100, 0x11FF
+		);
+
+		public static readonly UnicodeBlock Ethiopic = new UnicodeBlock(
+			"Ethiopic", 0x1200, 0x137F
+		);
+
+		public static readonly UnicodeBlock EthiopicSupplement = new UnicodeBlock(
+			"Ethiopic Supplement", 0x1380, 0x139F
+		);
+
+		public static readonly UnicodeBlock Cherokee = new UnicodeBlock(
+			"Cherokee", 0x13A0, 0x13FF
+		);
+
+		public static readonly UnicodeBlock UnifiedCanadianAboriginalSyllabics = new UnicodeBlock(
+			"Unified Canadian Aboriginal Syllabics", 0x1400, 0x167F
+		);
+
+		public static readonly UnicodeBlock Ogham = new UnicodeBlock(
+			"Ogham", 0x1680, 0x169F
+		);
+
+		public static readonly UnicodeBlock Runic = new UnicodeBlock(
+			"Runic", 0x16A0, 0x16FF
+		);
+
+		public static readonly UnicodeBlock Tagalog = new UnicodeBlock(
+			"Tagalog", 0x1700, 0x171F
+		);
+
+		public static readonly UnicodeBlock Hanunoo = new UnicodeBlock(
+			"Hanunoo", 0x1720, 0x173F
+		);
+
+		public static readonly UnicodeBlock Buhid = new UnicodeBlock(
+			"Buhid", 0x1740, 0x175F
+		);
+
+		public static readonly UnicodeBlock Tagbanwa = new UnicodeBlock(
+			"Tagbanwa", 0x1760, 0x177F
+		);
+
+		public static readonly UnicodeBlock Khmer = new UnicodeBlock(
+			"Khmer", 0x1780, 0x17FF
+		);
+
+		public static readonly UnicodeBlock Mongolian = new UnicodeBlock(
+			"Mongolian", 0x1800, 0x18AF
+		);
+
+		public static readonly UnicodeBlock UnifiedCanadianAboriginalSyllabicsExtended = new UnicodeBlock(
+			"Unified Canadian Aboriginal Syllabics Extended", 0x18B0, 0x18FF
+		);
+
+		public static readonly UnicodeBlock Limbu = new UnicodeBlock(
+			"Limbu", 0x1900, 0x194F
+		);
+
+		public static readonly UnicodeBlock TaiLe = new UnicodeBlock(
+			"Tai Le", 0x1950, 0x197F
+		);
+
+		public static readonly UnicodeBlock NewTaiLue = new UnicodeBlock(
+			"New Tai Lue", 0x1980, 0x19DF
+		);
+
+		public static readonly UnicodeBlock KhmerSymbols = new UnicodeBlock(
+			"Khmer Symbols", 0x19E0, 0x19FF
+		);
+
+		public static readonly UnicodeBlock Buginese = new UnicodeBlock(
+			"Buginese", 0x1A00, 0x1A1F
+		);
+
+		public static readonly UnicodeBlock TaiTham = new UnicodeBlock(
+			"Tai Tham", 0x1A20, 0x1AAF
+		);
+
+		public static readonly UnicodeBlock CombiningDiacriticalMarksExtended = new UnicodeBlock(
+			"Combining Diacritical Marks Extended", 0x1AB0, 0x1AFF
+		);
+
+		public static readonly UnicodeBlock Balinese = new UnicodeBlock(
+			"Balinese", 0x1B00, 0x1B7F
+		);
+
+		public static readonly UnicodeBlock Sundanese = new UnicodeBlock(
+			"Sundanese", 0x1B80, 0x1BBF
+		);
+
+		public static readonly UnicodeBlock Batak = new UnicodeBlock(
+			"Batak", 0x1BC0, 0x1BFF
+		);
+
+		public static readonly UnicodeBlock Lepcha = new UnicodeBlock(
+			"Lepcha", 0x1C00, 0x1C4F
+		);
+
+		public static readonly UnicodeBlock OlChiki = new UnicodeBlock(
+			"Ol Chiki", 0x1C50, 0x1C7F
+		);
+
+		public static readonly UnicodeBlock CyrillicExtendedC = new UnicodeBlock(
+			"Cyrillic Extended-C", 0x1C80, 0x1C8F
+		);
+
+		public static readonly UnicodeBlock GeorgianExtended = new UnicodeBlock(
+			"Georgian Extended", 0x1C90, 0x1CBF
+		);
+
+		public static readonly UnicodeBlock SundaneseSupplement = new UnicodeBlock(
+			"Sundanese Supplement", 0x1CC0, 0x1CCF
+		);
+
+		public static readonly UnicodeBlock VedicExtensions = new UnicodeBlock(
+			"Vedic Extensions", 0x1CD0, 0x1CFF
+		);
+
+		public static readonly UnicodeBlock PhoneticExtensions = new UnicodeBlock(
+			"Phonetic Extensions", 0x1D00, 0x1D7F
+		);
+
+		public static readonly UnicodeBlock PhoneticExtensionsSupplement = new UnicodeBlock(
+			"Phonetic Extensions Supplement", 0x1D80, 0x1DBF
+		);
+
+		public static readonly UnicodeBlock CombiningDiacriticalMarksSupplement = new UnicodeBlock(
+			"Combining Diacritical Marks Supplement", 0x1DC0, 0x1DFF
+		);
+
+		public static readonly UnicodeBlock LatinExtendedAdditional = new UnicodeBlock(
+			"Latin Extended Additional", 0x1E00, 0x1EFF
+		);
+
+		public static readonly UnicodeBlock GreekExtended = new UnicodeBlock(
+			"Greek Extended", 0x1F00, 0x1FFF
+		);
+
+		public static readonly UnicodeBlock GeneralPunctuation = new UnicodeBlock(
+			"General Punctuation", 0x2000, 0x206F
+		);
+
+		public static readonly UnicodeBlock SuperscriptsandSubscripts = new UnicodeBlock(
+			"Superscripts and Subscripts", 0x2070, 0x209F
+		);
+
+		public static readonly UnicodeBlock CurrencySymbols = new UnicodeBlock(
+			"Currency Symbols", 0x20A0, 0x20CF
+		);
+
+		public static readonly UnicodeBlock CombiningDiacriticalMarksforSymbols = new UnicodeBlock(
+			"Combining Diacritical Marks for Symbols", 0x20D0, 0x20FF
+		);
+
+		public static readonly UnicodeBlock LetterlikeSymbols = new UnicodeBlock(
+			"Letterlike Symbols", 0x2100, 0x214F
+		);
+
+		public static readonly UnicodeBlock NumberForms = new UnicodeBlock(
+			"Number Forms", 0x2150, 0x218F
+		);
+
+		public static readonly UnicodeBlock Arrows = new UnicodeBlock(
+			"Arrows", 0x2190, 0x21FF
+		);
+
+		public static readonly UnicodeBlock MathematicalOperators = new UnicodeBlock(
+			"Mathematical Operators", 0x2200, 0x22FF
+		);
+
+		public static readonly UnicodeBlock MiscellaneousTechnical = new UnicodeBlock(
+			"Miscellaneous Technical", 0x2300, 0x23FF
+		);
+
+		public static readonly UnicodeBlock ControlPictures = new UnicodeBlock(
+			"Control Pictures", 0x2400, 0x243F
+		);
+
+		public static readonly UnicodeBlock OpticalCharacterRecognition = new UnicodeBlock(
+			"Optical Character Recognition", 0x2440, 0x245F
+		);
+
+		public static readonly UnicodeBlock EnclosedAlphanumerics = new UnicodeBlock(
+			"Enclosed Alphanumerics", 0x2460, 0x24FF
+		);
+
+		public static readonly UnicodeBlock BoxDrawing = new UnicodeBlock(
+			"Box Drawing", 0x2500, 0x257F
+		);
+
+		public static readonly UnicodeBlock BlockElements = new UnicodeBlock(
+			"Block Elements", 0x2580, 0x259F
+		);
+
+		public static readonly UnicodeBlock GeometricShapes = new UnicodeBlock(
+			"Geometric Shapes", 0x25A0, 0x25FF
+		);
+
+		public static readonly UnicodeBlock MiscellaneousSymbols = new UnicodeBlock(
+			"Miscellaneous Symbols", 0x2600, 0x26FF
+		);
+
+		public static readonly UnicodeBlock Dingbats = new UnicodeBlock(
+			"Dingbats", 0x2700, 0x27BF
+		);
+
+		public static readonly UnicodeBlock MiscellaneousMathematicalSymbolsA = new UnicodeBlock(
+			"Miscellaneous Mathematical Symbols-A", 0x27C0, 0x27EF
+		);
+
+		public static readonly UnicodeBlock SupplementalArrowsA = new UnicodeBlock(
+			"Supplemental Arrows-A", 0x27F0, 0x27FF
+		);
+
+		public static readonly UnicodeBlock BraillePatterns = new UnicodeBlock(
+			"Braille Patterns", 0x2800, 0x28FF
+		);
+
+		public static readonly UnicodeBlock SupplementalArrowsB = new UnicodeBlock(
+			"Supplemental Arrows-B", 0x2900, 0x297F
+		);
+
+		public static readonly UnicodeBlock MiscellaneousMathematicalSymbolsB = new UnicodeBlock(
+			"Miscellaneous Mathematical Symbols-B", 0x2980, 0x29FF
+		);
+
+		public static readonly UnicodeBlock SupplementalMathematicalOperators = new UnicodeBlock(
+			"Supplemental Mathematical Operators", 0x2A00, 0x2AFF
+		);
+
+		public static readonly UnicodeBlock MiscellaneousSymbolsandArrows = new UnicodeBlock(
+			"Miscellaneous Symbols and Arrows", 0x2B00, 0x2BFF
+		);
+
+		public static readonly UnicodeBlock Glagolitic = new UnicodeBlock(
+			"Glagolitic", 0x2C00, 0x2C5F
+		);
+
+		public static readonly UnicodeBlock LatinExtendedC = new UnicodeBlock(
+			"Latin Extended-C", 0x2C60, 0x2C7F
+		);
+
+		public static readonly UnicodeBlock Coptic = new UnicodeBlock(
+			"Coptic", 0x2C80, 0x2CFF
+		);
+
+		public static readonly UnicodeBlock GeorgianSupplement = new UnicodeBlock(
+			"Georgian Supplement", 0x2D00, 0x2D2F
+		);
+
+		public static readonly UnicodeBlock Tifinagh = new UnicodeBlock(
+			"Tifinagh", 0x2D30, 0x2D7F
+		);
+
+		public static readonly UnicodeBlock EthiopicExtended = new UnicodeBlock(
+			"Ethiopic Extended", 0x2D80, 0x2DDF
+		);
+
+		public static readonly UnicodeBlock CyrillicExtendedA = new UnicodeBlock(
+			"Cyrillic Extended-A", 0x2DE0, 0x2DFF
+		);
+
+		public static readonly UnicodeBlock SupplementalPunctuation = new UnicodeBlock(
+			"Supplemental Punctuation", 0x2E00, 0x2E7F
+		);
+
+		public static readonly UnicodeBlock CJKRadicalsSupplement = new UnicodeBlock(
+			"CJK Radicals Supplement", 0x2E80, 0x2EFF
+		);
+
+		public static readonly UnicodeBlock KangxiRadicals = new UnicodeBlock(
+			"Kangxi Radicals", 0x2F00, 0x2FDF
+		);
+
+		public static readonly UnicodeBlock IdeographicDescriptionCharacters = new UnicodeBlock(
+			"Ideographic Description Characters", 0x2FF0, 0x2FFF
+		);
+
+		public static readonly UnicodeBlock CJKSymbolsandPunctuation = new UnicodeBlock(
+			"CJK Symbols and Punctuation", 0x3000, 0x303F
+		);
+
+		public static readonly UnicodeBlock Hiragana = new UnicodeBlock(
+			"Hiragana", 0x3040, 0x309F
+		);
+
+		public static readonly UnicodeBlock Katakana = new UnicodeBlock(
+			"Katakana", 0x30A0, 0x30FF
+		);
+
+		public static readonly UnicodeBlock Bopomofo = new UnicodeBlock(
+			"Bopomofo", 0x3100, 0x312F
+		);
+
+		public static readonly UnicodeBlock HangulCompatibilityJamo = new UnicodeBlock(
+			"Hangul Compatibility Jamo", 0x3130, 0x318F
+		);
+
+		public static readonly UnicodeBlock Kanbun = new UnicodeBlock(
+			"Kanbun", 0x3190, 0x319F
+		);
+
+		public static readonly UnicodeBlock BopomofoExtended = new UnicodeBlock(
+			"Bopomofo Extended", 0x31A0, 0x31BF
+		);
+
+		public static readonly UnicodeBlock CJKStrokes = new UnicodeBlock(
+			"CJK Strokes", 0x31C0, 0x31EF
+		);
+
+		public static readonly UnicodeBlock KatakanaPhoneticExtensions = new UnicodeBlock(
+			"Katakana Phonetic Extensions", 0x31F0, 0x31FF
+		);
+
+		public static readonly UnicodeBlock EnclosedCJKLettersandMonths = new UnicodeBlock(
+			"Enclosed CJK Letters and Months", 0x3200, 0x32FF
+		);
+
+		public static readonly UnicodeBlock CJKCompatibility = new UnicodeBlock(
+			"CJK Compatibility", 0x3300, 0x33FF
+		);
+
+		public static readonly UnicodeBlock CJKUnifiedIdeographsExtensionA = new UnicodeBlock(
+			"CJK Unified Ideographs Extension A", 0x3400, 0x4DBF
+		);
+
+		public static readonly UnicodeBlock YijingHexagramSymbols = new UnicodeBlock(
+			"Yijing Hexagram Symbols", 0x4DC0, 0x4DFF
+		);
+
+		public static readonly UnicodeBlock CJKUnifiedIdeographs = new UnicodeBlock(
+			"CJK Unified Ideographs", 0x4E00, 0x9FFF
+		);
+
+		public static readonly UnicodeBlock YiSyllables = new UnicodeBlock(
+			"Yi Syllables", 0xA000, 0xA48F
+		);
+
+		public static readonly UnicodeBlock YiRadicals = new UnicodeBlock(
+			"Yi Radicals", 0xA490, 0xA4CF
+		);
+
+		public static readonly UnicodeBlock Lisu = new UnicodeBlock(
+			"Lisu", 0xA4D0, 0xA4FF
+		);
+
+		public static readonly UnicodeBlock Vai = new UnicodeBlock(
+			"Vai", 0xA500, 0xA63F
+		);
+
+		public static readonly UnicodeBlock CyrillicExtendedB = new UnicodeBlock(
+			"Cyrillic Extended-B", 0xA640, 0xA69F
+		);
+
+		public static readonly UnicodeBlock Bamum = new UnicodeBlock(
+			"Bamum", 0xA6A0, 0xA6FF
+		);
+
+		public static readonly UnicodeBlock ModifierToneLetters = new UnicodeBlock(
+			"Modifier Tone Letters", 0xA700, 0xA71F
+		);
+
+		public static readonly UnicodeBlock LatinExtendedD = new UnicodeBlock(
+			"Latin Extended-D", 0xA720, 0xA7FF
+		);
+
+		public static readonly UnicodeBlock SylotiNagri = new UnicodeBlock(
+			"Syloti Nagri", 0xA800, 0xA82F
+		);
+
+		public static readonly UnicodeBlock CommonIndicNumberForms = new UnicodeBlock(
+			"Common Indic Number Forms", 0xA830, 0xA83F
+		);
+
+		public static readonly UnicodeBlock Phagspa = new UnicodeBlock(
+			"Phags-pa", 0xA840, 0xA87F
+		);
+
+		public static readonly UnicodeBlock Saurashtra = new UnicodeBlock(
+			"Saurashtra", 0xA880, 0xA8DF
+		);
+
+		public static readonly UnicodeBlock DevanagariExtended = new UnicodeBlock(
+			"Devanagari Extended", 0xA8E0, 0xA8FF
+		);
+
+		public static readonly UnicodeBlock KayahLi = new UnicodeBlock(
+			"Kayah Li", 0xA900, 0xA92F
+		);
+
+		public static readonly UnicodeBlock Rejang = new UnicodeBlock(
+			"Rejang", 0xA930, 0xA95F
+		);
+
+		public static readonly UnicodeBlock HangulJamoExtendedA = new UnicodeBlock(
+			"Hangul Jamo Extended-A", 0xA960, 0xA97F
+		);
+
+		public static readonly UnicodeBlock Javanese = new UnicodeBlock(
+			"Javanese", 0xA980, 0xA9DF
+		);
+
+		public static readonly UnicodeBlock MyanmarExtendedB = new UnicodeBlock(
+			"Myanmar Extended-B", 0xA9E0, 0xA9FF
+		);
+
+		public static readonly UnicodeBlock Cham = new UnicodeBlock(
+			"Cham", 0xAA00, 0xAA5F
+		);
+
+		public static readonly UnicodeBlock MyanmarExtendedA = new UnicodeBlock(
+			"Myanmar Extended-A", 0xAA60, 0xAA7F
+		);
+
+		public static readonly UnicodeBlock TaiViet = new UnicodeBlock(
+			"Tai Viet", 0xAA80, 0xAADF
+		);
+
+		public static readonly UnicodeBlock MeeteiMayekExtensions = new UnicodeBlock(
+			"Meetei Mayek Extensions", 0xAAE0, 0xAAFF
+		);
+
+		public static readonly UnicodeBlock EthiopicExtendedA = new UnicodeBlock(
+			"Ethiopic Extended-A", 0xAB00, 0xAB2F
+		);
+
+		public static readonly UnicodeBlock LatinExtendedE = new UnicodeBlock(
+			"Latin Extended-E", 0xAB30, 0xAB6F
+		);
+
+		public static readonly UnicodeBlock CherokeeSupplement = new UnicodeBlock(
+			"Cherokee Supplement", 0xAB70, 0xABBF
+		);
+
+		public static readonly UnicodeBlock MeeteiMayek = new UnicodeBlock(
+			"Meetei Mayek", 0xABC0, 0xABFF
+		);
+
+		public static readonly UnicodeBlock HangulSyllables = new UnicodeBlock(
+			"Hangul Syllables", 0xAC00, 0xD7AF
+		);
+
+		public static readonly UnicodeBlock HangulJamoExtendedB = new UnicodeBlock(
+			"Hangul Jamo Extended-B", 0xD7B0, 0xD7FF
+		);
+
+		public static readonly UnicodeBlock HighSurrogates = new UnicodeBlock(
+			"High Surrogates", 0xD800, 0xDB7F
+		);
+
+		public static readonly UnicodeBlock HighPrivateUseSurrogates = new UnicodeBlock(
+			"High Private Use Surrogates", 0xDB80, 0xDBFF
+		);
+
+		public static readonly UnicodeBlock LowSurrogates = new UnicodeBlock(
+			"Low Surrogates", 0xDC00, 0xDFFF
+		);
+
+		public static readonly UnicodeBlock PrivateUseArea = new UnicodeBlock(
+			"Private Use Area", 0xE000, 0xF8FF
+		);
+
+		public static readonly UnicodeBlock CJKCompatibilityIdeographs = new UnicodeBlock(
+			"CJK Compatibility Ideographs", 0xF900, 0xFAFF
+		);
+
+		public static readonly UnicodeBlock AlphabeticPresentationForms = new UnicodeBlock(
+			"Alphabetic Presentation Forms", 0xFB00, 0xFB4F
+		);
+
+		public static readonly UnicodeBlock ArabicPresentationFormsA = new UnicodeBlock(
+			"Arabic Presentation Forms-A", 0xFB50, 0xFDFF
+		);
+
+		public static readonly UnicodeBlock VariationSelectors = new UnicodeBlock(
+			"Variation Selectors", 0xFE00, 0xFE0F
+		);
+
+		public static readonly UnicodeBlock VerticalForms = new UnicodeBlock(
+			"Vertical Forms", 0xFE10, 0xFE1F
+		);
+
+		public static readonly UnicodeBlock CombiningHalfMarks = new UnicodeBlock(
+			"Combining Half Marks", 0xFE20, 0xFE2F
+		);
+
+		public static readonly UnicodeBlock CJKCompatibilityForms = new UnicodeBlock(
+			"CJK Compatibility Forms", 0xFE30, 0xFE4F
+		);
+
+		public static readonly UnicodeBlock SmallFormVariants = new UnicodeBlock(
+			"Small Form Variants", 0xFE50, 0xFE6F
+		);
+
+		public static readonly UnicodeBlock ArabicPresentationFormsB = new UnicodeBlock(
+			"Arabic Presentation Forms-B", 0xFE70, 0xFEFF
+		);
+
+		public static readonly UnicodeBlock HalfwidthandFullwidthForms = new UnicodeBlock(
+			"Halfwidth and Fullwidth Forms", 0xFF00, 0xFFEF
+		);
+
+		public static readonly UnicodeBlock Specials = new UnicodeBlock(
+			"Specials", 0xFFF0, 0xFFFF
+		);
+
+		public static readonly UnicodeBlock LinearBSyllabary = new UnicodeBlock(
+			"Linear B Syllabary", 0x10000, 0x1007F
+		);
+
+		public static readonly UnicodeBlock LinearBIdeograms = new UnicodeBlock(
+			"Linear B Ideograms", 0x10080, 0x100FF
+		);
+
+		public static readonly UnicodeBlock AegeanNumbers = new UnicodeBlock(
+			"Aegean Numbers", 0x10100, 0x1013F
+		);
+
+		public static readonly UnicodeBlock AncientGreekNumbers = new UnicodeBlock(
+			"Ancient Greek Numbers", 0x10140, 0x1018F
+		);
+
+		public static readonly UnicodeBlock AncientSymbols = new UnicodeBlock(
+			"Ancient Symbols", 0x10190, 0x101CF
+		);
+
+		public static readonly UnicodeBlock PhaistosDisc = new UnicodeBlock(
+			"Phaistos Disc", 0x101D0, 0x101FF
+		);
+
+		public static readonly UnicodeBlock Lycian = new UnicodeBlock(
+			"Lycian", 0x10280, 0x1029F
+		);
+
+		public static readonly UnicodeBlock Carian = new UnicodeBlock(
+			"Carian", 0x102A0, 0x102DF
+		);
+
+		public static readonly UnicodeBlock CopticEpactNumbers = new UnicodeBlock(
+			"Coptic Epact Numbers", 0x102E0, 0x102FF
+		);
+
+		public static readonly UnicodeBlock OldItalic = new UnicodeBlock(
+			"Old Italic", 0x10300, 0x1032F
+		);
+
+		public static readonly UnicodeBlock Gothic = new UnicodeBlock(
+			"Gothic", 0x10330, 0x1034F
+		);
+
+		public static readonly UnicodeBlock OldPermic = new UnicodeBlock(
+			"Old Permic", 0x10350, 0x1037F
+		);
+
+		public static readonly UnicodeBlock Ugaritic = new UnicodeBlock(
+			"Ugaritic", 0x10380, 0x1039F
+		);
+
+		public static readonly UnicodeBlock OldPersian = new UnicodeBlock(
+			"Old Persian", 0x103A0, 0x103DF
+		);
+
+		public static readonly UnicodeBlock Deseret = new UnicodeBlock(
+			"Deseret", 0x10400, 0x1044F
+		);
+
+		public static readonly UnicodeBlock Shavian = new UnicodeBlock(
+			"Shavian", 0x10450, 0x1047F
+		);
+
+		public static readonly UnicodeBlock Osmanya = new UnicodeBlock(
+			"Osmanya", 0x10480, 0x104AF
+		);
+
+		public static readonly UnicodeBlock Osage = new UnicodeBlock(
+			"Osage", 0x104B0, 0x104FF
+		);
+
+		public static readonly UnicodeBlock Elbasan = new UnicodeBlock(
+			"Elbasan", 0x10500, 0x1052F
+		);
+
+		public static readonly UnicodeBlock CaucasianAlbanian = new UnicodeBlock(
+			"Caucasian Albanian", 0x10530, 0x1056F
+		);
+
+		public static readonly UnicodeBlock LinearA = new UnicodeBlock(
+			"Linear A", 0x10600, 0x1077F
+		);
+
+		public static readonly UnicodeBlock CypriotSyllabary = new UnicodeBlock(
+			"Cypriot Syllabary", 0x10800, 0x1083F
+		);
+
+		public static readonly UnicodeBlock ImperialAramaic = new UnicodeBlock(
+			"Imperial Aramaic", 0x10840, 0x1085F
+		);
+
+		public static readonly UnicodeBlock Palmyrene = new UnicodeBlock(
+			"Palmyrene", 0x10860, 0x1087F
+		);
+
+		public static readonly UnicodeBlock Nabataean = new UnicodeBlock(
+			"Nabataean", 0x10880, 0x108AF
+		);
+
+		public static readonly UnicodeBlock Hatran = new UnicodeBlock(
+			"Hatran", 0x108E0, 0x108FF
+		);
+
+		public static readonly UnicodeBlock Phoenician = new UnicodeBlock(
+			"Phoenician", 0x10900, 0x1091F
+		);
+
+		public static readonly UnicodeBlock Lydian = new UnicodeBlock(
+			"Lydian", 0x10920, 0x1093F
+		);
+
+		public static readonly UnicodeBlock MeroiticHieroglyphs = new UnicodeBlock(
+			"Meroitic Hieroglyphs", 0x10980, 0x1099F
+		);
+
+		public static readonly UnicodeBlock MeroiticCursive = new UnicodeBlock(
+			"Meroitic Cursive", 0x109A0, 0x109FF
+		);
+
+		public static readonly UnicodeBlock Kharoshthi = new UnicodeBlock(
+			"Kharoshthi", 0x10A00, 0x10A5F
+		);
+
+		public static readonly UnicodeBlock OldSouthArabian = new UnicodeBlock(
+			"Old South Arabian", 0x10A60, 0x10A7F
+		);
+
+		public static readonly UnicodeBlock OldNorthArabian = new UnicodeBlock(
+			"Old North Arabian", 0x10A80, 0x10A9F
+		);
+
+		public static readonly UnicodeBlock Manichaean = new UnicodeBlock(
+			"Manichaean", 0x10AC0, 0x10AFF
+		);
+
+		public static readonly UnicodeBlock Avestan = new UnicodeBlock(
+			"Avestan", 0x10B00, 0x10B3F
+		);
+
+		public static readonly UnicodeBlock InscriptionalParthian = new UnicodeBlock(
+			"Inscriptional Parthian", 0x10B40, 0x10B5F
+		);
+
+		public static readonly UnicodeBlock InscriptionalPahlavi = new UnicodeBlock(
+			"Inscriptional Pahlavi", 0x10B60, 0x10B7F
+		);
+
+		public static readonly UnicodeBlock PsalterPahlavi = new UnicodeBlock(
+			"Psalter Pahlavi", 0x10B80, 0x10BAF
+		);
+
+		public static readonly UnicodeBlock OldTurkic = new UnicodeBlock(
+			"Old Turkic", 0x10C00, 0x10C4F
+		);
+
+		public static readonly UnicodeBlock OldHungarian = new UnicodeBlock(
+			"Old Hungarian", 0x10C80, 0x10CFF
+		);
+
+		public static readonly UnicodeBlock HanifiRohingya = new UnicodeBlock(
+			"Hanifi Rohingya", 0x10D00, 0x10D3F
+		);
+
+		public static readonly UnicodeBlock RumiNumeralSymbols = new UnicodeBlock(
+			"Rumi Numeral Symbols", 0x10E60, 0x10E7F
+		);
+
+		public static readonly UnicodeBlock Yezidi = new UnicodeBlock(
+			"Yezidi", 0x10E80, 0x10EBF
+		);
+
+		public static readonly UnicodeBlock OldSogdian = new UnicodeBlock(
+			"Old Sogdian", 0x10F00, 0x10F2F
+		);
+
+		public static readonly UnicodeBlock Sogdian = new UnicodeBlock(
+			"Sogdian", 0x10F30, 0x10F6F
+		);
+
+		public static readonly UnicodeBlock Chorasmian = new UnicodeBlock(
+			"Chorasmian", 0x10FB0, 0x10FDF
+		);
+
+		public static readonly UnicodeBlock Elymaic = new UnicodeBlock(
+			"Elymaic", 0x10FE0, 0x10FFF
+		);
+
+		public static readonly UnicodeBlock Brahmi = new UnicodeBlock(
+			"Brahmi", 0x11000, 0x1107F
+		);
+
+		public static readonly UnicodeBlock Kaithi = new UnicodeBlock(
+			"Kaithi", 0x11080, 0x110CF
+		);
+
+		public static readonly UnicodeBlock SoraSompeng = new UnicodeBlock(
+			"Sora Sompeng", 0x110D0, 0x110FF
+		);
+
+		public static readonly UnicodeBlock Chakma = new UnicodeBlock(
+			"Chakma", 0x11100, 0x1114F
+		);
+
+		public static readonly UnicodeBlock Mahajani = new UnicodeBlock(
+			"Mahajani", 0x11150, 0x1117F
+		);
+
+		public static readonly UnicodeBlock Sharada = new UnicodeBlock(
+			"Sharada", 0x11180, 0x111DF
+		);
+
+		public static readonly UnicodeBlock SinhalaArchaicNumbers = new UnicodeBlock(
+			"Sinhala Archaic Numbers", 0x111E0, 0x111FF
+		);
+
+		public static readonly UnicodeBlock Khojki = new UnicodeBlock(
+			"Khojki", 0x11200, 0x1124F
+		);
+
+		public static readonly UnicodeBlock Multani = new UnicodeBlock(
+			"Multani", 0x11280, 0x112AF
+		);
+
+		public static readonly UnicodeBlock Khudawadi = new UnicodeBlock(
+			"Khudawadi", 0x112B0, 0x112FF
+		);
+
+		public static readonly UnicodeBlock Grantha = new UnicodeBlock(
+			"Grantha", 0x11300, 0x1137F
+		);
+
+		public static readonly UnicodeBlock Newa = new UnicodeBlock(
+			"Newa", 0x11400, 0x1147F
+		);
+
+		public static readonly UnicodeBlock Tirhuta = new UnicodeBlock(
+			"Tirhuta", 0x11480, 0x114DF
+		);
+
+		public static readonly UnicodeBlock Siddham = new UnicodeBlock(
+			"Siddham", 0x11580, 0x115FF
+		);
+
+		public static readonly UnicodeBlock Modi = new UnicodeBlock(
+			"Modi", 0x11600, 0x1165F
+		);
+
+		public static readonly UnicodeBlock MongolianSupplement = new UnicodeBlock(
+			"Mongolian Supplement", 0x11660, 0x1167F
+		);
+
+		public static readonly UnicodeBlock Takri = new UnicodeBlock(
+			"Takri", 0x11680, 0x116CF
+		);
+
+		public static readonly UnicodeBlock Ahom = new UnicodeBlock(
+			"Ahom", 0x11700, 0x1173F
+		);
+
+		public static readonly UnicodeBlock Dogra = new UnicodeBlock(
+			"Dogra", 0x11800, 0x1184F
+		);
+
+		public static readonly UnicodeBlock WarangCiti = new UnicodeBlock(
+			"Warang Citi", 0x118A0, 0x118FF
+		);
+
+		public static readonly UnicodeBlock DivesAkuru = new UnicodeBlock(
+			"Dives Akuru", 0x11900, 0x1195F
+		);
+
+		public static readonly UnicodeBlock Nandinagari = new UnicodeBlock(
+			"Nandinagari", 0x119A0, 0x119FF
+		);
+
+		public static readonly UnicodeBlock ZanabazarSquare = new UnicodeBlock(
+			"Zanabazar Square", 0x11A00, 0x11A4F
+		);
+
+		public static readonly UnicodeBlock Soyombo = new UnicodeBlock(
+			"Soyombo", 0x11A50, 0x11AAF
+		);
+
+		public static readonly UnicodeBlock PauCinHau = new UnicodeBlock(
+			"Pau Cin Hau", 0x11AC0, 0x11AFF
+		);
+
+		public static readonly UnicodeBlock Bhaiksuki = new UnicodeBlock(
+			"Bhaiksuki", 0x11C00, 0x11C6F
+		);
+
+		public static readonly UnicodeBlock Marchen = new UnicodeBlock(
+			"Marchen", 0x11C70, 0x11CBF
+		);
+
+		public static readonly UnicodeBlock MasaramGondi = new UnicodeBlock(
+			"Masaram Gondi", 0x11D00, 0x11D5F
+		);
+
+		public static readonly UnicodeBlock GunjalaGondi = new UnicodeBlock(
+			"Gunjala Gondi", 0x11D60, 0x11DAF
+		);
+
+		public static readonly UnicodeBlock Makasar = new UnicodeBlock(
+			"Makasar", 0x11EE0, 0x11EFF
+		);
+
+		public static readonly UnicodeBlock LisuSupplement = new UnicodeBlock(
+			"Lisu Supplement", 0x11FB0, 0x11FBF
+		);
+
+		public static readonly UnicodeBlock TamilSupplement = new UnicodeBlock(
+			"Tamil Supplement", 0x11FC0, 0x11FFF
+		);
+
+		public static readonly UnicodeBlock Cuneiform = new UnicodeBlock(
+			"Cuneiform", 0x12000, 0x123FF
+		);
+
+		public static readonly UnicodeBlock CuneiformNumbersandPunctuation = new UnicodeBlock(
+			"Cuneiform Numbers and Punctuation", 0x12400, 0x1247F
+		);
+
+		public static readonly UnicodeBlock EarlyDynasticCuneiform = new UnicodeBlock(
+			"Early Dynastic Cuneiform", 0x12480, 0x1254F
+		);
+
+		public static readonly UnicodeBlock EgyptianHieroglyphs = new UnicodeBlock(
+			"Egyptian Hieroglyphs", 0x13000, 0x1342F
+		);
+
+		public static readonly UnicodeBlock EgyptianHieroglyphFormatControls = new UnicodeBlock(
+			"Egyptian Hieroglyph Format Controls", 0x13430, 0x1343F
+		);
+
+		public static readonly UnicodeBlock AnatolianHieroglyphs = new UnicodeBlock(
+			"Anatolian Hieroglyphs", 0x14400, 0x1467F
+		);
+
+		public static readonly UnicodeBlock BamumSupplement = new UnicodeBlock(
+			"Bamum Supplement", 0x16800, 0x16A3F
+		);
+
+		public static readonly UnicodeBlock Mro = new UnicodeBlock(
+			"Mro", 0x16A40, 0x16A6F
+		);
+
+		public static readonly UnicodeBlock BassaVah = new UnicodeBlock(
+			"Bassa Vah", 0x16AD0, 0x16AFF
+		);
+
+		public static readonly UnicodeBlock PahawhHmong = new UnicodeBlock(
+			"Pahawh Hmong", 0x16B00, 0x16B8F
+		);
+
+		public static readonly UnicodeBlock Medefaidrin = new UnicodeBlock(
+			"Medefaidrin", 0x16E40, 0x16E9F
+		);
+
+		public static readonly UnicodeBlock Miao = new UnicodeBlock(
+			"Miao", 0x16F00, 0x16F9F
+		);
+
+		public static readonly UnicodeBlock IdeographicSymbolsandPunctuation = new UnicodeBlock(
+			"Ideographic Symbols and Punctuation", 0x16FE0, 0x16FFF
+		);
+
+		public static readonly UnicodeBlock Tangut = new UnicodeBlock(
+			"Tangut", 0x17000, 0x187FF
+		);
+
+		public static readonly UnicodeBlock TangutComponents = new UnicodeBlock(
+			"Tangut Components", 0x18800, 0x18AFF
+		);
+
+		public static readonly UnicodeBlock KhitanSmallScript = new UnicodeBlock(
+			"Khitan Small Script", 0x18B00, 0x18CFF
+		);
+
+		public static readonly UnicodeBlock TangutSupplement = new UnicodeBlock(
+			"Tangut Supplement", 0x18D00, 0x18D8F
+		);
+
+		public static readonly UnicodeBlock KanaSupplement = new UnicodeBlock(
+			"Kana Supplement", 0x1B000, 0x1B0FF
+		);
+
+		public static readonly UnicodeBlock KanaExtendedA = new UnicodeBlock(
+			"Kana Extended-A", 0x1B100, 0x1B12F
+		);
+
+		public static readonly UnicodeBlock SmallKanaExtension = new UnicodeBlock(
+			"Small Kana Extension", 0x1B130, 0x1B16F
+		);
+
+		public static readonly UnicodeBlock Nushu = new UnicodeBlock(
+			"Nushu", 0x1B170, 0x1B2FF
+		);
+
+		public static readonly UnicodeBlock Duployan = new UnicodeBlock(
+			"Duployan", 0x1BC00, 0x1BC9F
+		);
+
+		public static readonly UnicodeBlock ShorthandFormatControls = new UnicodeBlock(
+			"Shorthand Format Controls", 0x1BCA0, 0x1BCAF
+		);
+
+		public static readonly UnicodeBlock ByzantineMusicalSymbols = new UnicodeBlock(
+			"Byzantine Musical Symbols", 0x1D000, 0x1D0FF
+		);
+
+		public static readonly UnicodeBlock MusicalSymbols = new UnicodeBlock(
+			"Musical Symbols", 0x1D100, 0x1D1FF
+		);
+
+		public static readonly UnicodeBlock AncientGreekMusicalNotation = new UnicodeBlock(
+			"Ancient Greek Musical Notation", 0x1D200, 0x1D24F
+		);
+
+		public static readonly UnicodeBlock MayanNumerals = new UnicodeBlock(
+			"Mayan Numerals", 0x1D2E0, 0x1D2FF
+		);
+
+		public static readonly UnicodeBlock TaiXuanJingSymbols = new UnicodeBlock(
+			"Tai Xuan Jing Symbols", 0x1D300, 0x1D35F
+		);
+
+		public static readonly UnicodeBlock CountingRodNumerals = new UnicodeBlock(
+			"Counting Rod Numerals", 0x1D360, 0x1D37F
+		);
+
+		public static readonly UnicodeBlock MathematicalAlphanumericSymbols = new UnicodeBlock(
+			"Mathematical Alphanumeric Symbols", 0x1D400, 0x1D7FF
+		);
+
+		public static readonly UnicodeBlock SuttonSignWriting = new UnicodeBlock(
+			"Sutton SignWriting", 0x1D800, 0x1DAAF
+		);
+
+		public static readonly UnicodeBlock GlagoliticSupplement = new UnicodeBlock(
+			"Glagolitic Supplement", 0x1E000, 0x1E02F
+		);
+
+		public static readonly UnicodeBlock NyiakengPuachueHmong = new UnicodeBlock(
+			"Nyiakeng Puachue Hmong", 0x1E100, 0x1E14F
+		);
+
+		public static readonly UnicodeBlock Wancho = new UnicodeBlock(
+			"Wancho", 0x1E2C0, 0x1E2FF
+		);
+
+		public static readonly UnicodeBlock MendeKikakui = new UnicodeBlock(
+			"Mende Kikakui", 0x1E800, 0x1E8DF
+		);
+
+		public static readonly UnicodeBlock Adlam = new UnicodeBlock(
+			"Adlam", 0x1E900, 0x1E95F
+		);
+
+		public static readonly UnicodeBlock IndicSiyaqNumbers = new UnicodeBlock(
+			"Indic Siyaq Numbers", 0x1EC70, 0x1ECBF
+		);
+
+		public static readonly UnicodeBlock OttomanSiyaqNumbers = new UnicodeBlock(
+			"Ottoman Siyaq Numbers", 0x1ED00, 0x1ED4F
+		);
+
+		public static readonly UnicodeBlock ArabicMathematicalAlphabeticSymbols = new UnicodeBlock(
+			"Arabic Mathematical Alphabetic Symbols", 0x1EE00, 0x1EEFF
+		);
+
+		public static readonly UnicodeBlock MahjongTiles = new UnicodeBlock(
+			"Mahjong Tiles", 0x1F000, 0x1F02F
+		);
+
+		public static readonly UnicodeBlock DominoTiles = new UnicodeBlock(
+			"Domino Tiles", 0x1F030, 0x1F09F
+		);
+
+		public static readonly UnicodeBlock PlayingCards = new UnicodeBlock(
+			"Playing Cards", 0x1F0A0, 0x1F0FF
+		);
+
+		public static readonly UnicodeBlock EnclosedAlphanumericSupplement = new UnicodeBlock(
+			"Enclosed Alphanumeric Supplement", 0x1F100, 0x1F1FF
+		);
+
+		public static readonly UnicodeBlock EnclosedIdeographicSupplement = new UnicodeBlock(
+			"Enclosed Ideographic Supplement", 0x1F200, 0x1F2FF
+		);
+
+		public static readonly UnicodeBlock MiscellaneousSymbolsandPictographs = new UnicodeBlock(
+			"Miscellaneous Symbols and Pictographs", 0x1F300, 0x1F5FF
+		);
+
+		public static readonly UnicodeBlock Emoticons = new UnicodeBlock(
+			"Emoticons", 0x1F600, 0x1F64F
+		);
+
+		public static readonly UnicodeBlock OrnamentalDingbats = new UnicodeBlock(
+			"Ornamental Dingbats", 0x1F650, 0x1F67F
+		);
+
+		public static readonly UnicodeBlock TransportandMapSymbols = new UnicodeBlock(
+			"Transport and Map Symbols", 0x1F680, 0x1F6FF
+		);
+
+		public static readonly UnicodeBlock AlchemicalSymbols = new UnicodeBlock(
+			"Alchemical Symbols", 0x1F700, 0x1F77F
+		);
+
+		public static readonly UnicodeBlock GeometricShapesExtended = new UnicodeBlock(
+			"Geometric Shapes Extended", 0x1F780, 0x1F7FF
+		);
+
+		public static readonly UnicodeBlock SupplementalArrowsC = new UnicodeBlock(
+			"Supplemental Arrows-C", 0x1F800, 0x1F8FF
+		);
+
+		public static readonly UnicodeBlock SupplementalSymbolsandPictographs = new UnicodeBlock(
+			"Supplemental Symbols and Pictographs", 0x1F900, 0x1F9FF
+		);
+
+		public static readonly UnicodeBlock ChessSymbols = new UnicodeBlock(
+			"Chess Symbols", 0x1FA00, 0x1FA6F
+		);
+
+		public static readonly UnicodeBlock SymbolsandPictographsExtendedA = new UnicodeBlock(
+			"Symbols and Pictographs Extended-A", 0x1FA70, 0x1FAFF
+		);
+
+		public static readonly UnicodeBlock SymbolsforLegacyComputing = new UnicodeBlock(
+			"Symbols for Legacy Computing", 0x1FB00, 0x1FBFF
+		);
+
+		public static readonly UnicodeBlock CJKUnifiedIdeographsExtensionB = new UnicodeBlock(
+			"CJK Unified Ideographs Extension B", 0x20000, 0x2A6DF
+		);
+
+		public static readonly UnicodeBlock CJKUnifiedIdeographsExtensionC = new UnicodeBlock(
+			"CJK Unified Ideographs Extension C", 0x2A700, 0x2B73F
+		);
+
+		public static readonly UnicodeBlock CJKUnifiedIdeographsExtensionD = new UnicodeBlock(
+			"CJK Unified Ideographs Extension D", 0x2B740, 0x2B81F
+		);
+
+		public static readonly UnicodeBlock CJKUnifiedIdeographsExtensionE = new UnicodeBlock(
+			"CJK Unified Ideographs Extension E", 0x2B820, 0x2CEAF
+		);
+
+		public static readonly UnicodeBlock CJKUnifiedIdeographsExtensionF = new UnicodeBlock(
+			"CJK Unified Ideographs Extension F", 0x2CEB0, 0x2EBEF
+		);
+
+		public static readonly UnicodeBlock CJKCompatibilityIdeographsSupplement = new UnicodeBlock(
+			"CJK Compatibility Ideographs Supplement", 0x2F800, 0x2FA1F
+		);
+
+		public static readonly UnicodeBlock CJKUnifiedIdeographsExtensionG = new UnicodeBlock(
+			"CJK Unified Ideographs Extension G", 0x30000, 0x3134F
+		);
+
+		public static readonly UnicodeBlock Tags = new UnicodeBlock(
+			"Tags", 0xE0000, 0xE007F
+		);
+
+		public static readonly UnicodeBlock VariationSelectorsSupplement = new UnicodeBlock(
+			"Variation Selectors Supplement", 0xE0100, 0xE01EF
+		);
+
+		public static readonly UnicodeBlock SupplementaryPrivateUseAreaA = new UnicodeBlock(
+			"Supplementary Private Use Area-A", 0xF0000, 0xFFFFF
+		);
+
+		public static readonly UnicodeBlock SupplementaryPrivateUseAreaB = new UnicodeBlock(
+			"Supplementary Private Use Area-B", 0x100000, 0x10FFFF
+		);
+
+		static readonly UnicodeBlock[] Blocks = new UnicodeBlock[] {
+			BasicLatin,
+			Latin1Supplement,
+			LatinExtendedA,
+			LatinExtendedB,
+			IPAExtensions,
+			SpacingModifierLetters,
+			CombiningDiacriticalMarks,
+			GreekandCoptic,
+			Cyrillic,
+			CyrillicSupplement,
+			Armenian,
+			Hebrew,
+			Arabic,
+			Syriac,
+			ArabicSupplement,
+			Thaana,
+			NKo,
+			Samaritan,
+			Mandaic,
+			SyriacSupplement,
+			ArabicExtendedA,
+			Devanagari,
+			Bengali,
+			Gurmukhi,
+			Gujarati,
+			Oriya,
+			Tamil,
+			Telugu,
+			Kannada,
+			Malayalam,
+			Sinhala,
+			Thai,
+			Lao,
+			Tibetan,
+			Myanmar,
+			Georgian,
+			HangulJamo,
+			Ethiopic,
+			EthiopicSupplement,
+			Cherokee,
+			UnifiedCanadianAboriginalSyllabics,
+			Ogham,
+			Runic,
+			Tagalog,
+			Hanunoo,
+			Buhid,
+			Tagbanwa,
+			Khmer,
+			Mongolian,
+			UnifiedCanadianAboriginalSyllabicsExtended,
+			Limbu,
+			TaiLe,
+			NewTaiLue,
+			KhmerSymbols,
+			Buginese,
+			TaiTham,
+			CombiningDiacriticalMarksExtended,
+			Balinese,
+			Sundanese,
+			Batak,
+			Lepcha,
+			OlChiki,
+			CyrillicExtendedC,
+			GeorgianExtended,
+			SundaneseSupplement,
+			VedicExtensions,
+			PhoneticExtensions,
+			PhoneticExtensionsSupplement,
+			CombiningDiacriticalMarksSupplement,
+			LatinExtendedAdditional,
+			GreekExtended,
+			GeneralPunctuation,
+			SuperscriptsandSubscripts,
+			CurrencySymbols,
+			CombiningDiacriticalMarksforSymbols,
+			LetterlikeSymbols,
+			NumberForms,
+			Arrows,
+			MathematicalOperators,
+			MiscellaneousTechnical,
+			ControlPictures,
+			OpticalCharacterRecognition,
+			EnclosedAlphanumerics,
+			BoxDrawing,
+			BlockElements,
+			GeometricShapes,
+			MiscellaneousSymbols,
+			Dingbats,
+			MiscellaneousMathematicalSymbolsA,
+			SupplementalArrowsA,
+			BraillePatterns,
+			SupplementalArrowsB,
+			MiscellaneousMathematicalSymbolsB,
+			SupplementalMathematicalOperators,
+			MiscellaneousSymbolsandArrows,
+			Glagolitic,
+			LatinExtendedC,
+			Coptic,
+			GeorgianSupplement,
+			Tifinagh,
+			EthiopicExtended,
+			CyrillicExtendedA,
+			SupplementalPunctuation,
+			CJKRadicalsSupplement,
+			KangxiRadicals,
+			IdeographicDescriptionCharacters,
+			CJKSymbolsandPunctuation,
+			Hiragana,
+			Katakana,
+			Bopomofo,
+			HangulCompatibilityJamo,
+			Kanbun,
+			BopomofoExtended,
+			CJKStrokes,
+			KatakanaPhoneticExtensions,
+			EnclosedCJKLettersandMonths,
+			CJKCompatibility,
+			CJKUnifiedIdeographsExtensionA,
+			YijingHexagramSymbols,
+			CJKUnifiedIdeographs,
+			YiSyllables,
+			YiRadicals,
+			Lisu,
+			Vai,
+			CyrillicExtendedB,
+			Bamum,
+			ModifierToneLetters,
+			LatinExtendedD,
+			SylotiNagri,
+			CommonIndicNumberForms,
+			Phagspa,
+			Saurashtra,
+			DevanagariExtended,
+			KayahLi,
+			Rejang,
+			HangulJamoExtendedA,
+			Javanese,
+			MyanmarExtendedB,
+			Cham,
+			MyanmarExtendedA,
+			TaiViet,
+			MeeteiMayekExtensions,
+			EthiopicExtendedA,
+			LatinExtendedE,
+			CherokeeSupplement,
+			MeeteiMayek,
+			HangulSyllables,
+			HangulJamoExtendedB,
+			HighSurrogates,
+			HighPrivateUseSurrogates,
+			LowSurrogates,
+			PrivateUseArea,
+			CJKCompatibilityIdeographs,
+			AlphabeticPresentationForms,
+			ArabicPresentationFormsA,
+			VariationSelectors,
+			VerticalForms,
+			CombiningHalfMarks,
+			CJKCompatibilityForms,
+			SmallFormVariants,
+			ArabicPresentationFormsB,
+			HalfwidthandFullwidthForms,
+			Specials,
+			LinearBSyllabary,
+			LinearBIdeograms,
+			AegeanNumbers,
+			AncientGreekNumbers,
+			AncientSymbols,
+			PhaistosDisc,
+			Lycian,
+			Carian,
+			CopticEpactNumbers,
+			OldItalic,
+			Gothic,
+			OldPermic,
+			Ugaritic,
+			OldPersian,
+			Deseret,
+			Shavian,
+			Osmanya,
+			Osage,
+			Elbasan,
+			CaucasianAlbanian,
+			LinearA,
+			CypriotSyllabary,
+			ImperialAramaic,
+			Palmyrene,
+			Nabataean,
+			Hatran,
+			Phoenician,
+			Lydian,
+			MeroiticHieroglyphs,
+			MeroiticCursive,
+			Kharoshthi,
+			OldSouthArabian,
+			OldNorthArabian,
+			Manichaean,
+			Avestan,
+			InscriptionalParthian,
+			InscriptionalPahlavi,
+			PsalterPahlavi,
+			OldTurkic,
+			OldHungarian,
+			HanifiRohingya,
+			RumiNumeralSymbols,
+			Yezidi,
+			OldSogdian,
+			Sogdian,
+			Chorasmian,
+			Elymaic,
+			Brahmi,
+			Kaithi,
+			SoraSompeng,
+			Chakma,
+			Mahajani,
+			Sharada,
+			SinhalaArchaicNumbers,
+			Khojki,
+			Multani,
+			Khudawadi,
+			Grantha,
+			Newa,
+			Tirhuta,
+			Siddham,
+			Modi,
+			MongolianSupplement,
+			Takri,
+			Ahom,
+			Dogra,
+			WarangCiti,
+			DivesAkuru,
+			Nandinagari,
+			ZanabazarSquare,
+			Soyombo,
+			PauCinHau,
+			Bhaiksuki,
+			Marchen,
+			MasaramGondi,
+			GunjalaGondi,
+			Makasar,
+			LisuSupplement,
+			TamilSupplement,
+			Cuneiform,
+			CuneiformNumbersandPunctuation,
+			EarlyDynasticCuneiform,
+			EgyptianHieroglyphs,
+			EgyptianHieroglyphFormatControls,
+			AnatolianHieroglyphs,
+			BamumSupplement,
+			Mro,
+			BassaVah,
+			PahawhHmong,
+			Medefaidrin,
+			Miao,
+			IdeographicSymbolsandPunctuation,
+			Tangut,
+			TangutComponents,
+			KhitanSmallScript,
+			TangutSupplement,
+			KanaSupplement,
+			KanaExtendedA,
+			SmallKanaExtension,
+			Nushu,
+			Duployan,
+			ShorthandFormatControls,
+			ByzantineMusicalSymbols,
+			MusicalSymbols,
+			AncientGreekMusicalNotation,
+			MayanNumerals,
+			TaiXuanJingSymbols,
+			CountingRodNumerals,
+			MathematicalAlphanumericSymbols,
+			SuttonSignWriting,
+			GlagoliticSupplement,
+			NyiakengPuachueHmong,
+			Wancho,
+			MendeKikakui,
+			Adlam,
+			IndicSiyaqNumbers,
+			OttomanSiyaqNumbers,
+			ArabicMathematicalAlphabeticSymbols,
+			MahjongTiles,
+			DominoTiles,
+			PlayingCards,
+			EnclosedAlphanumericSupplement,
+			EnclosedIdeographicSupplement,
+			MiscellaneousSymbolsandPictographs,
+			Emoticons,
+			OrnamentalDingbats,
+			TransportandMapSymbols,
+			AlchemicalSymbols,
+			GeometricShapesExtended,
+			SupplementalArrowsC,
+			SupplementalSymbolsandPictographs,
+			ChessSymbols,
+			SymbolsandPictographsExtendedA,
+			SymbolsforLegacyComputing,
+			CJKUnifiedIdeographsExtensionB,
+			CJKUnifiedIdeographsExtensionC,
+			CJKUnifiedIdeographsExtensionD,
+			CJKUnifiedIdeographsExtensionE,
+			CJKUnifiedIdeographsExtensionF,
+			CJKCompatibilityIdeographsSupplement,
+			CJKUnifiedIdeographsExtensionG,
+			Tags,
+			VariationSelectorsSupplement,
+			SupplementaryPrivateUseAreaA,
+			SupplementaryPrivateUseAreaB
+		};
+
+		public readonly string Name;
+		public readonly int StartCodePoint;
+		public readonly int EndCodePoint;
+
+		public UnicodeBlock(string name, int startCodePoint, int endCodePoint) {
+			Name = name;
+			StartCodePoint = startCodePoint;
+			EndCodePoint = endCodePoint;
 		}
 
-		public static bool Contains(string blockName) {
-			if (Range == null) {
-				InitRange();
+		public static bool operator ==(UnicodeBlock a, UnicodeBlock b) {
+			if (a is null) {
+				return b is null;
 			}
-			return Range.ContainsKey(blockName);
+			return a.Equals(b);
 		}
 
-		public static bool IsIncludedIn(string blockName, int codePoint) {
-			if (codePoint < 0 || codePoint > UnicodeCodePoint.Max) {
-				return false;
+		public static bool operator !=(UnicodeBlock a, UnicodeBlock b) {
+			if (a is null) {
+				return b is null;
 			}
-			if (Range == null) {
-				InitRange();
-			}
-			if (Range.TryGetValue(blockName, out int[] range)) {
-				return codePoint >= range[0] && codePoint <= range[1];
-			}
-			return false;
+			return !a.Equals(b);
 		}
 
-		public static string GetName(int codePoint) {
-			if (codePoint < 0 || codePoint > UnicodeCodePoint.Max) {
-				return string.Empty;
-			}
-			if (Range == null) {
-				InitRange();
-			}
-			foreach (KeyValuePair<string, int[]> item in Range) {
-				if (codePoint >= item.Value[0] && codePoint <= item.Value[1]) {
-					return item.Key;
+		public static UnicodeBlock FromCodePoint(char codePoint) {
+			foreach (UnicodeBlock block in Blocks) {
+				if (block.Contains(codePoint)) {
+					return block;
 				}
 			}
 			return No_Block;
+		}
+
+		public static UnicodeBlock FromCodePoint(int codePoint) {
+			if (codePoint < 0 || codePoint > UnicodeCodePoint.Max) {
+				return null;
+			}
+			foreach (UnicodeBlock block in Blocks) {
+				if (block.Contains(codePoint)) {
+					return block;
+				}
+			}
+			return No_Block;
+		}
+
+		public bool Contains(char codePoint) {
+			return codePoint >= StartCodePoint && codePoint <= EndCodePoint;
+		}
+
+		public bool Contains(int codePoint) {
+			if (codePoint < 0 || codePoint > UnicodeCodePoint.Max) {
+				return false;
+			}
+			return codePoint >= StartCodePoint && codePoint <= EndCodePoint;
+		}
+
+		public override bool Equals(object obj) {
+			if (obj is UnicodeBlock == false) {
+				return false;
+			}
+			UnicodeBlock block = (UnicodeBlock)obj;
+			return StartCodePoint == block.StartCodePoint &&
+					EndCodePoint == block.EndCodePoint &&
+					Name == block.Name;
+		}
+
+		public override int GetHashCode() {
+			int hash = 17;
+			hash = hash * 31 + StartCodePoint.GetHashCode();
+			hash = hash * 31 + EndCodePoint.GetHashCode();
+			hash = hash * 31 + Name.GetHashCode();
+			return hash;
+		}
+
+		public override string ToString() {
+			return string.Format(
+				"{0:X4}..{1:X4}; {2}",
+				StartCodePoint,
+				EndCodePoint,
+				Name
+			);
 		}
 	}
 }
